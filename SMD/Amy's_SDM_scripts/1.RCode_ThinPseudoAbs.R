@@ -11,13 +11,13 @@
 ######## START INITIALIZATION
 
 ## set pathnames
-path.root = "/Users/amylauren/Desktop/cardinalis SDM May 2014" 
+#path.root = "/Users/amylauren/Desktop/cardinalis SDM May 2014" 
 path.dat = paste(path.root, "/data files", sep="")
 path.obj = paste(path.root, "/R objects", sep="")
 path.gis = paste(path.dat, "/ecoregions.shp", sep="")
 
 ## set pathnames - Matthew
-path.root = "C:/Users/DW/Desktop/temp.sept.30" 
+#path.root = "C:/Users/DW/Desktop/temp.sept.30" 
 path.dat = paste(path.root, "/data files", sep="")
 path.obj = paste(path.root, "/R objects", sep="")
 path.gis = paste(path.dat, "/ecoregions.shp", sep="")

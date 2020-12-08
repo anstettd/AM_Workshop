@@ -1,0 +1,169 @@
+path.root="/Users/amylauren/Google Drive/Occupancy AmNat Amy" #
+path.dat = paste(path.root, "/data files", sep="")#
+path.obj = paste(path.root, "/R objects", sep="")#
+path.eco = paste(path.dat, "/ecoregions.shp", sep="")
+library(raster)#
+library(maptools)#
+library(sp)#
+library(rgdal)
+library(sp)#
+setwd(path.dat)#
+all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and
+levels(all$DATASET)
+head(all)
+herb = all[all$DATASET=="herb" & all$PRESABS==1,]
+dim(herb)
+library(maptools)#
+setwd(path.eco)#
+prj.wgs = "+proj=longlat +ellps=WGS84"#
+prj.aea = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0"#
+prj.lcc = "+proj=lcc +lat_1=49 +lat_2=77 +lat_0=0 +lon_0=-95 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"#
+ecoreg = readShapePoly("us_eco_l3_no_st.shp")#
+projection(ecoreg) = CRS(prj.aea)
+eco.names = levels(ecoreg2$US_L3NAME)#
+for (i in 1:length(eco.names)) {#
+	poly = ecoreg2[ecoreg2$US_L3NAME==eco.names[i],]#
+	assign(paste("poly",i, sep=""), poly)#
+	}#
+#
+#par(ask=T)#
+#for (i in 1:length(eco.names)) {#
+	#poly = get(paste("poly",i, sep=""))#
+	#plot(bio2)#
+	#points(occ, col="white", cex=0.5)#
+	#plot(poly, add=T)#
+	#}#
+# ecoregions that are not needed: i=1-9,11,15-18,20-24,26-35,37-42,44-63,65,67-69,72-83,85#
+# ecoregions that ARE needed: i=10,12,13,14,19,25,36,43,64,66,70,71,84#
+poly.list = c(10,12,13,14,19,25,36,43,64,66,70,71,84)
+dat.poly10 = herb[!is.na(over(herb, as(poly10, "SpatialPolygons"))),] ##
+dat.poly19 = herb[!is.na(over(herb, as(poly19, "SpatialPolygons"))),] ##
+dat.poly25 = herb[!is.na(over(herb, as(poly25, "SpatialPolygons"))),] ##
+dat.poly36 = herb[!is.na(over(herb, as(poly36, "SpatialPolygons"))),] ##
+dat.poly84 = herb[!is.na(over(herb, as(poly84, "SpatialPolygons"))),]
+eco.names = levels(ecoreg2$US_L3NAME)#
+for (i in 1:length(eco.names)) {#
+	poly = ecoreg2[ecoreg2$US_L3NAME==eco.names[i],]#
+	assign(paste("poly",i, sep=""), poly)#
+	}
+ecoreg2 = spTransform(ecoreg, CRS(prj.wgs))
+eco.names = levels(ecoreg2$US_L3NAME)#
+for (i in 1:length(eco.names)) {#
+	poly = ecoreg2[ecoreg2$US_L3NAME==eco.names[i],]#
+	assign(paste("poly",i, sep=""), poly)#
+	}
+poly.list = c(10,12,13,14,19,25,36,43,64,66,70,71,84)
+dat.poly10 = herb[!is.na(over(herb, as(poly10, "SpatialPolygons"))),] ##
+dat.poly19 = herb[!is.na(over(herb, as(poly19, "SpatialPolygons"))),] ##
+dat.poly25 = herb[!is.na(over(herb, as(poly25, "SpatialPolygons"))),] ##
+dat.poly36 = herb[!is.na(over(herb, as(poly36, "SpatialPolygons"))),] ##
+dat.poly84 = herb[!is.na(over(herb, as(poly84, "SpatialPolygons"))),]
+coordinates(herb) = ~Longitude + Latitude
+dat.poly10 = herb[!is.na(over(herb, as(poly10, "SpatialPolygons"))),] ##
+dat.poly19 = herb[!is.na(over(herb, as(poly19, "SpatialPolygons"))),] ##
+dat.poly25 = herb[!is.na(over(herb, as(poly25, "SpatialPolygons"))),] ##
+dat.poly36 = herb[!is.na(over(herb, as(poly36, "SpatialPolygons"))),] ##
+dat.poly84 = herb[!is.na(over(herb, as(poly84, "SpatialPolygons"))),]
+dat.poly10 = herb[!is.na(over(herb, as(poly10, "SpatialPolygons"))),]
+prj.wgs = "+proj=longlat +ellps=WGS84"
+proj4string(herb) = CRS(prj.wgs)
+dat.poly10 = herb[!is.na(over(herb, as(poly10, "SpatialPolygons"))),]
+dat.poly19 = herb[!is.na(over(herb, as(poly19, "SpatialPolygons"))),] ##
+dat.poly25 = herb[!is.na(over(herb, as(poly25, "SpatialPolygons"))),] ##
+dat.poly36 = herb[!is.na(over(herb, as(poly36, "SpatialPolygons"))),] ##
+dat.poly84 = herb[!is.na(over(herb, as(poly84, "SpatialPolygons"))),]
+dat.poly12 = herb[!is.na(over(herb, as(poly12, "SpatialPolygons"))),] ##
+dat.poly13 = herb[!is.na(over(herb, as(poly13, "SpatialPolygons"))),] ##
+dat.poly14 = herb[!is.na(over(herb, as(poly14, "SpatialPolygons"))),] ##
+dat.poly64 = herb[!is.na(over(herb, as(poly64, "SpatialPolygons"))),]
+dat.poly10
+dat.poly19
+dat.poly25
+dat.poly36
+dat.poly84
+dat.poly12
+dat.poly13
+dat.poly14
+dat.poly64
+dat.poly43
+dat.poly43 = herb[!is.na(over(herb, as(poly43, "SpatialPolygons"))),] ##
+dat.poly66 = herb[!is.na(over(herb, as(poly66, "SpatialPolygons"))),] ##
+dat.poly70 = herb[!is.na(over(herb, as(poly70, "SpatialPolygons"))),] ##
+dat.poly71 = herb[!is.na(over(herb, as(poly71, "SpatialPolygons"))),]
+dat.poly43
+dat.poly66
+dat.poly70
+dat.poly71
+11+9+53+4
+8+40+2+84
+2+4+118+96
+22+77+134
+220+77+134
+north.herb = rbind(dat.poly10, dat.poly19, dat.poly25, dat.poly36, dat.poly84)#
+center.herb = rbind(dat.poly12, dat.poly13, dat.poly14, dat.poly64)#
+south.herb = rbind(dat.poly43, dat.poly66, dat.poly70, dat.poly71)
+ecoreg = readShapePoly("us_eco_l3_no_st.shp")#
+projection(ecoreg) = CRS(prj.aea)
+prj.wgs = "+proj=longlat +ellps=WGS84"#
+ecoreg2 = spTransform(ecoreg, CRS(prj.wgs))
+ymin = min(occ$Latitude) - 2#
+ymax = max(occ$Latitude) + 2#
+xmin = min(occ$Longitude) - 2#
+xmax = max(occ$Longitude) + 2#
+e = extent(xmin, xmax, ymin, ymax)
+ymin = min(herb$Latitude) - 2#
+ymax = max(herb$Latitude) + 2#
+xmin = min(herb$Longitude) - 2#
+xmax = max(herb$Longitude) + 2#
+e = extent(xmin, xmax, ymin, ymax)
+ecoreg2 = spTransform(ecoreg, CRS(prj.wgs))
+ecoreg3 <- crop(ecoreg2, e)
+plot(ecoreg3)#
+#points(north, col="blue")#
+#points(center, col="green")#
+#points(south, col="red")#
+points(north.herb, col="blue")#
+points(center.herb, col="green")#
+points(south.herb, col="red")
+head(south.herb)
+max(south.herb$Elevation)
+max(center.herb$Elevation)
+max(north.herb$Elevation)
+south.herb$Elevation
+boxplot(south.herb$Elevation)
+vec <- which(south.herb$Elevation>2400)
+vec
+vec <- which(south.herb$Elevation>2300)
+vec
+boxplot(center.herb$Elevation)
+boxplot(south.herb$Elevation)
+boxplot(north.herb$Elevation)
+max(north.herb$Latitude)
+min(south.herb$Latitude)
+L.thresh = 400#
+H.thresh = 1200
+high <- herb[herb$Elevation > H.thresh,]#
+low <- herb[herb$Elevation < L.thresh,]#
+mid <- herb[herb$Elevation >= L.thresh & herb$Elevation <= H.thresh,]
+head(high)
+max(high$Latitude)
+min(high$Latitude)
+max(mid$Latitude)
+min(mid$Latitude)
+max(low$Latitude)
+min(low$Latitude)
+high.occ <- occ[occ$Elevation > H.thresh,]#
+low.occ <- occ[occ$Elevation < L.thresh,]#
+mid.occ <- occ[occ$Elevation >= L.thresh & occ$Elevation <= H.thresh,]
+occ = all[all$DATASET=="occ",] #pull out occupancy dataset
+high.occ <- occ[occ$Elevation > H.thresh,]#
+low.occ <- occ[occ$Elevation < L.thresh,]#
+mid.occ <- occ[occ$Elevation >= L.thresh & occ$Elevation <= H.thresh,]
+max(high.occ$Latitude)
+max(high.occ$Latitude[high.occ$PRESABS==1])
+max(mid.occ$Latitude[high.occ$PRESABS==1])
+max(low.occ$Latitude[low.occ$PRESABS==1])
+max(mid.occ$Latitude[mid.occ$PRESABS==1])
+min(high.occ$Latitude[high.occ$PRESABS==1])
+min(mid.occ$Latitude[mid.occ$PRESABS==1])
+min(low.occ$Latitude[low.occ$PRESABS==1])
