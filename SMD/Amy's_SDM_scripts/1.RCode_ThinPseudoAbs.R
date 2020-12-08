@@ -12,19 +12,19 @@
 
 ## set pathnames
 #path.root = "/Users/amylauren/Desktop/cardinalis SDM May 2014" 
-path.dat = paste(path.root, "/data files", sep="")
-path.obj = paste(path.root, "/R objects", sep="")
-path.gis = paste(path.dat, "/ecoregions.shp", sep="")
+#path.dat = paste(path.root, "/data files", sep="")
+#path.obj = paste(path.root, "/R objects", sep="")
+#path.gis = paste(path.dat, "/ecoregions.shp", sep="")
 
 ## set pathnames - Matthew
 #path.root = "C:/Users/DW/Desktop/temp.sept.30" 
-path.dat = paste(path.root, "/data files", sep="")
-path.obj = paste(path.root, "/R objects", sep="")
-path.gis = paste(path.dat, "/ecoregions.shp", sep="")
+#path.dat = paste(path.root, "/data files", sep="")
+#path.obj = paste(path.root, "/R objects", sep="")
+#path.gis = paste(path.dat, "/ecoregions.shp", sep="")
 
 
 ## Import localities
-setwd(path.dat)
+#setwd(path.dat)
 library(sp)
 library(raster)
 library(rgeos)
@@ -43,7 +43,7 @@ plot(herb8, pch=19, cex=0.5, col="red")
 points(herb9, pch=19, cex=0.5, col="green")
 points(herb10, pch=19, cex=0.5, col="blue")
 	
-all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs
+all = read.csv("SDM/data files/all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs
 herb.all = all[all$DATASET=="herb",] #drop occupancy points
 pseudo = herb.all[herb.all$PRESABS==0,] #pull out pseudos
 dim(pseudo); table(pseudo$PRESABS)
