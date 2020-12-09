@@ -13,20 +13,20 @@
 #modeest    # for determining data mode
 
 ## set pathnames
-path.root="/Users/amyangert/Desktop/cardinalis SDM" 
-path.dat=paste(path.root,"/data files",sep="") #(normals calculated from date of collection)
+#path.root="/Users/amyangert/Desktop/cardinalis SDM" 
+#path.dat=paste(path.root,"/data files",sep="") #(normals calculated from date of collection)
 
 ## set pathnames - Matthew
-path.root = "C:/Users/DW/Desktop/temp.sept.30" 
-path.dat = paste(path.root, "/data files", sep="")
-path.obj = paste(path.root, "/R objects", sep="")
-path.gis = paste(path.dat, "/ecoregions.shp", sep="")
+#path.root = "C:/Users/DW/Desktop/temp.sept.30" 
+#path.dat = paste(path.root, "/data files", sep="")
+#path.obj = paste(path.root, "/R objects", sep="")
+#path.gis = paste(path.dat, "/ecoregions.shp", sep="")
 
 
 ################################################################################
 ######## START INITIALIZATION
 ## make training data dataframe (old, before Matt merged files)
-setwd(path.dat)
+#setwd(path.dat)
 #ab = read.csv("pseudo.absence.herb.30yr.csv") #load pseudo-absences 
 #pr1 = read.csv("30yr.avg.bioclim.herb.csv") #load cleaned herbarium records + bioclim
 #pr2 = read.csv("30yr.avg.monthly.herb.csv") #load cleaned herbarium records + bioclim
@@ -43,7 +43,7 @@ setwd(path.dat)
 #dat = rbind(ab.cull, pr.cull) #bind pres and abs data into one frame
 
 ## read in training data dataframe
-all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
+all = read.csv("SDM/data_files/all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
 dat = all[all$DATASET=="herb",] #cull out occupancy dataset
 npres = sum(dat$PRESABS); npres #subsample for 10:1 ratio of pseudoabs:pres
 pres = dat[dat$PRESABS==1,]
@@ -61,6 +61,7 @@ dat = rbind(pres,pseud)
 
 par(ask=T)
 par(mfrow=c(1,2))
+# Daniel: This for loop requires hitting enter ~20 times manually the code below doesn't actually generate the output file
 for (i in 45:dim(dat)[2]) {
 	hist(dat[,i], main=names(dat)[i])
 	hist(log(dat[,i]+0.5), main=paste("log",names(dat)[i]))
@@ -89,7 +90,7 @@ dat$lnPPT12 = log(dat$PPT12+0.5)
 
 #replace raw with ln-transforms (in preliminary investigations, ln-var almost always have higher adj dev and lower AIC than untransformed var)
 dat.ln = dat[,c(1:48,85:92,57:58,76,60:65,77,67,78:80,71,81:84)]
-write.csv(dat.ln, "herb.dat.lnpreds.csv")
+write.csv(dat.ln, "SDM/Output/herb.dat.lnpreds.csv")
 ######## END EXAMINE DISTRIBUTION OF PRED
 ################################################################################
 
