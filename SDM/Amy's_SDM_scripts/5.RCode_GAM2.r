@@ -17,21 +17,21 @@
 #library(car)
 
 ## set pathnames
-path.root="/Users/amylauren/Google Drive/Occupancy AmNat Amy" 
-path.dat=paste(path.root, "/data files", sep="")
-path.obj=paste(path.root, "/R objects", sep="")
-path.fig=paste(path.root, "/figures", sep="")
-path.cod=paste(path.root, "/R code", sep="")
+#path.root="/Users/amylauren/Google Drive/Occupancy AmNat Amy" 
+#path.dat=paste(path.root, "/data files", sep="")
+#path.obj=paste(path.root, "/R objects", sep="")
+#path.fig=paste(path.root, "/figures", sep="")
+#path.cod=paste(path.root, "/R code", sep="")
 
 ## set pathnames - Matthew
-path.root = "C:/Users/DW/Desktop/temp.sept.30" 
-path.dat = paste(path.root, "/data files", sep="")
-path.dat.fix = paste(path.root, "/data files", sep="") # older files relocated to another directory
-path.obj = paste(path.root, "/R objects", sep="")
-path.eco = paste(path.obj, "/ecoregions.shp", sep="")
-path.bio = paste(path.obj, "/wc0.5", sep="")
-path.cod=paste(path.root, "/R code", sep="")
-path.fig=paste(path.root, "/figures", sep="")
+#path.root = "C:/Users/DW/Desktop/temp.sept.30" 
+#path.dat = paste(path.root, "/data files", sep="")
+#path.dat.fix = paste(path.root, "/data files", sep="") # older files relocated to another directory
+#path.obj = paste(path.root, "/R objects", sep="")
+#path.eco = paste(path.obj, "/ecoregions.shp", sep="")
+#path.bio = paste(path.obj, "/wc0.5", sep="")
+#path.cod=paste(path.root, "/R code", sep="")
+#path.fig=paste(path.root, "/figures", sep="")
 
 
 ################################################################################

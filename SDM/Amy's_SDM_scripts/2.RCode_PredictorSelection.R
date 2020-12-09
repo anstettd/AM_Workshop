@@ -101,6 +101,8 @@ library(modeest) # package modeest for mode
 t1=aggregate(dat[,c(9:92)],list(dat$PRES),FUN=mean,na.rm=T); t1 # mean of bioclim by P/A
 t2=aggregate(dat[,c(9:92)],list(dat$PRES),FUN=median,na.rm=T); t2 # median of bioclim by P/A
 t3=aggregate(dat[,c(9:92)],list(dat$PRES),FUN=mfv,na.rm=T); t3 # mode of bioclim by P/A
+# t3 trips ~100 warnings. Not sure if this is a problem.
+#argument 'na.rm' is soft-deprecated, please start using 'na_rm' instead
 
 ######## END DESCRIPTIVE STATS AMONG PRED PREDICTORS
 ################################################################################
@@ -176,12 +178,14 @@ pairs(dat.ln[,c(57:75)],lower.panel=panel.smooth, upper.panel=panel.cor,
       main="Bioclim Variables")
 pairs(dat.ln[,c(33:44)],lower.panel=panel.smooth, upper.panel=panel.cor, 
       main="Monthly Ave Temperature Variables")
-pairs(dat.ln[,c(9:20)],lower.panel=panel.smooth, upper.panel=panel.cor, 
+pairs(dat.ln[,c(9:20)],lower.panel=panel.smooth, upper.panel=panel.cor,
       main="Monthly Max Temperature Variables")
+#Daniel: Error: unexpected ')' in "      main="Monthly Ave Temperature Variables")"
 pairs(dat.ln[,c(21:32)],lower.panel=panel.smooth, upper.panel=panel.cor, 
       main="Monthly Min Temperature Variables")
 pairs(dat.ln[,c(45:56)],lower.panel=panel.smooth, upper.panel=panel.cor, 
       main="Monthly Precip Variables")
+#Daniel: Error: unexpected ')' in "      main="Monthly Min Temperature Variables")"
 
 ######## END CORRELATIONS AMONG PRED PREDICTORS
 ################################################################################
@@ -206,7 +210,10 @@ varimp.glm=function(tr.spp,tr.var,pres,pf,pl) {
     tmp.mat[(i-pf+1),2]=(1-(tmp$deviance/tmp$null.deviance))
     }
     return(tmp.mat)
-  }
+}
+#Daniel: Warning message: In doTryCatch(return(expr), name, parentenv, handler) :reached elapsed time limit
+
+
 #### END function variable importance
 
 ## estimate VIP values => AIC & Adj deviance
@@ -304,7 +311,7 @@ abline(h=0); abline(mean(dev.fit[,2]),0,lt=3) # ref lines; dash=mean adj.dev
 dat.bio = dat.ln[,c(1:8,58:60,66:68,70:71)]
 dat.mo1 = dat.ln[,c(1:8,38,30,45,50,51)]
 dat.mo2 = dat.ln[,c(1:8,14,21,28,45,50)]
-save(dat.bio, dat.mo1, dat.mo2, file="herb.dat.preds.Rda")
+save(dat.bio, dat.mo1, dat.mo2, file="SDM/Output/herb.dat.preds.Rda")
 
 
 
