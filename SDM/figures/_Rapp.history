@@ -1,0 +1,2508 @@
+?rand
+??rand
+?sample
+?normal
+?distribution
+dnorm(100,mean=0.97, sd=0.40)
+dnorm
+dnorm(1)
+dnorm(10)
+rnorm(100,mean=0.97, sd=0.40)
+popvec = c()#
+N0 = 1000#
+lam = 0.97#
+var = 0.40#
+time = 100#
+lamvec = rnorm(time, mean=lam, sd=var)
+No
+N0
+lam
+var
+time
+lamvec
+popvec
+popvec[1] = N0
+popvec
+for (i in 2:time) {#
+	Nnew = popvec[i-1]* lamvec[i]#
+	popvec[i] = Nnew#
+}
+popvec
+plot(popvec ~ time)
+length(popvec)
+row.name(popvec)
+row.names(popvec)
+plot(popvec ~ row.names(popvec)
+)
+plot(popvec ~ 1:100)
+plot(popvec ~ c(1:100))
+lines(popvec ~ c(1:100))
+plot(xlim=c(0,100), ylim=c(0,1200))
+plot(y=0, xlim=c(0,100), ylim=c(0,1200))
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1200))
+lines(popvec ~ c(1:100))
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1200), col="white")
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1200), col="white", xlab="Time", ylab="Population size")#
+lines(popvec ~ c(1:100))
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,2000), col="white", xlab="Time", ylab="Population size")#
+lines(popvec ~ c(1:100))
+popvec = c()#
+N0 = 1000#
+lam = 0.97#
+var = 0.40#
+time = 100#
+lamvec = rnorm(time, mean=lam, sd=var)#
+#
+popvec[1] = N0#
+for (i in 2:time) {#
+	Nnew = popvec[i-1]* lamvec[i]#
+	popvec[i] = Nnew#
+}#
+#
+lines(popvec ~ c(1:100), add=TRUE)
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,2000), col="white", xlab="Time", ylab="Population size")
+popvec = c()#
+N0 = 1000#
+lam = 0.97#
+var = 0.40#
+time = 100#
+lamvec = rnorm(time, mean=lam, sd=var)#
+#
+popvec[1] = N0#
+for (i in 2:time) {#
+	Nnew = popvec[i-1]* lamvec[i]#
+	popvec[i] = Nnew#
+}#
+#
+lines(popvec ~ c(1:100))
+colorvec = c("red", "blue", "green", "darkgreen", "pink", "purple", "black", "grey")
+j=1
+colorvec[j]
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,2000), col="white", xlab="Time", ylab="Population size")
+popvec = c()#
+	N0 = 1000#
+	lam = 0.97#
+	var = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+#
+	lines(popvec ~ c(1:100), col=colorvec[j])
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 0.97#
+	var = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,2000), col="white", xlab="Time", ylab="Population size")#
+#
+colorvec = c("red", "blue", "green", "darkgreen", "pink", "purple", "black", "grey")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 0.97#
+	var = 0.20#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,3000), col="white", xlab="Time", ylab="Population size")#
+#
+colorvec = c("red", "blue", "green", "darkgreen", "pink", "purple", "black", "grey")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.01#
+	var = 0.20#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,3000), col="white", xlab="Time", ylab="Population size")#
+#
+colorvec = c("red", "blue", "green", "darkgreen", "pink", "purple", "black", "grey")
+par(ask=TRUE)
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.01#
+	var = 0.20#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,3000), col="white", xlab="Time", ylab="Population size")
+colorvec = c("red", "blue", "green", "darkgreen", "pink", "purple", "black", "grey")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.01#
+	var = 0.20#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,3000), col="white", xlab="Time", ylab="Population size")#
+#
+colorvec = c("red", "blue", "green", "turquoise", "pink", "purple", "black", "grey")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.01#
+	var = 0.10#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,3000), col="white", xlab="Time", ylab="Population size")#
+#
+colorvec = c("red", "blue", "green", "turquoise", "pink", "purple", "black", "grey")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.01#
+	var = 0.10#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")#
+#
+colorvec = c("red", "blue", "green", "turquoise", "pink", "purple", "black", "grey")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.01#
+	var = 0.10#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,100), col="white", xlab="Time", ylab="Population size")#
+#
+colorvec = c("red", "blue", "green", "turquoise", "pink", "purple", "black", "grey")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.01#
+	var = 0.10#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=var)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,100), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		popvec[i] = Nnew#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+?ifelse
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		ifelse(Nnew<0, popvec[i]=0, popvec[i] = Nnew#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,100), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		ifelse(Nnew<0, popvec[i]=0, popvec[i] = Nnew)#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,100), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,1000), ylim=c(0,100), col="white", xlab="Time", ylab="Population size")#
+#
+colorvec = c("red", "blue", "green", "turquoise", "pink", "purple", "black", "grey")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,3000), col="white", xlab="Time", ylab="Population size")
+colorvec = c("red", "blue", "green")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	par(ask=TRUE)#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(2,1))
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 100#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")
+split.screen(c(2,1))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,3000), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,3000), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="N0 = 10")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="N0=1000")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="lam=1.05, sd(lam)=0.4, N0 = 10")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="lam=1.05, sd(lam)=0.4, N0=1000")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.05, sd(l)=0.3, N0 = 10")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.05#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="l=1.05, sd(l)=0.3, N0=1000")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.05#
+	sd = 0.40#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0=1000")
+screen(1)#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0=1000")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+split.screen(c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")#
+#
+screen(1)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}#
+screen(2)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0=1000")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+par(ask=T)
+split.screen(c(1,2))
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")
+split.screen(c(1,2))
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+screen(1)#
+par(ask=T)#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")
+par(mfrow=c(1,2), ask=T)#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0=1000")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+par(mfrow=c(1,2), ask=T)#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(Nnew,test, col=colorvec[j])#
+		}#
+	#lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+par(mfrow=c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(i,test, col=colorvec[j])#
+		}#
+	#lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0=1000")
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(i,test, col=colorvec[j])#
+		}#
+	#lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+par(mfrow=c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")#
+#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(i,test, col=colorvec[j])#
+		}#
+	#lines(popvec ~ c(1:100), col=colorvec[j])#
+	}#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0=1000")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(i,test, col=colorvec[j])#
+		}#
+	#lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+par(mfrow=c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")#
+#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1500), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(i,test, col=colorvec[j])#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,5000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0=1000")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(i,test, col=colorvec[j])#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+par(mfrow=c(1,2))#
+colorvec = c("red", "blue", "green", "magenta", "turquoise")#
+#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,1000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0 = 10")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 10#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(i,test, col=colorvec[j])#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}#
+plot(y=0, x=0, xlim=c(0,100), ylim=c(0,7000), col="white", xlab="Time", ylab="Population size", main="l=1.03, sd(l)=0.3, N0=1000")#
+#
+for (j in 1:length(colorvec)) {#
+	popvec = c()#
+	N0 = 1000#
+	lam = 1.03#
+	sd = 0.30#
+	time = 100#
+	lamvec = rnorm(time, mean=lam, sd=sd)#
+#
+	popvec[1] = N0#
+	for (i in 2:time) {#
+		Nnew = popvec[i-1]* lamvec[i]#
+		test = ifelse(Nnew<0, 0, Nnew)#
+		popvec[i] = test#
+		points(i,test, col=colorvec[j])#
+		}#
+	lines(popvec ~ c(1:100), col=colorvec[j])#
+	}
+library(rgdal)#
+library(RColorBrewer)#
+library(raster)
+getwd()
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_1970std/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)
+xx = asSGDF_GROD(x)
+getDriver(x)
+zz = asSGDF_GROD(z)
+bio5_1970 = raster(zz)
+plot(bio5_1970)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_1970/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_1970 = raster(zz)#
+plot(bio5_1970)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_dif/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_1970 = raster(zz)#
+plot(bio5_dif)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_dif/hdr.adf"
+z = new("GDALReadOnlyDataset", dpath)
+zz = asSGDF_GROD(z)
+bio5_dif = raster(zz)
+plot(bio5_dif)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_stddif/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_stddif = raster(zz)#
+plot(bio5_stddif)
+bio5_1970
+bio5_1970std
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_1970/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_1970 = raster(zz)#
+plot(bio5_1970)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_1970std/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_1970std = raster(zz)#
+plot(bio5_1970std)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_dif/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_dif = raster(zz)#
+plot(bio5_dif)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_stddif/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_stddif = raster(zz)#
+plot(bio5_stddif)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_1985/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_1985 = raster(zz)#
+plot(bio5_1985)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_1985std/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_1985std = raster(zz)#
+plot(bio5_1985std)
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_dif/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_dif = raster(zz)#
+plot(bio5_dif)#
+#
+dpath="/Users/amyangert/Desktop/ForAmy/bio5_stddif/hdr.adf"#
+z = new("GDALReadOnlyDataset", dpath)#
+zz = asSGDF_GROD(z)#
+bio5_stddif = raster(zz)#
+plot(bio5_stddif)
+bio5_1970
+bio5_1970std
+bio5_1985
+bio5_1985std
+bio5_dif
+bio5_stddif
+dif = bio5_1985 - bio5_1970
+dif
+stddif = bio5_1985std - bio5_1970std
+stddif
+source('~/Google Drive/OccAmNat/9.RCode_OccupancyTests5.R', chdir = TRUE)
+source('~/Google Drive/OccAmNat/9.RCode_OccupancyTests6.R', chdir = TRUE)
+q()
+source('~/Google Drive/OccAmNat/9.RCode_OccupancyTests6.R', chdir = TRUE)
+path.obj
+Sys.getenv()
+q()
+Sys.getenv()
+q()
+install.packages('helloJavaWorld')
+library(helloJavaWorld)
+helloJavaWorld()
+install.packages("dismo")
+path.root="/Users/amyangert/Google Drive/OccAmNat"
+path.root="/Users/amyangert/Google Drive/OccAmNat"
+path.root="/Users/amyangert/Google Drive/OccAmNat"
+path.root="/Users/amyangert/Google Drive/OccAmNat"
+path.root="/Users/amyangert/Google Drive/OccAmNat" #
+path.dat = paste(path.root, "/data files", sep="")#
+path.obj = paste(path.root, "/R objects", sep="")#
+path.fig = paste(path.root, "/figures", sep="")#
+path.cod = paste(path.root, "/R code", sep="")
+install.packages("raster")
+setwd(path.obj)
+for (i in 1:10) {#
+	mod.lr = get(load(paste("LR.mod2.",i,".pseudo11.Rda", sep="")))#
+	assign(paste("LR.mod2.",i, sep=""), mod.lr)#
+	mod.gam = get(load(paste("GAM.mod4.",i,".pseudo11.Rda", sep="")))#
+	assign(paste("GAM.mod4.",i, sep=""), mod.gam)#
+	mod.rf = get(load(paste("RF.mod1.",i,".pseudo11.Rda", sep="")))  #
+	assign(paste("RF.mod1.",i, sep=""), mod.rf)#
+	mod.brt = get(load(paste("BRT.mod4.",i,".pseudo11.Rda", sep="")))#
+	assign(paste("BRT.mod4.",i, sep=""), mod.brt)  #
+	mod.max = get(load(paste("MAX.mod1.",i,".pseudo11.Rda", sep="")))#
+	assign(paste("MAX.mod1.",i, sep=""), mod.max)  #
+	}
+ext.accs.lr = get(load("LR.mod2.extaccs.pseudo11.Rda")); cv.accs.lr <- get(load("LR.mod2.cvaccs.pseudo11.Rda")); accs.lr <- get(load("LR.mod2.accs.pseudo11.Rda"))#
+ext.accs.gam = get(load("GAM.mod4.extaccs.pseudo11.Rda")); cv.accs.gam = get(load("GAM.mod4.cvaccs.pseudo11.Rda")); accs.gam = get(load("GAM.mod4.accs.pseudo11.Rda"))#
+ext.accs.rf = get(load("RF.mod1.extaccs.pseudo11.Rda")); accs.rf = get(load("RF.mod1.accs.pseudo11.Rda"))#
+ext.accs.brt = get(load("BRT.mod4.extaccs.pseudo11.Rda")); cv.accs.brt = get(load("BRT.mod4.accs.pseudo11.Rda")); accs.brt = get(load("BRT.mod4.resubaccs.pseudo11.Rda"))#
+ext.accs.max = get(load("MAX.mod1.extaccs.pseudo11.Rda")); cv.accs.max = get(load("MAX.mod1.cvaccs.pseudo11.Rda")); accs.max = get(load("MAX.mod1.accs.pseudo11.Rda"))
+lr.cuts = ext.accs.lr[ext.accs.lr$thresh=="SensSpec", "threshold"]#
+gam.cuts = ext.accs.gam[ext.accs.gam$thresh=="SensSpec", "threshold"]#
+rf.cuts = ext.accs.rf[ext.accs.rf$thresh=="SensSpec", "threshold"]#
+brt.cuts = ext.accs.brt[ext.accs.brt$thresh=="SensSpec", "threshold"]#
+max.cuts = ext.accs.max[ext.accs.max$thresh=="SensSpec", "threshold"]#
+#
+cuts <- cbind(lr.cuts, gam.cuts, rf.cuts, brt.cuts, max.cuts)
+setwd(path.dat)#
+all <- read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences#
+occ <- all[all$DATASET=="occ",] #pull out occupancy dataset#
+occ$bio3 = log(occ$bio3+0.5) #make needed ln-transforms of predictors#
+occ$bio10 = log(occ$bio10+0.5)#
+occ$bio12 = log(occ$bio12+0.5)#
+occ$bio14 = log(occ$bio14+0.5)
+setwd(path.dat)#
+north = read.csv("north.csv")#
+center = read.csv("center.csv")#
+south = read.csv("south.csv")#
+#
+## Get ready to split data into high, mid, and low elevation sets#
+## Don't actually split until after predictions are bound to occ#
+L.thresh = 400#
+H.thresh = 1200
+library(dismo)
+for (i in 1:10) {
+for (i in 1:10) {#
+	mod = get(paste("MAX.mod1.",i, sep=""))#
+	MAXprob=predict(mod, occ, overwrite=T) #
+	occ = cbind(occ, MAXprob)#
+	}
+install.packages("maptools")
+install.packages("gam")
+install.packages(randomForest)
+install.packages("randomForest")
+install.packages("gbm")
+library(raster)
+library(raster)
+library(maptools)
+library(gam)
+library(randomForest)
+library(dismo)
+library(gbm)
+for (i in 1:10) {#
+	mod = get(paste("LR.mod2.",i, sep=""))#
+	LRprob = predict(mod, occ, type="response")#
+	occ = cbind(occ, LRprob)#
+	}   #
+for (i in 1:10) {#
+	mod = get(paste("LR.mod2.",i, sep=""))#
+	LRprob = predict(mod, north, type="response")#
+	north = cbind(north, LRprob)#
+	}   #
+for (i in 1:10) {#
+	mod = get(paste("LR.mod2.",i, sep=""))#
+	LRprob = predict(mod, center, type="response")#
+	center = cbind(center, LRprob)#
+	}   #
+for (i in 1:10) {#
+	mod = get(paste("LR.mod2.",i, sep=""))#
+	LRprob = predict(mod, south, type="response")#
+	south = cbind(south, LRprob)#
+	}
+library(gam)#
+for (i in 1:10) {#
+	mod = get(paste("GAM.mod4.",i, sep=""))#
+	GAMprob=predict(mod, occ, type="response")#
+	occ = cbind(occ, GAMprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("GAM.mod4.",i, sep=""))#
+	GAMprob=predict(mod, north, type="response")#
+	north = cbind(north, GAMprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("GAM.mod4.",i, sep=""))#
+	GAMprob=predict(mod, center, type="response")#
+	center = cbind(center, GAMprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("GAM.mod4.",i, sep=""))#
+	GAMprob=predict(mod, south, type="response")#
+	south = cbind(south, GAMprob)#
+	}
+library(randomForest) #
+for (i in 1:10) {#
+	mod = get(paste("RF.mod1.",i, sep=""))#
+	RFprob=predict(mod, occ, type="prob", fun=predict, index=2, overwrite=T)#
+	occ = cbind(occ, RFprob[,2])#
+	}#
+#names(occ)[96:105] = "RFprob"#
+for (i in 1:10) {#
+	mod = get(paste("RF.mod1.",i, sep=""))#
+	RFprob=predict(mod, north, type="prob", fun=predict, index=2, overwrite=T)#
+	north = cbind(north, RFprob[,2])#
+	}#
+#names(north)[96:105] = "RFprob"#
+for (i in 1:10) {#
+	mod = get(paste("RF.mod1.",i, sep=""))#
+	RFprob=predict(mod, center, type="prob", fun=predict, index=2, overwrite=T)#
+	center = cbind(center, RFprob[,2])#
+	}#
+#names(center)[96:105] = "RFprob"#
+for (i in 1:10) {#
+	mod = get(paste("RF.mod1.",i, sep=""))#
+	RFprob=predict(mod, south, type="prob", fun=predict, index=2, overwrite=T)#
+	south = cbind(south, RFprob[,2])#
+	}#
+#names(south)[96:105] = "RFprob"
+library(dismo)#
+library(gbm)#
+for (i in 1:10) {#
+	mod = get(paste("BRT.mod4.",i, sep=""))#
+	BRTprob=predict(mod, occ, n.trees=mod$gbm.call$best.trees, type="response") #
+	occ = cbind(occ, BRTprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("BRT.mod4.",i, sep=""))#
+	BRTprob=predict(mod, north, n.trees=mod$gbm.call$best.trees, type="response") #
+	north = cbind(north, BRTprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("BRT.mod4.",i, sep=""))#
+	BRTprob=predict(mod, center, n.trees=mod$gbm.call$best.trees, type="response") #
+	center = cbind(center, BRTprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("BRT.mod4.",i, sep=""))#
+	BRTprob=predict(mod, south, n.trees=mod$gbm.call$best.trees, type="response") #
+	south = cbind(south, BRTprob)#
+	}
+library(dismo) #
+for (i in 1:10) {#
+	mod = get(paste("MAX.mod1.",i, sep=""))#
+	MAXprob=predict(mod, occ, overwrite=T) #
+	occ = cbind(occ, MAXprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("MAX.mod1.",i, sep=""))#
+	MAXprob=predict(mod, north, overwrite=T) #
+	north = cbind(north, MAXprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("MAX.mod1.",i, sep=""))#
+	MAXprob=predict(mod, center, overwrite=T) #
+	center = cbind(center, MAXprob)#
+	}#
+for (i in 1:10) {#
+	mod = get(paste("MAX.mod1.",i, sep=""))#
+	MAXprob=predict(mod, south, overwrite=T) #
+	south = cbind(south, MAXprob)#
+	}
+occ$LRave = NA #
+occ$GAMave = NA #
+occ$RFave = NA #
+occ$BRTave = NA #
+occ$MAXave = NA #
+occ$Ens1 = NA #average over all models#
+occ$Ens2 = NA #average excluding BRT #
+occ$Ens3 = NA #average of (semi)parametric models
+for (i in 1:dim(occ)[1]) {#
+	occ[i,"LRave"] = mean(c(occ[i,76],occ[i,77],occ[i,78],occ[i,79],occ[i,80],occ[i,81],occ[i,82],occ[i,83],occ[i,84],occ[i,85]))#
+	occ[i,"GAMave"] = mean(c(occ[i,86],occ[i,87],occ[i,88],occ[i,89],occ[i,90],occ[i,91],occ[i,92],occ[i,93],occ[i,94],occ[i,95]))#
+	occ[i,"RFave"] = mean(c(occ[i,96],occ[i,97],occ[i,98],occ[i,99],occ[i,100],occ[i,101],occ[i,102],occ[i,103],occ[i,104],occ[i,105]))#
+	occ[i,"BRTave"] = mean(c(occ[i,106],occ[i,107],occ[i,108],occ[i,109],occ[i,110],occ[i,111],occ[i,112],occ[i,113],occ[i,114],occ[i,115]))#
+	occ[i,"MAXave"] = mean(c(occ[i,116],occ[i,117],occ[i,118],occ[i,119],occ[i,120],occ[i,121],occ[i,122],occ[i,123],occ[i,124],occ[i,125]))#
+	occ[i,"Ens1"] = mean(c(occ[i,"LRave"],occ[i,"GAMave"],occ[i,"RFave"],occ[i,"BRTave"]),occ[i,"MAXave"]) #
+	occ[i,"Ens2"] = mean(c(occ[i,"RFave"],occ[i,"BRTave"],occ[i,"MAXave"]))	#
+	occ[i,"Ens3"] = mean(c(occ[i,"LRave"],occ[i,"GAMave"]))	#
+	}#
+head(occ)
+LRvec = c()#
+GAMvec = c()#
+RFvec = c()#
+BRTvec = c()#
+MAXvec = c()#
+for (i in 1:10) {#
+	LRname = paste("LRprob",i,sep="")#
+	LRvec[i] = LRname#
+	GAMname = paste("GAMprob",i,sep="")#
+	GAMvec[i] = GAMname#
+	RFname = paste("RFprob",i,sep="")#
+	RFvec[i] = RFname#
+	BRTname = paste("BRTprob",i,sep="")#
+	BRTvec[i] = BRTname#
+	MAXname = paste("MAXprob",i,sep="")#
+	MAXvec[i] = MAXname#
+	}#
+names(occ)[76:85] = LRvec#
+names(occ)[86:95] = GAMvec#
+names(occ)[96:105] = RFvec#
+names(occ)[106:115] = BRTvec#
+names(occ)[116:125] = MAXvec
+north$LRave = NA #
+north$GAMave = NA #
+north$RFave = NA #
+north$BRTave = NA #
+north$MAXave = NA #
+north$Ens1 = NA #average over all models#
+north$Ens2 = NA #average excluding BRT #
+north$Ens3 = NA #average of (semi)parametric models#
+#
+for (i in 1:dim(north)[1]) {#
+	north[i,"LRave"] = mean(c(north[i,86],north[i,77],north[i,78],north[i,79],north[i,80],north[i,81],north[i,82],north[i,83],north[i,84],north[i,85]))#
+	north[i,"GAMave"] = mean(c(north[i,96],north[i,87],north[i,88],north[i,89],north[i,90],north[i,91],north[i,92],north[i,93],north[i,94],north[i,95]))#
+	north[i,"RFave"] = mean(c(north[i,106],north[i,97],north[i,98],north[i,99],north[i,100],north[i,101],north[i,102],north[i,103],north[i,	104],north[i,105]))#
+	north[i,"BRTave"] = mean(c(north[i,116],north[i,107],north[i,108],north[i,109],north[i,110],north[i,111],north[i,112],north[i,113],north[i,	114],north[i,115]))#
+	north[i,"MAXave"] = mean(c(north[i,126],north[i,117],north[i,118],north[i,119],north[i,120],north[i,121],north[i,122],north[i,123],north[i,	124],north[i,125]))#
+	north[i,"Ens1"] = mean(c(north[i,"LRave"],north[i,"GAMave"],north[i,"RFave"],north[i,"BRTave"],north[i,"MAXave"])) #
+	north[i,"Ens2"] = mean(c(north[i,"RFave"],north[i,"BRTave"],north[i,"MAXave"]))	#
+	north[i,"Ens3"] = mean(c(north[i,"LRave"],north[i,"GAMave"]))	#
+	}#
+head(north)#
+#
+names(north)[77:86] = LRvec#
+names(north)[87:96] = GAMvec#
+names(north)[97:106] = RFvec#
+names(north)[107:116] = BRTvec#
+names(north)[117:126] = MAXvec#
+#
+center$LRave = NA #
+center$GAMave = NA #
+center$RFave = NA #
+center$BRTave = NA #
+center$MAXave = NA #
+center$Ens1 = NA #average over all models#
+center$Ens2 = NA #average excluding BRT #
+center$Ens3 = NA #average of (semi)parametric models#
+#
+for (i in 1:dim(center)[1]) {#
+	center[i,"LRave"] = mean(c(center[i,86],center[i,77],center[i,78],center[i,79],center[i,80],center[i,81],center[i,82],center[i,83],center[i,						84],center[i,85]))#
+	center[i,"GAMave"] = mean(c(center[i,96],center[i,87],center[i,88],center[i,89],center[i,90],center[i,91],center[i,92],center[i,93],center[i,						94],center[i,95]))#
+	center[i,"RFave"] = mean(c(center[i,106],center[i,97],center[i,98],center[i,99],center[i,100],center[i,101],center[i,102],center[i,103],center[i,104],center[i,105]))#
+	center[i,"BRTave"] = mean(c(center[i,116],center[i,107],center[i,108],center[i,109],center[i,110],center[i,111],center[i,112],center[i,113],center[i,	114],center[i,115]))#
+	center[i,"MAXave"] = mean(c(center[i,126],center[i,117],center[i,118],center[i,119],center[i,120],center[i,121],center[i,122],center[i,123],center[i,	124],center[i,125]))#
+	center[i,"Ens1"] = mean(c(center[i,"LRave"],center[i,"GAMave"],center[i,"RFave"],center[i,"BRTave"],center[i,"MAXave"])) #
+	center[i,"Ens2"] = mean(c(center[i,"RFave"],center[i,"BRTave"],center[i,"MAXave"]))	#
+	center[i,"Ens3"] = mean(c(center[i,"LRave"],center[i,"GAMave"]))	#
+	}#
+head(center)#
+#
+names(center)[77:86] = LRvec#
+names(center)[87:96] = GAMvec#
+names(center)[97:106] = RFvec#
+names(center)[107:116] = BRTvec#
+names(center)[117:126] = MAXvec#
+#
+south$LRave = NA #
+south$GAMave = NA #
+south$RFave = NA #
+south$BRTave = NA #
+south$MAXave = NA #
+south$Ens1 = NA #average over all models#
+south$Ens2 = NA #average excluding BRT #
+south$Ens3 = NA #average of (semi)parametric models#
+#
+for (i in 1:dim(south)[1]) {#
+	south[i,"LRave"] = mean(c(south[i,86],south[i,77],south[i,78],south[i,79],south[i,80],south[i,81],south[i,82],south[i,83],south[i,84],south[i,85]))#
+	south[i,"GAMave"] = mean(c(south[i,96],south[i,87],south[i,88],south[i,89],south[i,90],south[i,91],south[i,92],south[i,93],south[i,94],south[i,95]))#
+	south[i,"RFave"] = mean(c(south[i,106],south[i,97],south[i,98],south[i,99],south[i,100],south[i,101],south[i,102],south[i,103],south[i,	104],south[i,105]))#
+	south[i,"BRTave"] = mean(c(south[i,116],south[i,107],south[i,108],south[i,109],south[i,110],south[i,111],south[i,112],south[i,113],south[i,	114],south[i,115]))#
+	south[i,"MAXave"] = mean(c(south[i,126],south[i,117],south[i,118],south[i,119],south[i,120],south[i,121],south[i,122],south[i,123],south[i,	124],south[i,125]))#
+	south[i,"Ens1"] = mean(c(south[i,"LRave"],south[i,"GAMave"],south[i,"RFave"],south[i,"BRTave"],south[i,"MAXave"])) #
+	south[i,"Ens2"] = mean(c(south[i,"RFave"],south[i,"BRTave"],south[i,"MAXave"]))	#
+	south[i,"Ens3"] = mean(c(south[i,"LRave"],south[i,"GAMave"]))	#
+	}#
+head(south)#
+#
+names(south)[77:86] = LRvec#
+names(south)[87:96] = GAMvec#
+names(south)[97:106] = RFvec#
+names(south)[107:116] = BRTvec#
+names(south)[117:126] = MAXvec#
+#
+high <- occ[occ$Elevation > H.thresh,]#
+low <- occ[occ$Elevation < L.thresh,]#
+mid <- occ[occ$Elevation >= L.thresh & occ$Elevation <= H.thresh,]
+pres = occ[occ$PRESABS==1,]; dim(pres)#
+abs = occ[occ$PRESABS==0,]; dim(abs)#
+#
+## Vector for making quadratic fitted lines vs latitude#
+pred.pres.lat = data.frame(Latitude = seq(min(pres$Latitude, na.rm=T), max(pres$Latitude, na.rm=T), by=0.2))#
+pred.abs.lat = data.frame(Latitude = seq(min(abs$Latitude, na.rm=T), max(abs$Latitude, na.rm=T), by=0.2))#
+#
+## Polynomial regressions vs latitude#
+# LR models#
+LR.ave.pres.mod = lm(LRave ~ Latitude + I(Latitude^2), data=pres)#
+LR.ave.pres.pred = predict(LR.ave.pres.mod, pred.pres.lat, type="response")#
+LR.ave.abs.mod = lm(LRave ~ Latitude + I(Latitude^2), data=abs)#
+LR.ave.abs.pred = predict(LR.ave.abs.mod, pred.abs.lat, type="response")#
+summary(LR.ave.pres.mod)#
+summary(LR.ave.abs.mod)#
+#
+# GAM models#
+GAM.ave.pres.mod = lm(GAMave ~ Latitude + I(Latitude^2), data=pres)#
+GAM.ave.pres.pred = predict(GAM.ave.pres.mod, pred.pres.lat, type="response")#
+GAM.ave.abs.mod = lm(GAMave ~ Latitude + I(Latitude^2), data=abs)#
+GAM.ave.abs.pred = predict(GAM.ave.abs.mod, pred.abs.lat, type="response")#
+summary(GAM.ave.pres.mod)#
+summary(GAM.ave.abs.mod)#
+#
+# RF models#
+RF.ave.pres.mod = lm(RFave ~ Latitude + I(Latitude^2), data=pres)#
+RF.ave.pres.pred = predict(RF.ave.pres.mod, pred.pres.lat, type="response")#
+RF.ave.abs.mod = lm(RFave ~ Latitude + I(Latitude^2), data=abs)#
+RF.ave.abs.pred = predict(RF.ave.abs.mod, pred.abs.lat, type="response")#
+summary(RF.ave.pres.mod)#
+summary(RF.ave.abs.mod)#
+#
+# BRT models#
+BRT.ave.pres.mod = lm(BRTave ~ Latitude + I(Latitude^2), data=pres)#
+BRT.ave.pres.pred = predict(BRT.ave.pres.mod, pred.pres.lat, type="response")#
+BRT.ave.abs.mod = lm(BRTave ~ Latitude + I(Latitude^2), data=abs)#
+BRT.ave.abs.pred = predict(BRT.ave.abs.mod, pred.abs.lat, type="response")#
+summary(BRT.ave.pres.mod)#
+summary(BRT.ave.abs.mod)#
+#
+# MAX models#
+MAX.ave.pres.mod = lm(MAXave ~ Latitude + I(Latitude^2), data=pres)#
+MAX.ave.pres.pred = predict(MAX.ave.pres.mod, pred.pres.lat, type="response")#
+MAX.ave.abs.mod = lm(MAXave ~ Latitude + I(Latitude^2), data=abs)#
+MAX.ave.abs.pred = predict(MAX.ave.abs.mod, pred.abs.lat, type="response")#
+summary(MAX.ave.pres.mod)#
+summary(MAX.ave.abs.mod)#
+#
+## Vector for making quadratic fitted lines vs Elevation#
+pred.pres.el = data.frame(Elevation = seq(min(pres$Elevation, na.rm=T), max(pres$Elevation, na.rm=T), by=50))#
+pred.abs.el = data.frame(Elevation = seq(min(abs$Elevation, na.rm=T), max(abs$Elevation, na.rm=T), by=50))#
+#
+## Polynomial regressions vs Elevation#
+# LR models#
+LR.ave.pres.mod.el = lm(LRave ~ Elevation + I(Elevation^2), data=pres)#
+LR.ave.pres.pred.el = predict(LR.ave.pres.mod.el, pred.pres.el, type="response")#
+LR.ave.abs.mod.el = lm(LRave ~ Elevation + I(Elevation^2), data=abs)#
+LR.ave.abs.pred.el = predict(LR.ave.abs.mod.el, pred.abs.el, type="response")#
+summary(LR.ave.pres.mod.el)#
+summary(LR.ave.abs.mod.el)#
+#
+# GAM models#
+GAM.ave.pres.mod.el = lm(GAMave ~ Elevation + I(Elevation^2), data=pres)#
+GAM.ave.pres.pred.el = predict(GAM.ave.pres.mod.el, pred.pres.el, type="response")#
+GAM.ave.abs.mod.el = lm(GAMave ~ Elevation + I(Elevation^2), data=abs)#
+GAM.ave.abs.pred.el = predict(GAM.ave.abs.mod.el, pred.abs.el, type="response")#
+summary(GAM.ave.pres.mod.el)#
+summary(GAM.ave.abs.mod.el)#
+#
+# RF models#
+RF.ave.pres.mod.el = lm(RFave ~ Elevation + I(Elevation^2), data=pres)#
+RF.ave.pres.pred.el = predict(RF.ave.pres.mod.el, pred.pres.el, type="response")#
+RF.ave.abs.mod.el = lm(RFave ~ Elevation + I(Elevation^2), data=abs)#
+RF.ave.abs.pred.el = predict(RF.ave.abs.mod.el, pred.abs.el, type="response")#
+summary(RF.ave.pres.mod.el)#
+summary(RF.ave.abs.mod.el)#
+#
+# BRT models#
+BRT.ave.pres.mod.el = lm(BRTave ~ Elevation + I(Elevation^2), data=pres)#
+BRT.ave.pres.pred.el = predict(BRT.ave.pres.mod.el, pred.pres.el, type="response")#
+BRT.ave.abs.mod.el = lm(BRTave ~ Elevation + I(Elevation^2), data=abs)#
+BRT.ave.abs.pred.el = predict(BRT.ave.abs.mod.el, pred.abs.el, type="response")#
+summary(BRT.ave.pres.mod.el)#
+summary(BRT.ave.abs.mod.el)#
+#
+# MAX models#
+MAX.ave.pres.mod.el = lm(MAXave ~ Elevation + I(Elevation^2), data=pres)#
+MAX.ave.pres.pred.el = predict(MAX.ave.pres.mod.el, pred.pres.el, type="response")#
+MAX.ave.abs.mod.el = lm(MAXave ~ Elevation + I(Elevation^2), data=abs)#
+MAX.ave.abs.pred.el = predict(MAX.ave.abs.mod.el, pred.abs.el, type="response")#
+summary(MAX.ave.pres.mod.el)#
+summary(MAX.ave.abs.mod.el)
+setwd(path.fig)
+pdf(file="SuitvLat_Reg_Main_Fig3.pdf", width=6, height=6, useDingbats=FALSE)
+par(mfrow=c(2,2), omi=c(0.8,0.8,0,0))
+par(mai=c(0.1,0.2,0.3,0.2)) #bottom, left, top, right#
+plot(pres$GAMave ~ pres$Latitude, pch=16, ylim=c(0,1.15), xaxt='n', xlab="", ylab="Predicted suitability (GAM)")#
+axis(1, labels=FALSE, tick=TRUE)#
+lines(x=pred.pres.lat$Latitude, y=GAM.ave.pres.pred, type="l", lwd=3)#
+points(abs$GAMave ~ abs$Latitude)#
+lines(x=pred.abs.lat$Latitude, y=GAM.ave.abs.pred, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="A", bty='n')#
+#
+# GAM elev#
+par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
+plot(pres$GAMave ~ pres$Elevation, pch=16, ylim=c(0,1.15), xaxt='n', yaxt='n', xlab="", ylab="")#
+axis(1, labels=FALSE, tick=TRUE)#
+axis(2, labels=FALSE, tick=TRUE)#
+lines(x=pred.pres.el$Elevation, y=GAM.ave.pres.pred.el, type="l", lwd=3)#
+points(abs$GAMave ~ abs$Elevation)#
+lines(x=pred.abs.el$Elevation, y=GAM.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="B", bty='n')#
+legend("topright", legend=c("presence", "absence"), pch=c(16,1), lty=c(1,2), bty='n')#
+#
+# RF lat#
+par(mai=c(0.3,0.2,0.1,0.2)) #bottom, left, top, right#
+plot(pres$RFave ~ pres$Latitude, pch=16, xlab="Latitude (oN)", ylab="Predicted suitability (RF)", ylim=c(0,1.15))#
+lines(x=pred.pres.lat$Latitude, y=RF.ave.pres.pred, type="l", lwd=3)#
+points(abs$RFave ~ abs$Latitude)#
+lines(x=pred.abs.lat$Latitude, y=RF.ave.abs.pred, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="C", bty='n')#
+#
+# RF elev#
+par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
+plot(pres$RFave ~ pres$Elevation, pch=16, xlab="Elevation (m)", ylab="", ylim=c(0,1.15), yaxt='n')#
+axis(2, labels=FALSE, tick=TRUE)#
+lines(x=pred.pres.el$Elevation, y=RF.ave.pres.pred.el, type="l", lwd=3)#
+points(abs$RFave ~ abs$Elevation)#
+lines(x=pred.abs.el$Elevation, y=RF.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="D", bty='n')#
+#
+mtext("Predicted suitability (GAM)", side=2, outer=T, line=2, at=0.7)#
+mtext("Predicted suitability (RF)", side=2, outer=T, line=2, at=0.25)#
+mtext(expression(paste("Latitude (",degree,"N)")), side=1, outer=T, line=1, at=0.25)#
+mtext("Elevation (m)", side=1, outer=T, line=1, at=0.75)#
+#
+dev.off()
+?pdf
+setwd(path.fig)#
+pdf(file="SuitvLat_Reg_Suppl_FigS5.8.pdf", width=6, height=9, useDingbats=FALSE)#
+par(mfrow=c(3,2), omi=c(0.8, 0.8, 0, 0))#
+#
+# LR lat#
+par(mai=c(0.1,0.2,0.3,0.2)) #bottom, left, top, right#
+plot(pres$LRave ~ pres$Latitude, pch=16, xlab="", ylab="", ylim=c(0,1.15), xaxt='n')#
+axis(1, labels=FALSE, tick=TRUE)#
+lines(x=pred.pres.lat$Latitude, y=LR.ave.pres.pred, type="l", lwd=3)#
+points(abs$LRave ~ abs$Latitude)#
+lines(x=pred.abs.lat$Latitude, y=LR.ave.abs.pred, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="A", bty='n')#
+#
+# LR elev#
+par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
+plot(pres$LRave ~ pres$Elevation, pch=16, xlab="", ylab="", ylim=c(0,1.15), xaxt='n', yaxt='n')#
+axis(1, labels=FALSE, tick=TRUE)#
+axis(2, labels=FALSE, tick=TRUE)#
+lines(x=pred.pres.el$Elevation, y=LR.ave.pres.pred.el, type="l", lwd=3)#
+points(abs$LRave ~ abs$Elevation)#
+lines(x=pred.abs.el$Elevation, y=LR.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="B", bty='n')#
+legend("topright", legend=c("presence", "absence"), pch=c(16,1), lty=c(1,2), bty='n')#
+#
+# BRT lat#
+par(mai=c(0.2,0.2,0.2,0.2)) #bottom, left, top, right#
+plot(pres$BRTave ~ pres$Latitude, pch=16, xlab="", ylab="", ylim=c(0,1.15), xaxt='n')#
+axis(1, labels=FALSE, tick=TRUE)#
+lines(x=pred.pres.lat$Latitude, y=BRT.ave.pres.pred, type="l", lwd=3)#
+points(abs$BRTave ~ abs$Latitude)#
+lines(x=pred.abs.lat$Latitude, y=BRT.ave.abs.pred, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="C", bty='n')#
+#
+# BRT elev#
+par(mai=c(0.2,0.1,0.2,0.3)) #bottom, left, top, right#
+plot(pres$BRTave ~ pres$Elevation, pch=16, xlab="", ylab="", ylim=c(0,1.15), xaxt='n', yaxt='n')#
+axis(1, labels=FALSE, tick=TRUE)#
+axis(2, labels=FALSE, tick=TRUE)#
+lines(x=pred.pres.el$Elevation, y=BRT.ave.pres.pred.el, type="l", lwd=3)#
+points(abs$BRTave ~ abs$Elevation)#
+lines(x=pred.abs.el$Elevation, y=BRT.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="D", bty='n')#
+#
+# MAX lat#
+par(mai=c(0.3,0.2,0.1,0.2)) #bottom, left, top, right#
+plot(pres$MAXave ~ pres$Latitude, pch=16, xlab="", ylab="", ylim=c(0,1.15))#
+lines(x=pred.pres.lat$Latitude, y=MAX.ave.pres.pred, type="l", lwd=3)#
+points(abs$MAXave ~ abs$Latitude)#
+lines(x=pred.abs.lat$Latitude, y=MAX.ave.abs.pred, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="E", bty='n')#
+#
+# MAX elev#
+par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
+plot(pres$MAXave ~ pres$Elevation, pch=16, xlab="", ylab="", ylim=c(0,1.15), yaxt='n')#
+axis(2, labels=FALSE, tick=TRUE)#
+lines(x=pred.pres.el$Elevation, y=MAX.ave.pres.pred.el, type="l", lwd=3)#
+points(abs$MAXave ~ abs$Elevation)#
+lines(x=pred.abs.el$Elevation, y=MAX.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
+legend("topleft", legend="F", bty='n')#
+#
+mtext("Predicted suitability (LR)", side=2, outer=T, line=2, at=0.8)#
+mtext("Predicted suitability (BRT)", side=2, outer=T, line=2, at=0.5)#
+mtext("Predicted suitability (MAX)", side=2, outer=T, line=2, at=0.18)#
+mtext(expression(paste("Latitude (",degree,"N)")), side=1, outer=T, line=1, at=0.25)#
+mtext("Elevation (m)", side=1, outer=T, line=1, at=0.75)#
+#
+dev.off()
+south$Group = "south"#
+center$Group = "center"#
+north$Group = "north"#
+lat = rbind(south, center, north)
+install.packages("car")
+library(car)
+library(car)
+suit.aov.lr = lm(LRave ~ Group, data=lat)#
+lr.t3 = Anova(suit.aov.lr, type=c("III"))#
+summary(suit.aov.lr); lr.t3#
+TukeyHSD(aov(LRave ~ Group, data=lat)) #
+	#pseudo11: south = ab, center = a, north = b#
+## diagnostics#
+qqnorm(suit.aov.lr$res) #looks ok#
+plot(suit.aov.lr$fit, suit.aov.lr$res) #possible non-homogeneity of variance#
+summary(lm(abs(suit.aov.lr$res) ~ lat$Group)) #
+	#pseudo11: passes levene's test#
+#
+## gam models#
+suit.aov.gam = lm(GAMave ~ Group, data=lat)#
+gam.t3 = Anova(suit.aov.gam, type=c("III"))#
+summary(suit.aov.gam); gam.t3#
+TukeyHSD(aov(GAMave ~ Group, data=lat)) #
+	#pseudo11: south = a, center = a, north = b#
+## diagnostics#
+qqnorm(suit.aov.gam$res) #looks ok#
+plot(suit.aov.gam$fit, suit.aov.gam$res) #possible non-homogeneity of variance#
+summary(lm(abs(suit.aov.gam$res) ~ lat$Group)) #
+	#pseudo11: passes levene's test#
+#
+## rf models#
+suit.aov.rf = lm(RFave ~ Group, data=lat)#
+rf.t3 = Anova(suit.aov.rf, type=c("III"))#
+summary(suit.aov.rf); rf.t3#
+TukeyHSD(aov(RFave ~ Group, data=lat)) #
+	#pseudo11: south = ab, center = a, north = b#
+## diagnostics#
+qqnorm(suit.aov.rf$res) #looks good#
+plot(suit.aov.rf$fit, suit.aov.rf$res) #looks ok#
+summary(lm(abs(suit.aov.rf$res) ~ lat$Group)) #
+	#pseudo11: passes levene's test#
+#
+suit.aov.brt = lm(BRTave ~ Group, data=lat)#
+brt.t3 = Anova(suit.aov.brt, type=c("III"))#
+summary(suit.aov.brt); brt.t3#
+TukeyHSD(aov(BRTave ~ Group, data=lat)) #
+	#pseudo11: south = a, center = a, north = b#
+## diagnostics#
+qqnorm(suit.aov.brt$res) #wiggly#
+plot(suit.aov.brt$fit, suit.aov.brt$res) #looks good#
+summary(lm(abs(suit.aov.brt$res) ~ lat$Group)) #
+	#pseudo11: fails levene's test#
+#
+suit.aov.max = lm(MAXave ~ Group, data=lat)#
+max.t3 = Anova(suit.aov.max, type=c("III"))#
+summary(suit.aov.max); max.t3#
+TukeyHSD(aov(MAXave ~ Group, data=lat)) 	#
+	#pseudo11: south = a, center = a, north = b#
+## diagnostics#
+qqnorm(suit.aov.max$res) #looks a little wonky#
+plot(suit.aov.max$fit, suit.aov.max$res) #looks ok#
+summary(lm(abs(suit.aov.max$res) ~ lat$Group)) #
+	#pseudo11: passes levene's test#
+#
+####Elevation#
+low$Group = "low"#
+mid$Group = "mid"#
+high$Group = "high"#
+elev = rbind(low, mid, high)#
+#
+library(car)#
+#
+## lr models#
+suit.aov.lr.el = lm(LRave ~ Group, data=elev)#
+lr.t3.el = Anova(suit.aov.lr.el, type=c("III"))#
+summary(suit.aov.lr.el); lr.t3.el#
+TukeyHSD(aov(LRave ~ Group, data=elev)) #
+	#pseudo11: low = a, mid = b, high = c#
+## diagnostics#
+qqnorm(suit.aov.lr.el$res) #looks ok#
+plot(suit.aov.lr.el$fit, suit.aov.lr.el$res) #possible non-homogeneity of variance#
+summary(lm(abs(suit.aov.lr.el$res) ~ elev$Group)) 	#
+	#pseudo11: fails levene's test #
+#
+## gam models#
+suit.aov.gam.el = lm(GAMave ~ Group, data=elev)#
+gam.t3.el = Anova(suit.aov.gam.el, type=c("III"))#
+summary(suit.aov.gam.el); gam.t3.el#
+TukeyHSD(aov(GAMave ~ Group, data=elev)) #
+	#pseudo11: low = a, mid = b, high = c#
+## diagnostics#
+qqnorm(suit.aov.gam.el$res) #looks ok#
+plot(suit.aov.gam.el$fit, suit.aov.gam.el$res) #possible non-homogeneity of variance#
+summary(lm(abs(suit.aov.gam.el$res) ~ elev$Group)) #
+	#pseudo11: fails levene's test#
+#
+## rf models#
+suit.aov.rf.el = lm(RFave ~ Group, data=elev)#
+rf.t3.el = Anova(suit.aov.rf.el, type=c("III"))#
+summary(suit.aov.rf.el); rf.t3.el#
+TukeyHSD(aov(RFave ~ Group, data=elev)) #
+	#pseudo11: low = a, mid = b, high = c#
+## diagnostics#
+qqnorm(suit.aov.rf.el$res) #looks ok#
+plot(suit.aov.rf.el$fit, suit.aov.rf.el$res) #possible non-homogeneity of variance#
+summary(lm(abs(suit.aov.rf.el$res) ~ elev$Group)) #
+	#pseudo11: passes levene's test#
+#
+suit.aov.brt.el = lm(BRTave ~ Group, data=elev)#
+brt.t3.el = Anova(suit.aov.brt.el, type=c("III"))#
+summary(suit.aov.brt.el); brt.t3.el#
+TukeyHSD(aov(BRTave ~ Group, data=elev)) #
+	#pseudo11: low = a, mid = b, high = c#
+## diagnostics#
+qqnorm(suit.aov.brt.el$res) #looks ok#
+plot(suit.aov.brt.el$fit, suit.aov.brt.el$res) #looks good#
+summary(lm(abs(suit.aov.brt.el$res) ~ elev$Group)) #
+	#pseudo11: fails levene's test#
+#
+suit.aov.max.el = lm(MAXave ~ Group, data=elev)#
+max.t3.el = Anova(suit.aov.max.el, type=c("III"))#
+summary(suit.aov.max.el); max.t3.el#
+TukeyHSD(aov(MAXave ~ Group, data=elev)) #
+	#pseudo11: low = a, mid = b, high = c#
+## diagnostics#
+qqnorm(suit.aov.max.el$res) #looks ok#
+plot(suit.aov.max.el$fit, suit.aov.max.el$res) #looks ok#
+summary(lm(abs(suit.aov.max.el$res) ~ elev$Group)) #
+	#pseudo11: fails levene's test#
+## box plots of average suitability#
+lat$Group = factor(lat$Group, c("south","center","north"))#
+elev$Group = factor(elev$Group, c("low","mid","high"))
+setwd(path.fig)#
+pdf(file="SuitvLat_Group_Main_Fig2.pdf", width=6, height=6, useDingbats=FALSE)#
+par(mfrow=c(2,2), omi=c(0.8, 0.8, 0, 0))#
+#
+#gam lat#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(GAMave~Group, data=lat, notch=TRUE, ylim=c(0,1.15), xaxt='n')#
+means = tapply(lat$GAMave, lat$Group, mean)#
+segments(.67,means[1], 1.33, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.8,means[3], 3.2, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("a","a","b"))#
+axis(1, labels=FALSE, tick=TRUE, at=1:3)#
+#text(x=2, y=1.1, expression("A) GAM, Latitude"))#
+legend("topleft", legend="A", bty='n')#
+#
+#gam elev#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(GAMave~Group, data=elev, notch=TRUE, ylim=c(0,1.15), xaxt='n', yaxt='n')#
+means = tapply(elev$GAMave, elev$Group, mean)#
+segments(.68,means[1], 1.32, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.75,means[3], 3.25, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("a","b","c"))#
+axis(1, labels=FALSE, tick=TRUE, at=1:3)#
+axis(2, labels=FALSE, tick=TRUE)#
+#text(x=2, y=1.1, expression("C) GAM, Elevation"))#
+legend("topleft", legend="B", bty='n')#
+#
+#rf lat#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(RFave~Group, data=lat, notch=TRUE, ylim=c(0,1.15))#
+means = tapply(lat$RFave, lat$Group, mean)#
+segments(.78,means[1], 1.22, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.7,means[3], 3.3, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("ab","a","b"))#
+#text(x=2, y=1.1, expression("B) RF, Latitude"))#
+legend("topleft", legend="C", bty='n')#
+#
+#rf elev#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(RFave~Group, data=elev, notch=TRUE, ylim=c(0,1.15), yaxt='n')#
+means = tapply(elev$RFave, elev$Group, mean)#
+segments(.8,means[1], 1.2, means[1], col="grey", lwd=2)#
+segments(1.65,means[2], 2.35, means[2], col="grey", lwd=2)#
+segments(2.66,means[3], 3.34, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("a","b","c"))#
+axis(2, labels=FALSE, tick=TRUE)#
+#text(x=2, y=1.1, expression("D) RF, Elevation"))#
+legend("topleft", legend="D", bty='n')#
+#
+mtext("Region", side=1, outer=T, line=2, at=0.5)#
+mtext("Predicted suitability", side=2, outer=T, line=2, at=0.5)#
+#
+dev.off()
+setwd(path.fig)#
+pdf(file="SuitvLat_Group_Supp_FigS5.7.pdf", width=6, height=9, useDingbats=FALSE)#
+par(mfrow=c(3,2), omi=c(0.8, 0.8, 0, 0))#
+#
+#lr lat#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(LRave~Group, data=lat, notch=TRUE, ylim=c(0,1.15), xaxt='n')#
+means = tapply(lat$LRave, lat$Group, mean)#
+segments(.67, means[1], 1.33, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.8,means[3], 3.2, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("ab","a","b"))#
+axis(1, labels=FALSE, tick=TRUE, at=1:3)#
+#text(x=2, y=1.1, expression("A) GLM, Latitude"))#
+legend("topleft", legend="A", bty='n')#
+#
+#lr elev#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(LRave~Group, data=elev, notch=TRUE, ylim=c(0,1.15), xaxt='n', yaxt='n')#
+means = tapply(elev$LRave, elev$Group, mean)#
+segments(.75, means[1], 1.25, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.8,means[3], 3.2, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("a","b","c"))#
+axis(1, labels=FALSE, tick=TRUE, at=1:3)#
+axis(2, labels=FALSE, tick=TRUE)#
+#text(x=2, y=1.1, expression("D) GLM, Elevation"))#
+legend("topleft", legend="B", bty='n')#
+#
+#brt lat#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(BRTave~Group, data=lat, notch=TRUE, ylim=c(0,1.15), xaxt='n')#
+means = tapply(lat$BRTave, lat$Group, mean)#
+segments(.62, means[1], 1.38, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.73,means[3], 3.27, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("a","a","b"))#
+axis(1, labels=FALSE, tick=TRUE, at=1:3)#
+#text(x=2, y=1.1, expression("B) BRT, Latitude"))#
+legend("topleft", legend="C", bty='n')#
+#
+#brt elev#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(BRTave~Group, data=elev, notch=TRUE, ylim=c(0,1.15), xaxt='n', yaxt='n')#
+means = tapply(elev$BRTave, elev$Group, mean)#
+segments(.69, means[1], 1.31, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.69,means[3], 3.31, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("a","b","c"))#
+axis(1, labels=FALSE, tick=TRUE, at=1:3)#
+axis(2, labels=FALSE, tick=TRUE)#
+#text(x=2, y=1.1, expression("E) BRT, Elevation"))#
+legend("topleft", legend="D", bty='n')#
+#
+#max lat#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(MAXave~Group, data=lat, notch=TRUE, ylim=c(0,1.15), cex=1.5)#
+means = tapply(lat$MAXave, lat$Group, mean)#
+segments(.65, means[1], 1.35, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.7,means[3], 3.3, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("a","a","b"))#
+#text(x=2, y=1.1, expression("C) MAX, Latitude"))#
+legend("topleft", legend="E", bty='n')#
+#
+#max elev#
+par(mai=c(0,0.1,0.2,0.1)) #bottom, left, top, right#
+boxplot(MAXave~Group, data=elev, notch=TRUE, ylim=c(0,1.15), yaxt='n', cex=1.5)#
+means = tapply(elev$MAXave, elev$Group, mean)#
+segments(.7, means[1], 1.3, means[1], col="grey", lwd=2)#
+segments(1.6,means[2], 2.4, means[2], col="grey", lwd=2)#
+segments(2.79,means[3], 3.21, means[3], col="grey", lwd=2)#
+text(x=1:3, y=1.02, labels=c("a","b","c"))#
+axis(2, labels=FALSE, tick=TRUE)#
+#text(x=2, y=1.1, expression("F) MAX, Elevation"))#
+legend("topleft", legend="F", bty='n')#
+#
+mtext("Region", side=1, outer=T, line=3, at=0.5)#
+mtext("Predicted suitability", side=2, outer=T, line=2, at=0.5)#
+#
+dev.off()
+setwd(path.cod)#
+source("calibration.R")#
+#
+setwd(path.fig)#
+x=seq(0,1,0.05)#
+y=seq(0,1,0.05)#
+setwd(path.fig)#
+pdf(file="CalPlots_Main_Fig4.pdf", width=6, height=6, useDingbats=FALSE)#
+par(mfrow=c(2,2), omi=c(0.8,0.8,0,0))#
+#
+# GAM average by latitude#
+north.cal.gam = calib.mod(north$PRESABS, north$GAMave)#
+center.cal.gam = calib.mod(center$PRESABS, center$GAMave)#
+south.cal.gam = calib.mod(south$PRESABS, south$GAMave)#
+south.mod = glm(south$PRESABS ~ log((south$GAMave)/(1-(south$GAMave))), family=binomial)#
+center.mod = glm(center$PRESABS ~ log((center$GAMave)/(1-(center$GAMave))), family=binomial)#
+north.mod = glm(north$PRESABS ~ log((north$GAMave)/(1-(north$GAMave))), family=binomial)#
+south.pred = predict(south.mod, type="response")#
+center.pred = predict(center.mod, type="response")#
+north.pred = predict(north.mod, type="response")#
+par(mai=c(0.1,0.3,0.3,0.1)) #bottom, left, top, right#
+plot(south.pred ~ south$GAMave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2, xaxt='n')#
+axis(1, labels=F, tick=T)#
+#points(south$PRESABS ~ south$GAMave, col="red", cex=0.2)#
+points(center.pred ~ center$GAMave, col="darkgreen", cex=2)#
+#points(center$PRESABS ~ center$GAMave, col="darkgreen", cex=0.2)#
+points(north.pred ~ north$GAMave, col="blue", cex=2)#
+#points(north$PRESABS ~ north$GAMave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="A", bty="n", cex=1.5)#
+#
+# GAM average by elevation#
+high.cal.gam = calib.mod(high$PRESABS, high$GAMave)#
+mid.cal.gam = calib.mod(mid$PRESABS, mid$GAMave)#
+low.cal.gam = calib.mod(low$PRESABS, low$GAMave)#
+low.mod = glm(low$PRESABS ~ log((low$GAMave)/(1-(low$GAMave))), family=binomial)#
+mid.mod = glm(mid$PRESABS ~ log((mid$GAMave)/(1-(mid$GAMave))), family=binomial)#
+high.mod = glm(high$PRESABS ~ log((high$GAMave)/(1-(high$GAMave))), family=binomial)#
+low.pred = predict(low.mod, type="response")#
+mid.pred = predict(mid.mod, type="response")#
+high.pred = predict(high.mod, type="response")#
+par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
+plot(low.pred ~ low$GAMave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2, yaxt='n', xaxt='n')#
+axis(1, labels=F, tick=T)#
+axis(2, labels=F, tick=T)#
+#points(low$PRESABS ~ low$GAMave, col="red", cex=0.2)#
+points(mid.pred ~ mid$GAMave, col="darkgreen", cex=2)#
+#points(mid$PRESABS ~ mid$GAMave, col="darkgreen", cex=0.2)#
+points(high.pred ~ high$GAMave, col="blue", cex=2)#
+#points(high$PRESABS ~ high$GAMave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="B", bty="n", cex=1.5)#
+#
+# RF average by latitude#
+north.cal.rf = calib.mod(north$PRESABS, north$RFave)#
+center.cal.rf = calib.mod(center$PRESABS, center$RFave)#
+south.cal.rf = calib.mod(south$PRESABS, south$RFave)#
+south.mod = glm(south$PRESABS ~ log((south$RFave)/(1-(south$RFave))), family=binomial)#
+center.mod = glm(center$PRESABS ~ log((center$RFave)/(1-(center$RFave))), family=binomial)#
+north.mod = glm(north$PRESABS ~ log((north$RFave)/(1-(north$RFave))), family=binomial)#
+south.pred = predict(south.mod, type="response")#
+center.pred = predict(center.mod, type="response")#
+north.pred = predict(north.mod, type="response")#
+par(mai=c(0.3,0.3,0.1,0.1)) #bottom, left, top, right#
+plot(south.pred ~ south$RFave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2)#
+#points(south$PRESABS ~ south$RFave, col="red", cex=0.2)#
+points(center.pred ~ center$RFave, col="darkgreen", cex=2)#
+#points(center$PRESABS ~ center$RFave, col="darkgreen", cex=0.2)#
+points(north.pred ~ north$RFave, col="blue", cex=2)#
+#points(north$PRESABS ~ north$RFave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="C", bty="n", cex=1.5)#
+#
+# RF average by elevation#
+high.cal.rf = calib.mod(high$PRESABS, high$RFave)#
+mid.cal.rf = calib.mod(mid$PRESABS, mid$RFave)#
+low.cal.rf = calib.mod(low$PRESABS, low$RFave)#
+low.mod = glm(low$PRESABS ~ log((low$RFave)/(1-(low$RFave))), family=binomial)#
+mid.mod = glm(mid$PRESABS ~ log((mid$RFave)/(1-(mid$RFave))), family=binomial)#
+high.mod = glm(high$PRESABS ~ log((high$RFave)/(1-(high$RFave))), family=binomial)#
+low.pred = predict(low.mod, type="response")#
+mid.pred = predict(mid.mod, type="response")#
+high.pred = predict(high.mod, type="response")#
+par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
+plot(low.pred ~ low$RFave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2, yaxt='n')#
+axis(2, labels=F, tick=T)#
+#points(low$PRESABS ~ low$RFave, col="red", cex=0.2)#
+points(mid.pred ~ mid$RFave, col="darkgreen", cex=2)#
+#points(mid$PRESABS ~ mid$RFave, col="darkgreen", cex=0.2)#
+points(high.pred ~ high$RFave, col="blue", cex=2)#
+#points(high$PRESABS ~ high$RFave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="D", bty="n", cex=1.5)#
+#
+mtext("Predicted suitability (Elevation)", side=1, outer=T, line=1, at=0.75, cex=1)#
+mtext("Predicted suitability (Latitude)", side=1, outer=T, line=1, at=0.25, cex=1)#
+mtext("Observed probability (RF)", side=2, outer=T, line=1, at=0.25, cex=1)#
+mtext("Observed probability (GAM)", side=2, outer=T, line=1, at=0.75, cex=1)#
+#
+dev.off()
+setwd(path.fig)#
+x=seq(0,1,0.05)#
+y=seq(0,1,0.05)#
+setwd(path.fig)#
+pdf(file="CalPlots_Supp_FigS6.11.pdf", width=6, height=9, useDingbats=FALSE)#
+par(mfrow=c(3,2), omi=c(0.8,0.8,0,0))#
+#
+# LR average by latitude#
+north.cal.lr = calib.mod(north$PRESABS, north$LRave)#
+center.cal.lr = calib.mod(center$PRESABS, center$LRave)#
+south.cal.lr = calib.mod(south$PRESABS, south$LRave)#
+south.mod = glm(south$PRESABS ~ log((south$LRave)/(1-(south$LRave))), family=binomial)#
+center.mod = glm(center$PRESABS ~ log((center$LRave)/(1-(center$LRave))), family=binomial)#
+north.mod = glm(north$PRESABS ~ log((north$LRave)/(1-(north$LRave))), family=binomial)#
+south.pred = predict(south.mod, type="response")#
+center.pred = predict(center.mod, type="response")#
+north.pred = predict(north.mod, type="response")#
+par(mai=c(0.1,0.3,0.3,0.1)) #bottom, left, top, right#
+plot(south.pred ~ south$LRave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2, xaxt='n')#
+axis(1, labels=F, tick=T)#
+#points(south$PRESABS ~ south$LRave, col="red", cex=0.2)#
+points(center.pred ~ center$LRave, col="darkgreen", cex=2)#
+#points(center$PRESABS ~ center$LRave, col="darkgreen", cex=0.2)#
+points(north.pred ~ north$LRave, col="blue", cex=2)#
+#points(north$PRESABS ~ north$LRave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="A", bty="n", cex=1.5)#
+#
+# LR average by elevation#
+high.cal.lr = calib.mod(high$PRESABS, high$LRave)#
+mid.cal.lr = calib.mod(mid$PRESABS, mid$LRave)#
+low.cal.lr = calib.mod(low$PRESABS, low$LRave)#
+low.mod = glm(low$PRESABS ~ log((low$LRave)/(1-(low$LRave))), family=binomial)#
+mid.mod = glm(mid$PRESABS ~ log((mid$LRave)/(1-(mid$LRave))), family=binomial)#
+high.mod = glm(high$PRESABS ~ log((high$LRave)/(1-(high$LRave))), family=binomial)#
+low.pred = predict(low.mod, type="response")#
+mid.pred = predict(mid.mod, type="response")#
+high.pred = predict(high.mod, type="response")#
+par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
+plot(low.pred ~ low$LRave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2, xaxt='n', yaxt='n')#
+axis(1, labels=F, tick=T)#
+axis(2, labels=F, tick=T)#
+#points(low$PRESABS ~ low$LRave, col="red", cex=0.2)#
+points(mid.pred ~ mid$LRave, col="darkgreen", cex=2)#
+#points(mid$PRESABS ~ mid$LRave, col="darkgreen", cex=0.2)#
+points(high.pred ~ high$LRave, col="blue", cex=2)#
+#points(high$PRESABS ~ high$LRave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="B", bty="n", cex=1.5)#
+#
+# BRT average by latitude#
+north.cal.brt = calib.mod(north$PRESABS, north$BRTave)#
+center.cal.brt = calib.mod(center$PRESABS, center$BRTave)#
+south.cal.brt = calib.mod(south$PRESABS, south$BRTave)#
+south.mod = glm(south$PRESABS ~ log((south$BRTave)/(1-(south$BRTave))), family=binomial)#
+center.mod = glm(center$PRESABS ~ log((center$BRTave)/(1-(center$BRTave))), family=binomial)#
+north.mod = glm(north$PRESABS ~ log((north$BRTave)/(1-(north$BRTave))), family=binomial)#
+south.pred = predict(south.mod, type="response")#
+center.pred = predict(center.mod, type="response")#
+north.pred = predict(north.mod, type="response")#
+par(mai=c(0.1,0.3,0.1,0.1)) #bottom, left, top, right#
+plot(south.pred ~ south$BRTave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2, xaxt='n')#
+axis(1, labels=F, tick=T)#
+#points(south$PRESABS ~ south$BRTave, col="red", cex=0.2)#
+points(center.pred ~ center$BRTave, col="darkgreen", cex=2)#
+#points(center$PRESABS ~ center$BRTave, col="darkgreen", cex=0.2)#
+points(north.pred ~ north$BRTave, col="blue", cex=2)#
+#points(north$PRESABS ~ north$BRTave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="C", bty="n", cex=1.5)#
+#
+# BRT average by elevation#
+high.cal.brt = calib.mod(high$PRESABS, high$BRTave)#
+mid.cal.brt = calib.mod(mid$PRESABS, mid$BRTave)#
+low.cal.brt = calib.mod(low$PRESABS, low$BRTave)#
+low.mod = glm(low$PRESABS ~ log((low$BRTave)/(1-(low$BRTave))), family=binomial)#
+mid.mod = glm(mid$PRESABS ~ log((mid$BRTave)/(1-(mid$BRTave))), family=binomial)#
+high.mod = glm(high$PRESABS ~ log((high$BRTave)/(1-(high$BRTave))), family=binomial)#
+low.pred = predict(low.mod, type="response")#
+mid.pred = predict(mid.mod, type="response")#
+high.pred = predict(high.mod, type="response")#
+par(mai=c(0.1,0.1,0.1,0.3)) #bottom, left, top, right#
+plot(low.pred ~ low$BRTave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2, xaxt='n', yaxt='n')#
+axis(1, labels=F, tick=T)#
+axis(2, labels=F, tick=T)#
+#points(low$PRESABS ~ low$BRTave, col="red", cex=0.2)#
+points(mid.pred ~ mid$BRTave, col="darkgreen", cex=2)#
+#points(mid$PRESABS ~ mid$BRTave, col="darkgreen", cex=0.2)#
+points(high.pred ~ high$BRTave, col="blue", cex=2)#
+#points(high$PRESABS ~ high$BRTave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="D", bty="n", cex=1.5)#
+#
+# MAX average by latitude#
+north.cal.max = calib.mod(north$PRESABS, north$MAXave)#
+center.cal.max = calib.mod(center$PRESABS, center$MAXave)#
+south.cal.max = calib.mod(south$PRESABS, south$MAXave)#
+south.mod = glm(south$PRESABS ~ log((south$MAXave)/(1-(south$MAXave))), family=binomial)#
+center.mod = glm(center$PRESABS ~ log((center$MAXave)/(1-(center$MAXave))), family=binomial)#
+north.mod = glm(north$PRESABS ~ log((north$MAXave)/(1-(north$MAXave))), family=binomial)#
+south.pred = predict(south.mod, type="response")#
+center.pred = predict(center.mod, type="response")#
+north.pred = predict(north.mod, type="response")#
+par(mai=c(0.3,0.3,0.1,0.1)) #bottom, left, top, right#
+plot(south.pred ~ south$MAXave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2)#
+#points(south$PRESABS ~ south$MAXave, col="red", cex=0.2)#
+points(center.pred ~ center$MAXave, col="darkgreen", cex=2)#
+#points(center$PRESABS ~ center$MAXave, col="darkgreen", cex=0.2)#
+points(north.pred ~ north$MAXave, col="blue", cex=2)#
+#points(north$PRESABS ~ north$MAXave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="E", bty="n", cex=1.5)#
+#
+# MAX average by elevation#
+high.cal.max = calib.mod(high$PRESABS, high$MAXave)#
+mid.cal.max = calib.mod(mid$PRESABS, mid$MAXave)#
+low.cal.max = calib.mod(low$PRESABS, low$MAXave)#
+low.mod = glm(low$PRESABS ~ log((low$MAXave)/(1-(low$MAXave))), family=binomial)#
+mid.mod = glm(mid$PRESABS ~ log((mid$MAXave)/(1-(mid$MAXave))), family=binomial)#
+high.mod = glm(high$PRESABS ~ log((high$MAXave)/(1-(high$MAXave))), family=binomial)#
+low.pred = predict(low.mod, type="response")#
+mid.pred = predict(mid.mod, type="response")#
+high.pred = predict(high.mod, type="response")#
+par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
+plot(low.pred ~ low$MAXave, col="red", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", cex=2, yaxt='n')#
+axis(2, labels=F, tick=T)#
+#points(low$PRESABS ~ low$MAXave, col="red", cex=0.2)#
+points(mid.pred ~ mid$MAXave, col="darkgreen", cex=2)#
+#points(mid$PRESABS ~ mid$MAXave, col="darkgreen", cex=0.2)#
+points(high.pred ~ high$MAXave, col="blue", cex=2)#
+#points(high$PRESABS ~ high$MAXave, col="blue", cex=0.2)#
+lines(y~x, lty="dashed")#
+legend("topleft", legend="F", bty="n", cex=1.5)#
+#
+mtext("Predicted suitability (Elevation)", side=1, outer=T, line=1, at=0.75, cex=1)#
+mtext("Predicted suitability (Latitude)", side=1, outer=T, line=1, at=0.25, cex=1)#
+mtext("Observed probability (MAX)", side=2, outer=T, line=1, at=0.17, cex=1)#
+mtext("Observed probability (BRT)", side=2, outer=T, line=1, at=0.5, cex=1)#
+mtext("Observed probability (LR)", side=2, outer=T, line=1, at=0.82, cex=1)#
+#
+dev.off()
+pred.lat = data.frame(Latitude = seq(min(occ$Latitude, na.rm=T), max(occ$Latitude, na.rm=T), by=0.2))#
+pred.el = data.frame(Elevation = seq(min(occ$Elevation, na.rm=T), max(occ$Elevation, na.rm=T), by=50))#
+table.F2 = c()
+setwd(path.fig)#
+pdf(file="LogPlots_Main_Fig5.pdf", width=6, height=6, useDingbats=FALSE)#
+par(mfrow=c(2,2), omi=c(0.8,0.8,0,0))#
+#
+# GAM average by latitude#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"GAMave"]#
+thresh = mean(cuts[,2])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Latitude")]#
+mod1 <- glm(PRESABS ~ Latitude, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Latitude + I(Latitude^2), data=dat, family=binomial)#
+lat.1 = coef(mod1)[2]#
+lat.2 = coef(mod2)[2]#
+latsq.2 = coef(mod2)[3]#
+lat_p.1 = summary(mod1)$coefficients[,4][2]#
+lat_p.2 = summary(mod2)$coefficients[,4][2]#
+latsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("GAM", lat.1, lat_p.1, AIC.1, lat.2, lat_p.2, latsq.2, latsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.lat, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.lat, type="response")#
+		}#
+#
+par(mai=c(0.1,0.3,0.3,0.1)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Latitude, xlab="", ylab="", cex=2, xaxt='n')#
+axis(1, labels=F, tick=T)#
+lines(x= pred.lat$Latitude, y=preds.i, type="l", lwd=1, col="black")#
+legend("topright", legend="A", bty="n", cex=1.5)#
+#
+# GAM average by elevation#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"GAMave"]#
+thresh = mean(cuts[,2])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Elevation")]#
+mod1 <- glm(PRESABS ~ Elevation, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Elevation + I(Elevation^2), data=dat, family=binomial)#
+el.1 = coef(mod1)[2]#
+el.2 = coef(mod2)[2]#
+elsq.2 = coef(mod2)[3]#
+el_p.1 = summary(mod1)$coefficients[,4][2]#
+el_p.2 = summary(mod2)$coefficients[,4][2]#
+elsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("GAM", el.1, el_p.1, AIC.1, el.2, el_p.2, elsq.2, elsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.el, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.el, type="response")#
+		}#
+#
+par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Elevation, xlab="", ylab="", cex=2, yaxt='n', xaxt='n')#
+axis(1, labels=F, tick=T)#
+axis(2, labels=F, tick=T)#
+lines(x=pred.el$Elevation, y=preds.i, type="l", lwd=1, col="grey")#
+legend("topright", legend="B", bty="n", cex=1.5)#
+#
+# RF average by latitude#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"RFave"]#
+thresh = mean(cuts[,3])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Latitude")]#
+mod1 <- glm(PRESABS ~ Latitude, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Latitude + I(Latitude^2), data=dat, family=binomial)#
+lat.1 = coef(mod1)[2]#
+lat.2 = coef(mod2)[2]#
+latsq.2 = coef(mod2)[3]#
+lat_p.1 = summary(mod1)$coefficients[,4][2]#
+lat_p.2 = summary(mod2)$coefficients[,4][2]#
+latsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("RF", lat.1, lat_p.1, AIC.1, lat.2, lat_p.2, latsq.2, latsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.lat, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.lat, type="response")#
+		}#
+par(mai=c(0.3,0.3,0.1,0.1)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Latitude, xlab="", ylab="", cex=2)#
+	lines(x= pred.lat$Latitude, y=preds.i, type="l", lwd=1, col="black")#
+legend("topright", legend="C", bty="n", cex=1.5)#
+#
+# RF average by elevation#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"RFave"]#
+thresh = mean(cuts[,3])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Elevation")]#
+mod1 <- glm(PRESABS ~ Elevation, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Elevation + I(Elevation^2), data=dat, family=binomial)#
+el.1 = coef(mod1)[2]#
+el.2 = coef(mod2)[2]#
+elsq.2 = coef(mod2)[3]#
+el_p.1 = summary(mod1)$coefficients[,4][2]#
+el_p.2 = summary(mod2)$coefficients[,4][2]#
+elsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("RF", el.1, el_p.1, AIC.1, el.2, el_p.2, elsq.2, elsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.el, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.el, type="response")#
+		}#
+par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Elevation, xlab="", ylab="", cex=2, yaxt='n')#
+axis(2, labels=F, tick=T)#
+lines(x=pred.el$Elevation, y=preds.i, type="l", lwd=1, col="grey")#
+legend("topright", legend="D", bty="n", cex=1.5)#
+#
+mtext("Presence (1) or Absence (0)", side=2, outer=T, line=1, at=0.5, cex=1)#
+mtext(expression(paste("Latitude (",degree,"N)")), side=1, outer=T, line=1, at=0.25, cex=1)#
+mtext("Elevation (m)", side=1, outer=T, line=1, at=0.75, cex=1)#
+#
+dev.off()
+x=seq(0,1,0.05)#
+y=seq(0,1,0.05)#
+setwd(path.fig)#
+pdf(file="LogPlots_Supp_FigF2.pdf", width=6, height=9, useDingbats=FALSE)#
+par(mfrow=c(3,2), omi=c(0.8,0.8,0,0))#
+#
+# LR average by latitude#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"LRave"]#
+thresh = mean(cuts[,1])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Latitude")]#
+mod1 <- glm(PRESABS ~ Latitude, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Latitude + I(Latitude^2), data=dat, family=binomial)#
+lat.1 = coef(mod1)[2]#
+lat.2 = coef(mod2)[2]#
+latsq.2 = coef(mod2)[3]#
+lat_p.1 = summary(mod1)$coefficients[,4][2]#
+lat_p.2 = summary(mod2)$coefficients[,4][2]#
+latsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("LR", lat.1, lat_p.1, AIC.1, lat.2, lat_p.2, latsq.2, latsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.lat, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.lat, type="response")#
+		}#
+par(mai=c(0.1,0.3,0.3,0.1)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Latitude, xlab="", ylab="", cex=2, xaxt='n')#
+axis(1, labels=F, tick=T)#
+lines(x= pred.lat$Latitude, y=preds.i, type="l", lwd=1, col="black")#
+legend("topright", legend="A", bty="n", cex=1.5)#
+#
+# LR average by elevation#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"LRave"]#
+thresh = mean(cuts[,1])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Elevation")]#
+mod1 <- glm(PRESABS ~ Elevation, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Elevation + I(Elevation^2), data=dat, family=binomial)#
+el.1 = coef(mod1)[2]#
+el.2 = coef(mod2)[2]#
+elsq.2 = coef(mod2)[3]#
+el_p.1 = summary(mod1)$coefficients[,4][2]#
+el_p.2 = summary(mod2)$coefficients[,4][2]#
+elsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("LR", el.1, el_p.1, AIC.1, el.2, el_p.2, elsq.2, elsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.el, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.el, type="response")#
+		}#
+par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Elevation, xlab="", ylab="", cex=2, xaxt='n', yaxt='n')#
+axis(1, labels=F, tick=T)#
+axis(2, labels=F, tick=T)#
+lines(x=pred.el$Elevation, y=preds.i, type="l", lwd=1, col="grey")#
+legend("topright", legend="B", bty="n", cex=1.5)#
+#
+# BRT average by latitude#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"BRTave"]#
+thresh = mean(cuts[,4])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Latitude")]#
+mod1 <- glm(PRESABS ~ Latitude, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Latitude + I(Latitude^2), data=dat, family=binomial)#
+lat.1 = coef(mod1)[2]#
+lat.2 = coef(mod2)[2]#
+latsq.2 = coef(mod2)[3]#
+lat_p.1 = summary(mod1)$coefficients[,4][2]#
+lat_p.2 = summary(mod2)$coefficients[,4][2]#
+latsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("BRT", lat.1, lat_p.1, AIC.1, lat.2, lat_p.2, latsq.2, latsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.lat, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.lat, type="response")#
+		}#
+par(mai=c(0.1,0.3,0.1,0.1)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Latitude, xlab="", ylab="", cex=2, xaxt='n')#
+axis(1, labels=F, tick=T)#
+lines(x= pred.lat $Latitude, y=preds.i, type="l", lwd=1, col="black")#
+legend("topright", legend="C", bty="n", cex=1.5)#
+#
+# BRT average by elevation#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"BRTave"]#
+thresh = mean(cuts[,4])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Elevation")]#
+mod1 <- glm(PRESABS ~ Elevation, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Elevation + I(Elevation^2), data=dat, family=binomial)#
+el.1 = coef(mod1)[2]#
+el.2 = coef(mod2)[2]#
+elsq.2 = coef(mod2)[3]#
+el_p.1 = summary(mod1)$coefficients[,4][2]#
+el_p.2 = summary(mod2)$coefficients[,4][2]#
+elsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("BRT", el.1, el_p.1, AIC.1, el.2, el_p.2, elsq.2, elsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.el, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.el, type="response")#
+		}#
+par(mai=c(0.1,0.1,0.1,0.3)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Elevation, xlab="", ylab="", cex=2, xaxt='n', yaxt='n')#
+axis(1, labels=F, tick=T)#
+axis(2, labels=F, tick=T)#
+lines(x=pred.el$Elevation, y=preds.i, type="l", lwd=1, col="black")#
+legend("topright", legend="D", bty="n", cex=1.5)#
+#
+# MAX average by latitude#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"MAXave"]#
+thresh = mean(cuts[,5])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Latitude")]#
+mod1 <- glm(PRESABS ~ Latitude, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Latitude + I(Latitude^2), data=dat, family=binomial)#
+lat.1 = coef(mod1)[2]#
+lat.2 = coef(mod2)[2]#
+latsq.2 = coef(mod2)[3]#
+lat_p.1 = summary(mod1)$coefficients[,4][2]#
+lat_p.2 = summary(mod2)$coefficients[,4][2]#
+latsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("MAX", lat.1, lat_p.1, AIC.1, lat.2, lat_p.2, latsq.2, latsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.lat, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.lat, type="response")#
+		}#
+par(mai=c(0.3,0.3,0.1,0.1)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Latitude, xlab="", ylab="", cex=2)#
+lines(x=pred.lat$Latitude, y=preds.i, type="l", lwd=1, col="black")#
+legend("topright", legend="E", bty="n", cex=1.5)#
+#
+# MAX average by elevation#
+suityn = c()#
+AIC.all = c()#
+AIC = c()#
+suitvec = occ[,"MAXave"]#
+thresh = mean(cuts[,5])#
+suityn =  suitvec >= thresh#
+dat = occ[suityn=="TRUE", c("PRESABS","Elevation")]#
+mod1 <- glm(PRESABS ~ Elevation, data=dat, family=binomial)#
+mod2 <- glm(PRESABS ~ Elevation + I(Elevation^2), data=dat, family=binomial)#
+el.1 = coef(mod1)[2]#
+el.2 = coef(mod2)[2]#
+elsq.2 = coef(mod2)[3]#
+el_p.1 = summary(mod1)$coefficients[,4][2]#
+el_p.2 = summary(mod2)$coefficients[,4][2]#
+elsq_p.2 = summary(mod2)$coefficients[,4][3]#
+AIC.1 = extractAIC(mod1)[2]#
+AIC.2 = extractAIC(mod2)[2]#
+AIC.diff = AIC.2 - AIC.1#
+AIC.all = cbind(AIC.1, AIC.2, AIC.diff)#
+table = cbind("MAX", el.1, el_p.1, AIC.1, el.2, el_p.2, elsq.2, elsq_p.2, AIC.2)#
+table.F2 = rbind(table.F2, table)#
+if (AIC.diff < -2) {#
+	preds.i = predict(mod2, pred.el, type="response")#
+	} else {#
+		preds.i = predict(mod1, pred.el, type="response")#
+		}#
+par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
+plot(dat$PRESABS~ dat$Elevation, xlab="", ylab="", cex=2, yaxt='n')#
+axis(2, labels=F, tick=T)#
+lines(x=pred.el$Elevation, y=preds.i, type="l", lwd=1, col="black")#
+legend("topright", legend="F", bty="n", cex=1.5)#
+#
+mtext("Presence (1) or Absence (0)", side=2, outer=T, line=1, at=0.5, cex=1)#
+mtext(expression(paste("Latitude (",degree,"N)")), side=1, outer=T, line=1, at=0.25, cex=1)#
+mtext("Elevation (m)", side=1, outer=T, line=1, at=0.75, cex=1)#
+#
+dev.off()

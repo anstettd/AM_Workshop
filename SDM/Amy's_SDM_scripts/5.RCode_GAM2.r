@@ -41,7 +41,7 @@
 ## variables chosen based on dev and collinearity: bio15, lnbio10, lnbio14, lnbio12, bio11, bio4, lnbio3, bio2
 ## variables requiring ln-transform are already transformed (see RCode_ThinPseudos)
 
-setwd(path.dat) 
+#setwd(path.dat) 
 
 #for (i in 1:10) {
 #	dat = read.csv(paste("dat",i,".csv", sep=""))
@@ -61,7 +61,7 @@ setwd(path.dat)
 
 ## use these (1:1 ratio)
 for (i in 1:10) {
-	dat = read.csv(paste("dat",i,"c.csv", sep=""))
+	dat = read.csv(paste("SDM/Output/dat",i,"c.csv", sep=""))
 	dat = dat[,c(4,59:61,67:69,71:72)] #column indices changed 9/4/14
 	assign(paste("dat",i, sep=""), dat)
 	}
@@ -74,7 +74,7 @@ head(dat1); head(dat10)
 str(dat1); str(dat10)                      
 
 ## testing data
-all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
+all = read.csv("SDM/data_files/all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
 ext = all[all$DATASET=="occ",] #pull out occupancy dataset
 ext$bio3 = log(ext$bio3+0.5) #make needed ln-transforms of predictors
 ext$bio10 = log(ext$bio10+0.5)
@@ -90,10 +90,10 @@ ext$bio14 = log(ext$bio14+0.5)
 ################################################################################
 ######## {Do not rerun} START COMPARATIVE GAM MODELLING 
 
-setwd(path.cod)
-source("modforms.R")
+#setwd(path.cod)
+source("SDM/R_Code/modforms.R")
 
-setwd(path.obj)
+#setwd(path.obj)
 library(gam)
 
 for (i in 1:10) {
@@ -146,7 +146,7 @@ for (i in 1:10) {
 ################################################################################
 ######## {Start here} START LOAD SAVED MODEL OBJECTS AND PREDICTIONS
 
-setwd(path.obj)
+#setwd(path.obj)
 library(gam)
 
 for (i in 1:10) {
@@ -165,7 +165,7 @@ for (i in 1:10) {
 ######## START RESUBSTITUTION ACCURACY COMPARISONS, MODEL = STEP GAM
 
 library(PresenceAbsence)   
-setwd(path.cod)
+#setwd(path.cod)
 source("accuracy.R")
 
 accs = c()
@@ -180,7 +180,7 @@ for (i in 1:10) {
 	temp$model = "GAM.mod4"
 	accs = rbind(accs, temp)
 	}
-setwd(path.obj)
+#setwd(path.obj)
 save(accs, file="GAM.mod4.accs.pseudo11.Rda")
 
 ######## END RESUBSTITUTION ACCURACY CALCULATIONS, MODEL= STEP GAM
@@ -191,10 +191,10 @@ save(accs, file="GAM.mod4.accs.pseudo11.Rda")
 ################################################################################
 ######## START RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL= STEP GAM
 
-setwd(path.cod)
+#setwd(path.cod)
 source("calibration.R")
 
-setwd(path.fig)
+#setwd(path.fig)
 pdf(file="GAM_CalPlots_Training.pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)

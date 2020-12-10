@@ -43,7 +43,7 @@
 ## see file 'RCode_ThinPseudoAbs'
 ## now just call in saved .csv files
 
-setwd(path.dat) 
+#setwd(path.dat) 
 
 #for (i in 1:10) {
 #	dat = read.csv(paste("dat",i,".csv", sep=""))
@@ -61,7 +61,7 @@ setwd(path.dat)
 
 ##use these (1:1 ratio)
 for (i in 1:10) {
-	dat = read.csv(paste("dat",i,"c.csv", sep=""))
+	dat = read.csv(paste("SDM/Output/dat",i,"c.csv", sep=""))
 	dat = dat[,c(4,59:61,67:69,71:72)] #column indices changed 9/4/14
 	assign(paste("dat",i, sep=""), dat)
 	}

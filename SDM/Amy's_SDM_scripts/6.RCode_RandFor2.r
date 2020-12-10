@@ -91,12 +91,12 @@ ext$bio14 = log(ext$bio14+0.5)
 ######## {Do not re-run} START RF MODEL
 
 library(randomForest) 
-setwd(path.cod)
+#setwd(path.cod)
 source("modforms.R")
 
 setwd(path.obj)
 for (i in 1:10) {
-	dat = get(paste("dat", i, sep=""))
+	dat = get(paste("SDM/Output/dat", i, sep=""))
 	mod1.RF = randomForest(mod.form.lin(dat,1,2), importance=T, keep.forest=T, data=dat)           
 	assign(paste("RF.mod1.",i, sep=""), mod1.RF)
 	save(mod1.RF, file=paste("RF.mod1.",i,".pseudo11.Rda", sep=""))	

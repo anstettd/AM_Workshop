@@ -1,0 +1,227 @@
+library(raster)
+library(maptools)
+library(gam)
+library(randomForest)
+library(dismo)
+library(gbm)
+library(rgdal)
+## set pathnames - Amy
+# desktop
+path.root="/Users/amylauren/Google Drive/OccAmNat"
+path.dat = paste(path.root, "/data files", sep="")
+path.obj = paste(path.root, "/R objects", sep="")
+path.eco = paste(path.dat, "/ecoregions.shp", sep="")
+path.bio = paste(path.dat, "/wc0.5", sep="")
+path.sta = paste(path.dat, "/gz_2010_us_040_00_500k", sep="")
+path.fig = paste(path.root, "/figures", sep="")
+library(sp)
+library(rgdal)
+setwd(path.dat)
+prj.wgs = "+proj=longlat +ellps=WGS84"
+prj.aea = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0"
+setwd(path.dat)
+for (i in 1:10) {
+dat = read.csv(paste("dat",i,"c.csv", sep=""))
+coordinates(dat) = ~Longitude + Latitude
+proj4string(dat) = CRS(prj.wgs)
+assign(paste("dat",i, sep=""), dat)
+dat.aea = spTransform(dat, CRS=CRS(prj.aea))
+assign(paste("dat",i,".aea", sep=""), dat.aea)
+}
+rm(dat)
+library(sp)
+library(rgdal)
+setwd(path.dat)
+all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
+occ = all[all$DATASET=="occ",] #pull out occupancy dataset
+dim(occ) #check size
+occ$bio3 = log(occ$bio3+0.5) #make needed ln-transforms of predictors
+occ$bio10 = log(occ$bio10+0.5)
+occ$bio12 = log(occ$bio12+0.5)
+occ$bio14 = log(occ$bio14+0.5)
+coordinates(occ) = ~Longitude + Latitude
+prj.wgs = "+proj=longlat +ellps=WGS84"
+prj.aea = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0"
+proj4string(occ) = CRS(prj.wgs)
+occ.aea = spTransform(occ, CRS=CRS(prj.aea))
+L.thresh = 400
+H.thresh = 1200
+high <- occ[occ$Elevation > H.thresh,]
+low <- occ[occ$Elevation < L.thresh,]
+mid <- occ[occ$Elevation >= L.thresh & occ$Elevation <= H.thresh,]
+high.aea = occ.aea[occ.aea$Elevation > H.thresh,]
+low.aea <- occ.aea[occ.aea$Elevation < L.thresh,]
+mid.aea <- occ.aea[occ.aea$Elevation >= L.thresh & occ.aea$Elevation <= H.thresh,]
+setwd(path.dat)
+north = read.csv("north.csv")
+center = read.csv("center.csv")
+south = read.csv("south.csv")
+prj.wgs = "+proj=longlat +ellps=WGS84"
+coordinates(north) = ~Longitude + Latitude
+proj4string(north) = CRS(prj.wgs)
+coordinates(center) = ~Longitude + Latitude
+proj4string(center) = CRS(prj.wgs)
+coordinates(south) = ~Longitude + Latitude
+proj4string(south) = CRS(prj.wgs)
+## reproject to albers equal area
+library(rgdal)
+prj.aea = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0"
+occ.aea = spTransform(occ, CRS=CRS(prj.aea))
+north.aea = spTransform(north, CRS=CRS(prj.aea))
+center.aea = spTransform(center, CRS=CRS(prj.aea))
+south.aea = spTransform(south, CRS=CRS(prj.aea))
+# crop to buffered bounding box
+library(raster)
+occ2 = spTransform(occ, CRS=CRS(prj.aea))
+ymin = min(occ$Latitude) - 1.5
+ymax = max(occ$Latitude) + 1.5
+xmin = min(occ$Longitude) - 1.5
+xmax = max(occ$Longitude) + 1.5
+e = extent(xmin, xmax, ymin, ymax)
+# read in ecoregions
+setwd(path.eco)
+# see 'help' for this function, you  need to set the directory to one folder level above where the destination file is saved
+ecoreg = readOGR(dsn="/Users/amylauren/Google Drive/OccAmNat/data files/ecoregions.shp", layer="us_eco_l3_no_st")
+# project to match other layers
+library(rgdal)
+prj.wgs = "+proj=longlat +ellps=WGS84"
+prj.aea = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0"
+ecoreg.wgs = spTransform(ecoreg, CRS(prj.wgs))
+ecoreg.aea = spTransform(ecoreg, CRS(prj.aea))
+# crop polygon to buffered bounding box
+# note: this loses the region names, so it doesn't work for subsetting data
+library(rgeos)
+bbox = as(e, "SpatialPolygons")
+proj4string(bbox) = CRS(prj.wgs)
+bbox.aea = spTransform(bbox, CRS=CRS(prj.aea))
+ecoreg.crop.aea <- crop(ecoreg.aea, bbox.aea) # ADDED
+eco.names = levels(ecoreg.wgs$US_L3NAME)
+poly.list = c(10,12,13,14,19,25,36,43,64,66,70,71,84)
+for (i in 1:length(poly.list)) {
+poly = ecoreg.wgs[ecoreg.wgs$US_L3NAME==eco.names[poly.list[i]],]
+assign(paste("poly",poly.list[i], sep=""), poly)
+poly.aea = spTransform(poly, CRS=CRS(prj.aea))
+assign(paste("poly",poly.list[i],".aea", sep=""), poly.aea)
+}
+## world map polygons
+library(rworldmap); data(countriesLow)
+library(rworldxtra); data(countriesHigh)
+library(rgdal)
+prj.aea = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0"
+countriesLow.aea = spTransform(countriesLow, CRS=CRS(prj.aea))
+countriesHigh.aea = spTransform(countriesHigh, CRS=CRS(prj.aea))
+setwd(path.sta)
+sta = readShapePoly("gz_2010_us_040_00_500k.shp")
+projection(sta) = CRS(prj.wgs)
+sta.aea = spTransform(sta, CRS=CRS(prj.aea))
+## gridlines
+# note: this wasn't working as a standalone, so I've added more lines below to make gridlines based on cropped frame
+library(sp)
+library(rgdal)#
+#create unprojected gridlines
+ecoreg.wgs = spTransform(ecoreg, CRS=CRS(prj.wgs))
+grd.wgs = gridlines(ecoreg.wgs, ndiscr=200)
+grd.aea = spTransform(grd.wgs, CRS=CRS(prj.aea))
+prj.lcc = "+proj=lcc +lat_1=49 +lat_2=77 +lat_0=0 +lon_0=-95 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+grd.lcc = spTransform(grd.wgs, CRS=CRS(prj.lcc))
+gridat <- gridat(ecoreg.wgs, side="EN")
+#project labels for gridlines
+gridat.aea=spTransform(gridat, CRS=CRS(prj.aea), side="EN")
+gridat.lcc=spTransform(gridat, CRS=CRS(prj.lcc), side="EN")
+#slim down labels to fit on plots
+lab.wgs = parse(text=as.character(gridat$labels))
+lab.wgs.cull = lab.wgs[c(2,4,6:9)]
+coord.wgs = coordinates(gridat)
+coord.wgs.cull = coord.wgs[c(2,4,6:9),]
+lab.aea = parse(text=as.character(gridat.aea$labels))
+lab.aea.cull = lab.aea[c(2,4,6:9)]
+coord.aea = coordinates(gridat.aea)
+coord.aea.cull = coord.aea[c(2,4,6:9),]
+#Clip function to trim probability rasters by bbox.lcc (extent obj)
+clip<-function(raster,shape) {
+a1_crop<-crop(raster,shape)
+step1<-rasterize(shape,a1_crop)
+a1_crop*step1}
+frame.aea <- crop(countriesHigh.aea, bbox.aea);
+frame.wgs = spTransform(frame.aea, CRS=CRS(prj.wgs))
+frame.grd = gridlines(frame.wgs, ndiscr=100)
+frame.grd.aea = spTransform(frame.grd, CRS=CRS(prj.aea))
+plot(frame.aea); plot(frame.grd.aea, add=T) # check it out..OK?
+frame.gridat <- gridat(frame.wgs, side="EN")
+frame.lab.wgs = parse(text=as.character(frame.gridat$labels))
+frame.lab.wgs.cull = frame.lab.wgs[c(2,4,6:9)]
+frame.coord.wgs = coordinates(frame.gridat)
+frame.coord.wgs.cull = frame.coord.wgs[c(2,4,6:9),]
+frame.gridat.aea=spTransform(frame.gridat, CRS=CRS(prj.aea), side="EN")
+frame.lab.aea = parse(text=as.character(frame.gridat.aea$labels))
+frame.lab.aea.cull = frame.lab.aea[c(2,4,6:9)]
+frame.coord.aea = coordinates(frame.gridat.aea)
+frame.coord.aea.cull = frame.coord.aea[c(2,4,6:9),]
+setwd(path.fig)
+pdf(file="FigA1_MAP_herb.reps.pdf", width=11, height=8.5, useDingbats = FALSE)
+par(mfrow=c(2,5),mar=c(10,5,4,4.5)+.1,xpd=NA)
+for (i in 1:10) {
+dat = get(paste("dat",i,".aea", sep=""))
+pres = dat[dat$PRESABS==1,]
+abs = dat[dat$PRESABS==0,]
+plot(frame.aea, col="lightgrey")
+sta.aea2 <- crop(sta.aea,frame.aea); plot(sta.aea2, add=T, border="black", lwd=0.2)
+grd.aea2 <- crop(grd.aea,frame.aea); plot(grd.aea2, add=T, lty="dashed", col="darkgrey", lwd=1)
+points(abs, pch=21, cex=0.75, col="lightgrey", bg="white")
+points(pres, pch=21, col="lightgrey", bg="black")
+legend("bottomleft", legend=c("pres","abs"), pch=21, col="lightgrey", pt.bg=c("black","white"), bg="white", box.col="white")
+text(coordinates(frame.coord.aea.cull), labels=frame.lab.wgs.cull, pos=c(3,3,3,4,4,4), offset=0.5, col="black",cex=0.9)
+#offset=0
+#offset=c(0.5, 0.5, 0.5, 0, 0, 0)
+#offset=c(0, 0, 0, 0.5, 0.5, 0.5)
+#pos=c(1,1,1,4,4,4)
+}
+dev.off()
+setwd(path.fig)
+pdf(file="FigA3_MAP_occ.points.pdf", width=11, height=8.5, useDingbats=FALSE)
+par(mfrow=c(1,2))
+# left panel: color coded by north, center, and south
+plot(frame.aea, col="lightgrey")
+sta.aea2 <- crop(sta.aea,frame.aea); plot(sta.aea2, add=T, border="black", lwd=0.2)
+grd.aea2 <- crop(grd.aea,frame.aea); plot(grd.aea2, add=T, lty="dashed", col="darkgrey", lwd=1)
+poly10.aea2 <- crop(poly10.aea,frame.aea); plot(poly10.aea2, add=T, border="blue") #north
+poly19.aea2 <- crop(poly19.aea,frame.aea); plot(poly19.aea2, add=T, border="blue") #north
+poly25.aea2 <- crop(poly25.aea,frame.aea); plot(poly25.aea2, add=T, border="blue") #north
+plot(poly36.aea, add=T, border="blue") #north
+plot(poly84.aea, add=T, border="blue") #north
+poly12.aea2 <- crop(poly12.aea,frame.aea); plot(poly12.aea2, add=T, border="darkgreen") #center (few points; ecologically marginal)
+plot(poly13.aea, add=T, border="darkgreen") #center
+plot(poly14.aea, add=T, border ="darkgreen") #center (few points; ecologically marginal)
+plot(poly64.aea, add=T, border ="darkgreen") #center
+poly43.aea2 <- crop(poly43.aea,frame.aea); plot(poly43.aea2, add=T, border ="red") #south (few points; ecologically marginal)
+poly66.aea2 <- crop(poly66.aea,frame.aea); plot(poly66.aea2, add=T, border ="red") #south
+plot(poly70.aea, add=T, border ="red") #south
+plot(poly71.aea, add=T, border ="red") #south
+points(north.aea, pch=21, col="lightgrey", bg="blue")
+points(center.aea, pch=21, col="lightgrey", bg="darkgreen")
+points(south.aea, pch=21, col="lightgrey", bg="red")
+legend("bottomleft", legend=c("north","center","south"), pch=21, col="lightgrey", pt.bg=c("blue","darkgreen","red"), bg="white", box.col="white")
+text(coordinates(frame.coord.aea.cull), labels=frame.lab.wgs.cull, pos=c(3,3,3,4,4,4), offset=0.5, col="black")
+# right panel: color coded by low, mid, and high
+plot(frame.aea, col="lightgrey")
+sta.aea2 <- crop(sta.aea,frame.aea); plot(sta.aea2, add=T, border="black", lwd=0.2)
+grd.aea2 <- crop(grd.aea,frame.aea); plot(grd.aea2, add=T, lty="dashed", col="darkgrey", lwd=1)
+poly10.aea2 <- crop(poly10.aea,frame.aea); plot(poly10.aea2, add=T, border="darkgrey") #north
+poly19.aea2 <- crop(poly19.aea,frame.aea); plot(poly19.aea2, add=T, border="darkgrey") #north
+poly25.aea2 <- crop(poly25.aea,frame.aea); plot(poly25.aea2, add=T, border="darkgrey") #north
+plot(poly36.aea, add=T, border="darkgrey") #north
+plot(poly84.aea, add=T, border="darkgrey") #north
+poly12.aea2 <- crop(poly12.aea,frame.aea); plot(poly12.aea2, add=T, border="darkgrey") #center (few points; ecologically marginal)
+plot(poly13.aea, add=T, border="darkgrey") #center
+plot(poly14.aea, add=T, border ="darkgrey") #center (few points; ecologically marginal)
+plot(poly64.aea, add=T, border ="darkgrey") #center
+poly43.aea2 <- crop(poly43.aea,frame.aea); plot(poly43.aea2, add=T, border ="darkgrey") #south (few points; ecologically marginal)
+poly66.aea2 <- crop(poly66.aea,frame.aea); plot(poly66.aea2, add=T, border ="darkgrey") #south
+plot(poly70.aea, add=T, border ="darkgrey") #south
+plot(poly71.aea, add=T, border ="darkgrey") #south
+points(low.aea, pch=21, col="lightgrey", bg="red")
+points(mid.aea, pch=21, col="lightgrey", bg="darkgreen")
+points(high.aea, pch=21, col="lightgrey", bg="blue")
+legend("bottomleft", legend=c("high","mid","low"), pch=21, col="lightgrey", pt.bg=c("blue","darkgreen","red"), bg="white", box.col="white")
+text(coordinates(frame.coord.aea.cull), labels=frame.lab.wgs.cull, pos=c(3,3,3,4,4,4), offset=0.5, col="black")
+dev.off()
