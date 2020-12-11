@@ -99,7 +99,7 @@ library(dismo)
 		# FEATURES = LQHP (linear, quadratic, hinge, product)
 		# REGULARIZATION MULTIPLIER = 2.5
 		
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## call up replicate training data
 	dat = get(paste("dat",i, sep=""))
@@ -107,7 +107,7 @@ for (i in 1:10) {
 	mod.MAX=maxent(dat[,c(2:9)],dat$PRESABS, args=c("betamultiplier=2.5", "threshold=FALSE")) 
 	
 	assign(paste("MAX.mod1.",i, sep=""), mod.MAX)
-	save(mod.MAX, file=paste("MAX.mod1.",i,".pseudo11.Rda", sep=""))
+	save(mod.MAX, file=paste("SDM/Output/MAX.mod1.",i,".pseudo11.Rda", sep=""))
 	}
 
 #plot(mod.MAX) # var importance plot
@@ -229,7 +229,7 @@ for (i in 1:10) {
 	temp$model = "MAX.mod1"
 	cv.accs=rbind(cv.accs, temp)
 	}
-setwd(path.obj)
+#setwd(path.obj)
 save(cv.accs, file="SDM/Output/MAX.mod1.cvaccs.pseudo11.Rda")
 
 ######## END CROSS-VALIDATION METRICS FROM MAXENT
@@ -259,7 +259,7 @@ for (i in 1:10) {
 	temp$model = "MAX.mod1"
 	ext.accs=rbind(ext.accs, temp)
 	}
-setwd(path.obj)
+#setwd(path.obj)
 save(ext.accs, file="SDM/Output/MAX.mod1.extaccs.pseudo11.Rda")
 
 ######## END EXTERNAL ACCURACY METRICS FROM MAXENT
@@ -274,8 +274,8 @@ save(ext.accs, file="SDM/Output/MAX.mod1.extaccs.pseudo11.Rda")
 #setwd(path.cod)
 source("SDM/R_code/calibration.R")
 
-setwd(path.fig)
-pdf(file="MAX_CalPlots_Testing_pseudo11.pdf", width=11, height=8.5)
+#setwd(path.fig)
+pdf(file="SDM/Output/MAX_CalPlots_Testing_pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
