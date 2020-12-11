@@ -94,14 +94,14 @@ source("SDM/R_code/modforms.R")
 
 for (i in 1:10) {
 	## build initial model all variables: mod1.i.LR
-	dat = get(paste("SDM/Output/dat",i, sep=""))
+	dat = get(paste("dat",i, sep=""))
 	mod1.LR=glm(mod.form.quad(dat,1,2),family=binomial,data=dat)
 	assign(paste("LR.mod1.",i, sep=""), mod1.LR)
 	#mod1.fit=100*(1-mod1.LR$deviance/mod1.LR$null.deviance)
 	mod1.pred=predict(mod1.LR,type="response") # model prediction
 	assign(paste("LR.mod1.",i,".pred", sep=""), mod1.pred)
 	#summary(mod1.LR)        # full model summary stats
-	save(mod1.LR, file=paste("LR.mod1.",i,".pseudo11.Rda", sep="")) # save model object
+	save(mod1.LR, file=paste("SDM/Output/LR.mod1.",i,".pseudo11.Rda", sep="")) # save model object
 
 	## build parsimonious model w/ backwards variable reduction: mod2.i.LR
 	mod2.LR=step(mod1.LR,trace=F) # backwards stepwise variable reduction
@@ -110,7 +110,7 @@ for (i in 1:10) {
 	mod2.pred=predict(mod2.LR,type="response") # model prediction
 	assign(paste("LR.mod2.",i,".pred", sep=""), mod2.pred)
 	#summary(mod2.LR)  # reduced model summary	
-	save(mod2.LR, file=paste("LR.mod2.",i,".pseudo11.Rda", sep="")) # save model object
+	save(mod2.LR, file=paste("SDM/Output/LR.mod2.",i,".pseudo11.Rda", sep="")) # save model object
 	}
 
 ######## END BUILD FULL AND REDUCED MODELS
@@ -125,7 +125,7 @@ for (i in 1:10) {
 #setwd(path.obj)
 
 for (i in 1:10) {
-	mod = get(load(paste("LR.mod2.",i,".pseudo11.Rda", sep="")))
+	mod = get(load(paste("SDM/Output/LR.mod2.",i,".pseudo11.Rda", sep="")))
 	assign(paste("LR.mod2.",i, sep=""), mod)
 	pred=predict(mod,type="response") # model prediction
 	assign(paste("LR.mod2.",i,".pred", sep=""), pred)
@@ -144,7 +144,7 @@ for (i in 1:10) {
 
 library(PresenceAbsence)   
 #setwd(path.cod)
-source("accuracy.R")
+source("SDM/R_code/accuracy.R")
 
 accs = c()
 for (i in 1:10) {
@@ -157,8 +157,8 @@ for (i in 1:10) {
 	temp$model = "LR.mod2"
 	accs = rbind(accs, temp)
 	}
-setwd(path.obj)
-save(accs, file="LR.mod2.accs.pseudo11.Rda")
+#setwd(path.obj)
+save(accs, file="SDM/Output/LR.mod2.accs.pseudo11.Rda")
 
 ######## END RESUBSTITUTION ACCURACY CALCULATIONS, MODEL=LOGISTIC GLM
 ################################################################################
@@ -169,10 +169,10 @@ save(accs, file="LR.mod2.accs.pseudo11.Rda")
 ################################################################################
 ######## START RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL=LOGISTIC GLM
 #setwd(path.cod)
-source("calibration.R")
+source("SDM/R_code/calibration.R")
 
-setwd(path.fig)
-pdf(file="GLM_CalPlots_Training_pseudo11.pdf", width=11, height=8.5)
+#setwd(path.fig)
+pdf(file="SDM/Output/GLM_CalPlots_Training_pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
@@ -196,7 +196,7 @@ for (i in 1:10) {
 dev.off()
 
 #setwd(path.obj)
-save(cal.LR.training, file="LR.mod2.cal.training.Rda")
+save(cal.LR.training, file="SDM/Output/LR.mod2.cal.training.Rda")
 
 ######## END RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL=LOGISTIC GLM
 ################################################################################
@@ -226,8 +226,8 @@ for (i in 1:10) {
 	temp$model = "LR.mod2"
 	cv.accs = rbind(cv.accs, temp)
 	}
-setwd(path.obj)
-save(cv.accs, file="LR.mod2.cvaccs.pseudo11.Rda")
+#setwd(path.obj)
+save(cv.accs, file="SDM/Output/LR.mod2.cvaccs.pseudo11.Rda")
 
 ######## END CROSS-VALIDATION ACCURACY CALCULATIONS, MODEL=LOGISTIC GLM
 ################################################################################
@@ -241,7 +241,7 @@ save(cv.accs, file="LR.mod2.cvaccs.pseudo11.Rda")
 
 library(PresenceAbsence)
 #setwd(path.cod)
-source("accuracy.R")
+source("SDM/R_code/accuracy.R")
 
 ext.accs = c()
 for (i in 1:10) {
@@ -254,8 +254,8 @@ for (i in 1:10) {
 	temp$model = "LR.mod2"
 	ext.accs = rbind(ext.accs, temp)
 	}
-setwd(path.obj)
-save(ext.accs, file="LR.mod2.extaccs.pseudo11.Rda")
+#setwd(path.obj)
+save(ext.accs, file="SDM/Output/LR.mod2.extaccs.pseudo11.Rda")
 
 ######## END EXTERNAL VALIDATION CALCULATIONS, MODEL=LOGISTIC GLM
 ################################################################################
@@ -266,16 +266,16 @@ save(ext.accs, file="LR.mod2.extaccs.pseudo11.Rda")
 ################################################################################
 ######## START EXTERNAL RELIABILITY  CALCULATIONS, MODEL=LOGISTIC GLM
 #setwd(path.cod)
-source("calibration.R")
+source("SDM/R_code/calibration.R")
 
 setwd(path.fig)
-pdf(file="GLM_CalPlots_Testing_pseudo11.pdf", width=11, height=8.5)
+pdf(file="SDM/Output/GLM_CalPlots_Testing_pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
 cal.LR.testing = as.data.frame(matrix(NA, 10,4))
 names(cal.LR.testing) = c("int", "slope", "p_int", "p_slope")
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## pull in replicate data and model predictions	
 	mod = get(paste("LR.mod2.",i, sep=""))
@@ -292,8 +292,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.LR.testing, file="LR.mod2.cal.testing.Rda")
+#setwd(path.obj)
+save(cal.LR.testing, file="SDM/Output/LR.mod2.cal.testing.Rda")
 
 ######## END EXTERNAL RELIABILITY CALCULATIONS, MODEL=LOGISTIC GLM
 ################################################################################
@@ -305,7 +305,7 @@ save(cal.LR.testing, file="LR.mod2.cal.testing.Rda")
 ######## START SPATIAL VARIATION IN RESIDUALS
 #setwd(path.dat)
 for (i in 1:10) {
-	dat = read.csv(paste("dat",i,"c.csv", sep=""))
+	dat = read.csv(paste("SDM/Output/dat",i,"c.csv", sep=""))
 	dat = dat[,c(4,7,59:61,67:69,71:72)] #column indices changed 9/4/14
 	assign(paste("dat",i, sep=""), dat)
 	}

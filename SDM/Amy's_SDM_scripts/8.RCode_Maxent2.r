@@ -74,7 +74,7 @@ head(dat1); head(dat10)
 str(dat1); str(dat10)                      
 
 ## testing data
-all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
+all = read.csv("SDM/data_files/all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
 ext = all[all$DATASET=="occ",] #pull out occupancy dataset
 ext$bio3 = log(ext$bio3+0.5) #make needed ln-transforms of predictors
 ext$bio10 = log(ext$bio10+0.5)
@@ -123,7 +123,7 @@ for (i in 1:10) {
 ######## {START HERE} LOAD FINAL MODELS 
 
 library(dismo)                         
-setwd(path.obj)
+#setwd(path.obj)
 
 for (i in 1:10) {
 	mod = get(load(paste("MAX.mod1.",i,".pseudo11.Rda", sep="")))
@@ -141,8 +141,8 @@ for (i in 1:10) {
 
 library(PresenceAbsence) 
 
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code/accuracy.R")
 
 accs=c()
 for (i in 1:10) {
@@ -156,8 +156,8 @@ for (i in 1:10) {
 	temp$model = "MAX.mod1"
 	accs = rbind(accs, temp)	
 }	
-setwd(path.obj)
-save(accs, file="MAX.mod1.accs.pseudo11.Rda")
+#setwd(path.obj)
+save(accs, file="SDM/Output/MAX.mod1.accs.pseudo11.Rda")
 	
 ######## END INTERNAL ACCURACY & CLASSIFICATION 
 ################################################################################
@@ -169,17 +169,17 @@ save(accs, file="MAX.mod1.accs.pseudo11.Rda")
 ################################################################################
 ######## START RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL=MAX
 
-setwd(path.cod)
-source("calibration.R")
+#setwd(path.cod)
+source("SDM/R_code/calibration.R")
 
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
 cal.MAX.training = as.data.frame(matrix(NA, 10,4))
 names(cal.MAX.training) = c("int", "slope", "p_int", "p_slope")
-setwd(path.fig)
-pdf(file="MAX_CalPlots_Training_pseudo11.pdf", width=11, height=8.5)
+#setwd(path.fig)
+pdf(file="SDM/Output/MAX_CalPlots_Training_pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## pull in replicate data and model predictions	
 	dat = get(paste("dat",i, sep=""))
@@ -197,8 +197,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.MAX.training, file="MAX.mod1.cal.training.Rda")
+#setwd(path.obj)
+save(cal.MAX.training, file="SDM/Output/MAX.mod1.cal.training.Rda")
 
 ######## END RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL=MAX
 ################################################################################
@@ -212,8 +212,8 @@ save(cal.MAX.training, file="MAX.mod1.cal.training.Rda")
 
 library(PresenceAbsence) 
 
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code/accuracy.R")
 
 cv.accs=c()
 modl="mod.MAX" # var placeholder
@@ -230,7 +230,7 @@ for (i in 1:10) {
 	cv.accs=rbind(cv.accs, temp)
 	}
 setwd(path.obj)
-save(cv.accs, file="MAX.mod1.cvaccs.pseudo11.Rda")
+save(cv.accs, file="SDM/Output/MAX.mod1.cvaccs.pseudo11.Rda")
 
 ######## END CROSS-VALIDATION METRICS FROM MAXENT
 ################################################################################
@@ -245,8 +245,8 @@ save(cv.accs, file="MAX.mod1.cvaccs.pseudo11.Rda")
 
 library(PresenceAbsence)   
 
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code/accuracy.R")
 
 ext.accs=c()
 modl = "mod.MAX" # var placeholder
@@ -260,7 +260,7 @@ for (i in 1:10) {
 	ext.accs=rbind(ext.accs, temp)
 	}
 setwd(path.obj)
-save(ext.accs, file="MAX.mod1.extaccs.pseudo11.Rda")
+save(ext.accs, file="SDM/Output/MAX.mod1.extaccs.pseudo11.Rda")
 
 ######## END EXTERNAL ACCURACY METRICS FROM MAXENT
 ################################################################################
@@ -271,8 +271,8 @@ save(ext.accs, file="MAX.mod1.extaccs.pseudo11.Rda")
 ################################################################################
 ######## START EXTERNAL RELIABILITY METRICS FROM MAXENT
 
-setwd(path.cod)
-source("calibration.R")
+#setwd(path.cod)
+source("SDM/R_code/calibration.R")
 
 setwd(path.fig)
 pdf(file="MAX_CalPlots_Testing_pseudo11.pdf", width=11, height=8.5)
@@ -281,7 +281,7 @@ x=seq(0,1,0.05)
 y=seq(0,1,0.05)
 cal.MAX.testing = as.data.frame(matrix(NA, 10,4))
 names(cal.MAX.testing) = c("int", "slope", "p_int", "p_slope")
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## pull in replicate data and model predictions	
 	mod = get(paste("MAX.mod1.",i, sep=""))
@@ -300,8 +300,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.MAX.testing, file="MAX.mod1.cal.testing.Rda")
+#setwd(path.obj)
+save(cal.MAX.testing, file="SDM/Output/MAX.mod1.cal.testing.Rda")
 
 ######## END EXTERNAL RELIABILITY METRICS FROM MAXENT
 ################################################################################
@@ -313,7 +313,7 @@ save(cal.MAX.testing, file="MAX.mod1.cal.testing.Rda")
 ######## START SOME EXTRA STUFF
 
 ## compare model variable importance
-setwd(path.obj)
+#setwd(path.obj)
 library(dismo)
 par(ask=T)
 par(mfrow=c(1,1))
@@ -323,7 +323,7 @@ for (i in 1:10) {
 	}
 
 ## compare variable responses
-setwd(path.obj)
+#setwd(path.obj)
 library(dismo)
 par(ask=T)
 par(mfrow=c(2,4))

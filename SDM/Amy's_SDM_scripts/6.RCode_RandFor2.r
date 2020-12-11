@@ -92,11 +92,11 @@ ext$bio14 = log(ext$bio14+0.5)
 
 library(randomForest) 
 #setwd(path.cod)
-source("modforms.R")
+source("SDM/R_code/modforms.R")
 
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
-	dat = get(paste("SDM/Output/dat", i, sep=""))
+	dat = get(paste("dat", i, sep=""))
 	mod1.RF = randomForest(mod.form.lin(dat,1,2), importance=T, keep.forest=T, data=dat)           
 	assign(paste("RF.mod1.",i, sep=""), mod1.RF)
 	save(mod1.RF, file=paste("RF.mod1.",i,".pseudo11.Rda", sep=""))	
@@ -114,11 +114,11 @@ for (i in 1:10) {
 ######## {Start here} LOAD SAVED MODEL AND PREDICTIONS
 
 library(randomForest) 
-setwd(path.obj)
+#setwd(path.obj)
 
 for (i in 1:10) {
 	dat = get(paste("dat", i, sep=""))
-	mod1.RF = get(load(paste("RF.mod1.",i,".pseudo11.Rda", sep="")))
+	mod1.RF = get(load(paste("SRF.mod1.",i,".pseudo11.Rda", sep="")))
 	assign(paste("RF.mod1.",i, sep=""), mod1.RF)
 	mod1.pred = predict(mod1.RF, type="prob")[,2]
 	assign(paste("RF.mod1.",i,".pred", sep=""), mod1.pred)
@@ -134,8 +134,8 @@ for (i in 1:10) {
 ######## START RESUBSTITUTION ACCURACY CALCULATIONS, MODEL=RF
 
 library(PresenceAbsence)   # PresenceAbsence for accuracy metrics
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code/accuracy.R")
 
 accs = c()
 for (i in 1:10) {
@@ -148,8 +148,8 @@ for (i in 1:10) {
 	temp$model = "RF.mod1"
 	accs = rbind(accs, temp)
 	}
-setwd(path.obj)
-save(accs, file="RF.mod1.accs.pseudo11.Rda")
+#setwd(path.obj)
+save(accs, file="SDM/Output/RF.mod1.accs.pseudo11.Rda")
 
 ######## END RESUBSTITUTION ACCURACY CALCULATIONS, MODEL=RF
 ################################################################################
@@ -159,17 +159,17 @@ save(accs, file="RF.mod1.accs.pseudo11.Rda")
 ################################################################################
 ######## START RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL= RF
 
-setwd(path.cod)
-source("calibration.R")
+#setwd(path.cod)
+source("SDM/R_code/calibration.R")
 
-setwd(path.fig)
-pdf(file="RF_CalPlots_Training.pseudo11.pdf", width=11, height=8.5)
+#setwd(path.fig)
+pdf(file="SDM/Output/RF_CalPlots_Training.pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
 cal.RF.training = as.data.frame(matrix(NA, 10,4))
 names(cal.RF.training) = c("int", "slope", "p_int", "p_slope")
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## pull in replicate data and model predictions	
 	dat = get(paste("dat",i, sep=""))
@@ -189,8 +189,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.RF.training, file="RF.mod1.cal.training.Rda")
+#setwd(path.obj)
+save(cal.RF.training, file="SDM/Output/RF.mod1.cal.training.Rda")
 
 ######## END RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL= RF
 ################################################################################
@@ -203,8 +203,8 @@ save(cal.RF.training, file="RF.mod1.cal.training.Rda")
 ## predict to independent occupancy dataset
 
 library(PresenceAbsence)  
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code/accuracy.R")
 
 ext.accs = c()
 for (i in 1:10) {
@@ -216,8 +216,8 @@ for (i in 1:10) {
 	temp$model = "RF.mod1"
 	ext.accs = rbind(ext.accs, temp)
 	}
-setwd(path.obj)
-save(ext.accs, file="RF.mod1.extaccs.pseudo11.Rda")
+#setwd(path.obj)
+save(ext.accs, file="SDM/Output/RF.mod1.extaccs.pseudo11.Rda")
 
 ######## END EXTERNAL VALIDATION CALCULATIONS, MODEL=RF
 ################################################################################
@@ -227,11 +227,11 @@ save(ext.accs, file="RF.mod1.extaccs.pseudo11.Rda")
 
 ################################################################################
 ######## START EXTERNAL RELIABILITY  CALCULATIONS, MODEL=RF
-setwd(path.cod)
-source("calibration.R")
+#setwd(path.cod)
+source("SDM/R_code/calibration.R")
 
-setwd(path.fig)
-pdf(file="RF_CalPlots_Testing.pseudo11.pdf", width=11, height=8.5)
+#setwd(path.fig)
+pdf(file="SDM/Output/RF_CalPlots_Testing.pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
@@ -256,8 +256,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.RF.testing, file="RF.mod1.cal.testing.Rda")
+#setwd(path.obj)
+save(cal.RF.testing, file="SDM/Output/RF.mod1.cal.testing.Rda")
 
 ######## END EXTERNAL RELIABILITY, MODEL=RF
 ################################################################################
@@ -269,7 +269,7 @@ save(cal.RF.testing, file="RF.mod1.cal.testing.Rda")
 ######## START EXTRA STUFF
 
 ## variable importance plots
-setwd(path.obj)
+#setwd(path.obj)
 library(randomForest)
 par(ask=T)
 for (i in 1:10) {
@@ -278,7 +278,7 @@ for (i in 1:10) {
 	}
 
 ## partial plots
-setwd(path.obj)
+#setwd(path.obj)
 library(randomForest)
 par(mfrow=c(2,4))
 for (i in 1:10) {

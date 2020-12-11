@@ -73,7 +73,7 @@ head(dat1); head(dat10)
 str(dat1); str(dat10)                      
 
 ## testing data
-all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
+all = read.csv("SDM/data_files//all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
 ext = all[all$DATASET=="occ",] #pull out occupancy dataset
 ext$bio3 = log(ext$bio3+0.5) #make needed ln-transforms of predictors
 ext$bio10 = log(ext$bio10+0.5)
@@ -92,7 +92,7 @@ ext$bio14 = log(ext$bio14+0.5)
 library(gbm)    # load gbm package for BRT
 library(dismo)  # for BRT calls per Elith et al (2008) JAnimalEcol 77:802-813
 
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## call up replicate training data
 	dat = get(paste("dat", i, sep=""))
@@ -105,42 +105,42 @@ for (i in 1:10) {
 		tree.complexity=2, learning.rate=0.01, bag.fraction=0.75, n.folds=5, 
 		n.trees=50, plot.main=TRUE, keep.fold.fit=TRUE, step.size=15) 
  	assign(paste("BRT.mod1.",i, sep=""), mod1.BRT)
- 	save(mod1.BRT, file=paste("BRT.mod1.",i,".pseudo11.Rda", sep=""))
+ 	save(mod1.BRT, file=paste("SDM/Output/BRT.mod1.",i,".pseudo11.Rda", sep=""))
  		
 	## basic BRT model - LR adjusted up 
 	mod2.BRT=gbm.step(data=dat, gbm.x=pred, gbm.y=1, family="bernoulli",
 		tree.complexity=2, learning.rate=0.001, bag.fraction=0.75, n.folds=5,
 	    plot.main=TRUE, keep.fold.fit=TRUE, step.size=15)
  	assign(paste("BRT.mod2.",i, sep=""), mod2.BRT)
- 	save(mod2.BRT, file=paste("BRT.mod2.",i,".pseudo11.Rda", sep=""))
+ 	save(mod2.BRT, file=paste("SDM/Output/BRT.mod2.",i,".pseudo11.Rda", sep=""))
 
 	## basic BRT model - LR adjusted down
 	mod3.BRT=gbm.step(data=dat, gbm.x=pred, gbm.y=1, family="bernoulli",
 	    tree.complexity=2, learning.rate=0.1, bag.fraction=0.75, n.folds=5,
 	    plot.main=TRUE, keep.fold.fit=TRUE, step.size=15)
  	assign(paste("BRT.mod3.",i, sep=""), mod3.BRT)
- 	save(mod3.BRT, file=paste("BRT.mod3.",i,".pseudo11.Rda", sep=""))
+ 	save(mod3.BRT, file=paste("SDM/Output/BRT.mod3.",i,".pseudo11.Rda", sep=""))
 
 	## basic BRT model - now bump TC up
 	mod4.BRT=gbm.step(data=dat, gbm.x=pred, gbm.y=1, family="bernoulli",
 	    tree.complexity=3, learning.rate=0.1, bag.fraction=0.75, n.folds=5,
 	    plot.main=TRUE, keep.fold.fit=TRUE, step.size=5)
  	assign(paste("BRT.mod4.",i, sep=""), mod4.BRT)
- 	save(mod4.BRT, file=paste("BRT.mod4.",i,".pseudo11.Rda", sep=""))
+ 	save(mod4.BRT, file=paste("SDM/Output/BRT.mod4.",i,".pseudo11.Rda", sep=""))
 
 	## basic BRT model - keep TC up and bump LR back up
 	mod5.BRT=gbm.step(data=dat, gbm.x=pred, gbm.y=1, family="bernoulli",
 	    tree.complexity=3, learning.rate=0.01, bag.fraction=0.75, n.folds=5,
 	    plot.main=TRUE, keep.fold.fit=TRUE, step.size=5)
  	assign(paste("BRT.mod5.",i, sep=""), mod5.BRT)
- 	save(mod5.BRT, file=paste("BRT.mod5.",i,".pseudo11.Rda", sep=""))
+ 	save(mod5.BRT, file=paste("SDM/Output/BRT.mod5.",i,".pseudo11.Rda", sep=""))
 	
 	## back to min LR, decrease TC further
 	mod6.BRT=gbm.step(data=dat, gbm.x=pred, gbm.y=1, family="bernoulli",
 	   tree.complexity=1, learning.rate=0.1, bag.fraction=0.75, n.folds=5,
 	   plot.main=TRUE, keep.fold.fit=TRUE, step.size=5)
  	assign(paste("BRT.mod6.",i, sep=""), mod6.BRT)
- 	save(mod6.BRT, file=paste("BRT.mod6.",i,".pseudo11.Rda", sep=""))
+ 	save(mod6.BRT, file=paste("SDM/Output/BRT.mod6.",i,".pseudo11.Rda", sep=""))
 	}
 
 ## Notes about interpreting deviance graphs
@@ -166,7 +166,7 @@ for (i in 1:10) {
 	dat = get(paste("dat", failed[i], sep="")); resp=paste("as.factor(",colnames(dat[1]),")",sep=""); n.col=ncol(dat); pred=2:n.col
 	mod4.BRT=gbm.step(data=dat, gbm.x=pred, gbm.y=1, family="bernoulli", tree.complexity=3, learning.rate=0.1, bag.fraction=0.75, n.folds=5, plot.main=TRUE, keep.fold.fit=TRUE)
 	assign(paste("BRT.mod4.",failed[i], sep=""), mod4.BRT)
- 	save(mod4.BRT, file=paste("BRT.mod4.",failed[i],".pseudo11.Rda", sep=""))}
+ 	save(mod4.BRT, file=paste("SDM/Output/BRT.mod4.",failed[i],".pseudo11.Rda", sep=""))}
 	
 	
 ## examine BRT output
@@ -350,10 +350,10 @@ names(ntrees) = c("mod1", "mod2","mod3", "mod4", "mod5", "mod6")
 ################################################################################
 ######## {START HERE} LOAD FINAL MODELS 
 
-setwd(path.obj)
+#setwd(path.obj)
 
 for (i in 1:10) {
-	mod = get(load(paste("BRT.mod4.",i,".pseudo11.Rda", sep="")))
+	mod = get(load(paste("SDM/Output/BRT.mod4.",i,".pseudo11.Rda", sep="")))
 	assign(paste("BRT.mod4.",i, sep=""), mod)
 	}
 
@@ -367,8 +367,8 @@ for (i in 1:10) {
 ######## START INTERNAL ACCURACY CALCULATIONS, MODEL=BRT
 
 library(PresenceAbsence)   
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code/accuracy.R")
 
 ## be sure to adjust model #
 accs = c()
@@ -384,8 +384,8 @@ for (i in 1:10) {
 		temp$model = "BRT.mod4"
 		accs = rbind(accs, temp)	
 }
-setwd(path.obj)
-save(accs, file="BRT.mod4.resubaccs.pseudo11.Rda")
+#setwd(path.obj)
+save(accs, file="SDM/Output/BRT.mod4.resubaccs.pseudo11.Rda")
 
 ######## END INTERNAL ACCURACY CALCULATIONS, MODEL=RF
 ################################################################################
@@ -396,17 +396,17 @@ save(accs, file="BRT.mod4.resubaccs.pseudo11.Rda")
 ################################################################################
 ######## START RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL= BRT
 
-setwd(path.cod)
-source("calibration.R")
+#setwd(path.cod)
+source("SDM/R_code/calibration.R")
 
-setwd(path.fig)
-pdf(file="BRT_CalPlots_Training.mod4.pseudo11.pdf", width=11, height=8.5)
+#setwd(path.fig)
+pdf(file="SDM/Output/BRT_CalPlots_Training.mod4.pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
 cal.BRT.training = as.data.frame(matrix(NA, 10,4))
 names(cal.BRT.training) = c("int", "slope", "p_int", "p_slope")
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## pull in replicate data and model predictions	
 	dat = get(paste("dat",i, sep=""))
@@ -424,8 +424,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.BRT.training, file="BRT.mod4.cal.training.Rda")
+#setwd(path.obj)
+save(cal.BRT.training, file="SDM/Output/BRT.mod4.cal.training.Rda")
 
 ######## END RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL= BRT
 ################################################################################
@@ -438,8 +438,8 @@ save(cal.BRT.training, file="BRT.mod4.cal.training.Rda")
 ## predict to independent occupancy dataset
 
 library(PresenceAbsence)   
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code/accuracy.R")
 
 ## be sure to adjust model #
 extaccs = c()
@@ -452,8 +452,8 @@ for (i in 1:10) {
 	temp$model = "BRT.mod4"
 	extaccs = rbind(extaccs, temp)	
 	}
-setwd(path.obj)
-save(extaccs, file="BRT.mod4.extaccs.pseudo11.Rda")
+#setwd(path.obj)
+save(extaccs, file="SDM/Output/BRT.mod4.extaccs.pseudo11.Rda")
 
 ######## END EXTERNAL ACCURACY CALCULATIONS, MODEL=BRT
 ################################################################################
@@ -464,17 +464,17 @@ save(extaccs, file="BRT.mod4.extaccs.pseudo11.Rda")
 ################################################################################
 ######## START EXTERNAL RELIABILITY CALCULATIONS, MODEL=BRT
 
-setwd(path.cod)
-source("calibration.R")
+#setwd(path.cod)
+source("SDM/R_code/calibration.R")
 
-setwd(path.fig)
-pdf(file="BRT_CalPlots_Testing.mod4.pseudo11.pdf", width=11, height=8.5)
+#setwd(path.fig)
+pdf(file="SDM/Output/BRT_CalPlots_Testing.mod4.pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
 cal.BRT.testing = as.data.frame(matrix(NA, 10,4))
 names(cal.BRT.testing) = c("int", "slope", "p_int", "p_slope")
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## pull in replicate data and model predictions	
 	mod = get(paste("BRT.mod4.",i, sep=""))
@@ -491,8 +491,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.BRT.testing, file="BRT.mod4.cal.testing.Rda")
+#setwd(path.obj)
+save(cal.BRT.testing, file="SDM/Output/BRT.mod4.cal.testing.Rda")
 
 ######## END EXTERNAL RELIBIALITY CALCULATIONS, MODEL=BRT
 ################################################################################
