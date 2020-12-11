@@ -119,7 +119,7 @@ for (i in 1:10) {
 	#assign(paste("GAM.mod3.",i,".fit", sep=""), mod3.fit)
 
 	## GAM model 4: stepwise w/diff scopes
-	mod4.GAM=step.gam(mod2.GAM,scope=list(
+	mod4.GAM=step.Gam(mod2.GAM,scope=list( # Daniel: Changed "step.gam" to "step.Gam"
 		"bio2"	=~1+ bio2	+s(bio2,2) +s(bio2,3)	+s(bio2,4),
 		"bio3"	=~1+ bio3 	+s(bio3,2) 	+s(bio3,3) 	+s(bio3,4),
 		"bio4"	=~1+ bio4 	+s(bio4,2) 	+s(bio4,3) 	+s(bio4,4),
@@ -132,7 +132,7 @@ for (i in 1:10) {
 	#mod4.fit=100*(1-mod4.GAM$deviance/mod4.GAM$null.deviance)  
 	assign(paste("GAM.mod4.",i, sep=""), mod4.GAM)
 	#assign(paste("GAM.mod4.",i,".fit", sep=""), mod4.fit)
-	save(mod4.GAM, file=paste("GAM.mod4.",i,".pseudo11.Rda", sep=""))
+	save(mod4.GAM, file=paste("SDM/Output/GAM.mod4.",i,".pseudo11.Rda", sep=""))
 
 	#mods.fit=cbind(mod1.fit,mod2.fit,mod3.fit,mod4.fit)  # all model fits
 	#assign(paste("GAM.mods.",i,".fit", sep=""), mods.fit)
@@ -150,7 +150,7 @@ for (i in 1:10) {
 library(gam)
 
 for (i in 1:10) {
-	mod = get(load(paste("GAM.mod4.",i,".pseudo11.Rda", sep="")))
+	mod = get(load(paste("SDM/Output/GAM.mod4.",i,".pseudo11.Rda", sep="")))
 	assign(paste("GAM.mod4.",i, sep=""), mod)
 	pred = predict(mod, type="response")
 	assign(paste("GAM.mod4.",i,".pred", sep=""), pred)
@@ -166,7 +166,7 @@ for (i in 1:10) {
 
 library(PresenceAbsence)   
 #setwd(path.cod)
-source("accuracy.R")
+source("SDM/R_code/accuracy.R")
 
 accs = c()
 for (i in 1:10) {
@@ -181,7 +181,7 @@ for (i in 1:10) {
 	accs = rbind(accs, temp)
 	}
 #setwd(path.obj)
-save(accs, file="GAM.mod4.accs.pseudo11.Rda")
+save(accs, file="SDM/Output/GAM.mod4.accs.pseudo11.Rda")
 
 ######## END RESUBSTITUTION ACCURACY CALCULATIONS, MODEL= STEP GAM
 ################################################################################
@@ -192,16 +192,16 @@ save(accs, file="GAM.mod4.accs.pseudo11.Rda")
 ######## START RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL= STEP GAM
 
 #setwd(path.cod)
-source("calibration.R")
+source("SDM/R_code/calibration.R")
 
 #setwd(path.fig)
-pdf(file="GAM_CalPlots_Training.pseudo11.pdf", width=11, height=8.5)
+pdf(file="SDM/Output/GAM_CalPlots_Training.pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
 cal.GAM.training = as.data.frame(matrix(NA, 10,4))
 names(cal.GAM.training) = c("int", "slope", "p_int", "p_slope")
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## pull in replicate data and model predictions	
 	dat = get(paste("dat",i, sep=""))
@@ -219,8 +219,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.GAM.training, file="GAM.mod4.cal.training.Rda")
+#setwd(path.obj)
+save(cal.GAM.training, file="SDM/Output/GAM.mod4.cal.training.Rda")
 
 
 ######## END RESUBSTITUTION RELIABILITY CALCULATIONS, MODEL= STEP GAM
@@ -236,8 +236,8 @@ save(cal.GAM.training, file="GAM.mod4.cal.training.Rda")
 
 library(PresenceAbsence)	
 library(DAAG)          
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code/accuracy.R")
 
 cv.accs = c()
 for (i in 1:10) {
@@ -251,8 +251,8 @@ for (i in 1:10) {
 	temp$model = "GAM.mod4"
 	cv.accs = rbind(cv.accs, temp)
 	}
-setwd(path.obj)
-save(cv.accs, file="GAM.mod4.cvaccs.pseudo11.Rda")
+#setwd(path.obj)
+save(cv.accs, file="SDM/Output/GAM.mod4.cvaccs.pseudo11.Rda")
 
 ######## END CROSS-VALIDATION ACCURACY CALCULATIONS, MODEL= STEP GAM
 ################################################################################
@@ -265,8 +265,8 @@ save(cv.accs, file="GAM.mod4.cvaccs.pseudo11.Rda")
 ## predict to independent occupancy dataset
 
 library(PresenceAbsence)
-setwd(path.cod)
-source("accuracy.R")
+#setwd(path.cod)
+source("SDM/R_code//accuracy.R")
 
 ext.accs = c()
 for (i in 1:10) {
@@ -279,8 +279,8 @@ for (i in 1:10) {
 	temp$model = "GAM.mod4"
 	ext.accs = rbind(ext.accs, temp)
   }
-setwd(path.obj)
-save(ext.accs, file="GAM.mod4.extaccs.pseudo11.Rda")
+#setwd(path.obj)
+save(ext.accs, file="SDM/Output/GAM.mod4.extaccs.pseudo11.Rda")
 
 ######## END EXTERNAL VALIDATION CALCULATIONS, MODEL=STEP GAM
 ################################################################################
@@ -290,17 +290,17 @@ save(ext.accs, file="GAM.mod4.extaccs.pseudo11.Rda")
 
 ################################################################################
 ######## START EXTERNAL RELIABILITY  CALCULATIONS, MODEL=STEP GAM
-setwd(path.cod)
-source("calibration.R")
+#setwd(path.cod)
+source("SDM/R_code/calibration.R")
 
-setwd(path.fig)
-pdf(file="GAM_CalPlots_Testing.pseudo11.pdf", width=11, height=8.5)
+#setwd(path.fig)
+pdf(file="SDM/Output/GAM_CalPlots_Testing.pseudo11.pdf", width=11, height=8.5)
 par(mfrow=c(3,4))
 x=seq(0,1,0.05)
 y=seq(0,1,0.05)
 cal.GAM.testing = as.data.frame(matrix(NA, 10,4))
 names(cal.GAM.testing) = c("int", "slope", "p_int", "p_slope")
-setwd(path.obj)
+#setwd(path.obj)
 for (i in 1:10) {
 	## pull in replicate data and model predictions	
 	mod = get(paste("GAM.mod4.",i, sep=""))
@@ -317,8 +317,8 @@ for (i in 1:10) {
 	}
 dev.off()
 
-setwd(path.obj)
-save(cal.GAM.testing, file="GAM.mod4.cal.testing.Rda")
+#setwd(path.obj)
+save(cal.GAM.testing, file="SDM/Output/GAM.mod4.cal.testing.Rda")
 
 ######## END EXTERNAL RELIABILITY CALCULATIONS, MODEL= STEP GAM
 ################################################################################
