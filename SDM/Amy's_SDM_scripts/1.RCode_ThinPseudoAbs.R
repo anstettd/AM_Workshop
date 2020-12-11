@@ -7,7 +7,7 @@
 # Simplifications and changes made for AM workshop
   # Converted to tidyverse syntax
   # Using relative paths within R project instead of setwd commands
-  # Randomly selected 1 thinned presence input file so that everything is not done across i=1:10 replicates (using i=6 from Am Nat paper)
+  # Randomly chose 1 thinned presence input file so that everything is not done across i=1:10 replicates (using i=6 from Am Nat paper)
 
 # Still to do
   # Add missing code to draw pseudoabsences in the first place
