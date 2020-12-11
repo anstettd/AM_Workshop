@@ -77,22 +77,22 @@ library(rgeos)
 ## RATIONALE FOR STEP 2: Different ENM algorithms are optimized for different ratios of presence records relative to pseudoabsences.
     
 # 10:1 ratio abs:pres for GLM and GAM algorithms
-npsu = 10*length(herb) 
-samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
-psu2 = psu2[samp,]
-assign(paste("pseu","a",sep=""), psu2)
+npsu.glm = 10*length(herb) 
+samp.glm = sample(1:nrow(psu2), npsu.glm, replace=FALSE) 	
+psu2.glm = psu2[samp.glm,]
+assign(paste("pseu","a",sep=""), psu2.glm)
 
 # 4:1 ratio abs:pres for RF and MAX algorithms
-npsu = 4*length(herb) 
-samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
-psu2 = psu2[samp,]
-assign(paste("pseu","b",sep=""), psu2)
+npsu.rf = 4*length(herb) 
+samp.rf = sample(1:nrow(psu2), npsu.rf, replace=FALSE) 	
+psu2.rf = psu2[samp.rf,]
+assign(paste("pseu","b",sep=""), psu2.rf)
 
 # 1:1 ratio abs:pres for BRT algorithm
-npsu = length(herb) 
-samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
-psu2 = psu2[samp,]
-assign(paste("pseu","c",sep=""), psu2)
+npsu.brt = length(herb) 
+samp.brt = sample(1:nrow(psu2), npsu.brt, replace=FALSE) 	
+psu2.brt = psu2[samp.brt,]
+assign(paste("pseu","c",sep=""), psu2.brt)
 
 ################################################################################
 
