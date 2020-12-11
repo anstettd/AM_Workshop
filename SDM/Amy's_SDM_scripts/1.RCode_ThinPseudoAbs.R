@@ -1,14 +1,16 @@
 ################################################################################# SCRIPT PURPOSE: 
 	# Generate pseudoabsence records 
-  # Based loosely on methods used in Angert et al. 2018, Am Nat
+  # Based on methods used in Angert et al. 2018, Am Nat
   # Author: Amy Angert
   # last update:  11 Dec 2020
 
 # Simplifications and changes made for AM workshop
   # Converted to tidyverse syntax
   # Using relative paths within R project instead of setwd commands
-  # Randomly selected 1 thinned presence input file so that everything is not done across i=1:10 replicates; using i=6
-# Add missing code to draw pseudoabsences in the first place
+  # Randomly selected 1 thinned presence input file so that everything is not done across i=1:10 replicates (using i=6 from Am Nat paper)
+
+# Still to do
+  # Add missing code to draw pseudoabsences in the first place
   # No need to drop occupancy records; model can be built with full presence dataset
   # Add instructions for downloading climate records and delete merges below where climate variables are pulled in from another pre-existing file
 
@@ -16,7 +18,8 @@
 
 
 
-############################################################################### LOAD LIBRARIES AND INPUTS
+############################################################################### 
+## LOAD LIBRARIES AND INPUTS
 
 ## LIBRARIES
 library(tidyverse)
@@ -38,71 +41,58 @@ library(rgeos)
     all = read_csv("SDM/data_files/all.records.aug.31.csv")
   # drop occupancy survey points
     herb.all <- all %>% filter(DATASET=="herb")
-  # drop presences, retain only pseudos that were drawn previously ***THIS NEEDS TO CHANGE***
+  # drop presences, retain only pseudos that were drawn previously 
+  # ***THIS NEEDS TO CHANGE***
     pseudo <- all %>% filter(DATASET=="herb" & PRESABS==0)
   # convert to spatial points files
+    coordinates(herb.all) = ~Longitude + Latitude
+    projection(herb.all) = CRS('+proj=longlat')
     coordinates(pseudo) = ~Longitude + Latitude
     projection(pseudo) = CRS('+proj=longlat')
 
-coordinates(herb.all) = ~Longitude + Latitude
-projection(herb.all) = CRS('+proj=longlat')
-
 ################################################################################
 
 
 ################################################################################
-######## START SUBSAMPLE PSEUDOS
-library(sp)
+## SUBSAMPLE PSEUDOS 
 
-## 10:1 ratio abs:pres for GLM and GAM
-for (i in 1:10) {
-	herb = get(paste("herb",i,sep=""))
-	npsu = 10*length(herb) 
-	ok = zerodist2(pseudo, herb, 80)
-	drop = zerodist2(pseudo, herb, 0.600)
-	psu1 = pseudo[unique(ok[,1]),]
-	psu2 = psu1[-drop[,1],]
-	samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
-	psu2 = psu2[samp,]
-	assign(paste("pseu",i,sep=""), psu2)
-	}
+## RATIONALE FOR STEP 1: Pseudoabsences should fall in sampled regions yet not in occupied habitat. Here, the zerodist2 function is used to sample background points from within donut-shaped areas surrounding each presence record, so that resulting pseudoabsences are >0.6 km but <80 km from a presence.
 
-## 4:1 ratio abs:pres for RF and MAX
-for (i in 1:10) {
-	herb = get(paste("herb",i,sep=""))
-	npsu = 4*length(herb) 
-	ok = zerodist2(pseudo, herb, 80)
-	drop = zerodist2(pseudo, herb, 0.600)
-	psu1 = pseudo[unique(ok[,1]),]
-	psu2 = psu1[-drop[,1],]
-	samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
-	psu2 = psu2[samp,]
-	assign(paste("pseu",i,"b",sep=""), psu2)
-	}
+# Keep any background points within 80 km of a presence record
+  ok = zerodist2(pseudo, herb, 80)
+  psu1 = pseudo[unique(ok[,1]),] # not using tidyverse here - doesn't work on spatial data frames
 
-## 1:1 ratio abs:pres for BRT
-for (i in 1:10) {
-	herb = get(paste("herb",i,sep=""))
-	npsu = length(herb) 
-	ok = zerodist2(pseudo, herb, 80)
-	drop = zerodist2(pseudo, herb, 0.600)
-	psu1 = pseudo[unique(ok[,1]),]
-	psu2 = psu1[-drop[,1],]
-	samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
-	psu2 = psu2[samp,]
-	assign(paste("pseu",i,"c",sep=""), psu2)
-	}
+# Drop any background points that are closer then 0.6 km from a presence record
+  drop = zerodist2(pseudo, herb, 0.600)
+  psu2 = psu1[-drop[,1],]
+    
+## RATIONALE FOR STEP 2: Different ENM algorithms are optimized for different ratios of presence records relative to pseudoabsences.
+    
+# 10:1 ratio abs:pres for GLM and GAM algorithms
+npsu = 10*length(herb) 
+samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
+psu2 = psu2[samp,]
+assign(paste("pseu","a",sep=""), psu2)
 
-######## END SUBSAMPLE PSEUDOS
-################################################################################
+# 4:1 ratio abs:pres for RF and MAX algorithms
+npsu = 4*length(herb) 
+samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
+psu2 = psu2[samp,]
+assign(paste("pseu","b",sep=""), psu2)
+
+# 1:1 ratio abs:pres for BRT algorithm
+npsu = length(herb) 
+samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
+psu2 = psu2[samp,]
+assign(paste("pseu","c",sep=""), psu2)
 
 ################################################################################
-######## START MERGE PRES & PSEUDOABS
-#setwd(path.dat)
-for (i in 1:10) {
-	herb = get(paste("herb",i,sep="")) #get thinned herb set
-#Daniel: merge is a function in base R, sp, and raster, I assume you wanted merge in base R
-	herb.clim = base::merge(herb.all, herb, by.x="MASTER.ID", by.y="rowID", all.x=FALSE, all.y=TRUE) #associate with climatic variables
+
+## stopped here 12/11
+################################################################################
+## MERGE PRESENCES & PSEUDOABSENCES
+
+herb.clim = base::merge(herb.all, herb, by.x="MASTER.ID", by.y="rowID", all.x=FALSE, all.y=TRUE) #associate with climatic variables
 	herb.clim = herb.clim[,c(1:75)] #drop cols not present in pseu
 	#names(herb.clim)[1] = "ID1"
 	#names(herb.clim)[2] = "ID2" 
@@ -124,7 +114,7 @@ for (i in 1:10) {
 	presabs$bio14 = log(presabs$bio14+0.5)
 	assign(paste("dat",i,sep=""), presabs) #save
 	write.csv(presabs, file=paste("SDM/Output/dat",i,".csv", sep=""))
-	}
+
 #check numbers
 table(dat1$PRESABS)
 -table(dat5$PRESABS)
