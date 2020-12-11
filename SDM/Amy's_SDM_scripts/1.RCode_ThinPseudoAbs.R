@@ -1,71 +1,53 @@
-###################################################################################
-## Amy Angert
-## PROGRAM FUNCTIONS: 
-	# Thin pseudoabsence records to match thinned replicates of herbarium dataset
-## last update:  29 May 2014
+################################################################################# SCRIPT PURPOSE: 
+	# Generate pseudoabsence records 
+  # Based loosely on methods used in Angert et al. 2018, Am Nat
+  # Author: Amy Angert
+  # last update:  11 Dec 2020
 
-## Amy notes 11 Dec 2020: simplifications and changes needed for AM workshop
-  # Delete all setwd paths to use relative paths within R project
-  # Add missing code to draw pseudoabsences in the first place
-  # Randomly select 1 thinned presence file so that everything is not done across i=1:10 replicates
+# Simplifications and changes made for AM workshop
+  # Converted to tidyverse syntax
+  # Using relative paths within R project instead of setwd commands
+  # Randomly selected 1 thinned presence input file so that everything is not done across i=1:10 replicates; using i=6
+# Add missing code to draw pseudoabsences in the first place
   # No need to drop occupancy records; model can be built with full presence dataset
-  # Add instructions for downloading climate records and delete merges below where climate variables are pulled in from another file
+  # Add instructions for downloading climate records and delete merges below where climate variables are pulled in from another pre-existing file
 
-###################################################################################
-
-
-
-################################################################################
-######## START INITIALIZATION
-
-## set pathnames
-#path.root = "/Users/amylauren/Desktop/cardinalis SDM May 2014" 
-#path.dat = paste(path.root, "/data files", sep="")
-#path.obj = paste(path.root, "/R objects", sep="")
-#path.gis = paste(path.dat, "/ecoregions.shp", sep="")
-
-## set pathnames - Matthew
-#path.root = "C:/Users/DW/Desktop/temp.sept.30" 
-#path.dat = paste(path.root, "/data files", sep="")
-#path.obj = paste(path.root, "/R objects", sep="")
-#path.gis = paste(path.dat, "/ecoregions.shp", sep="")
+###############################################################################
 
 
-## Import localities
-#setwd(path.dat)
+
+############################################################################### LOAD LIBRARIES AND INPUTS
+
+## LIBRARIES
+library(tidyverse)
 library(sp)
 library(raster)
 library(rgeos)
 
-for (i in 1:10) {
-	dat <- read.csv(paste("SDM/data_files/occurrences.thinned",i,".csv", sep=""))
-	coordinates(dat) <- ~longitude+latitude
-	projection(dat) <- CRS('+proj=longlat')
-	dat$rowID <- dat$Species
-	assign(paste("herb",i, sep=""), dat)
-	}
-plot(herb1, pch=19, cex=0.5, col="red")
-points(herb2, pch=19, cex=0.5, col="blue")
-points(herb3, pch=19, cex=0.5, col="green")
-plot(herb8, pch=19, cex=0.5, col="red")
-points(herb9, pch=19, cex=0.5, col="green")
-points(herb10, pch=19, cex=0.5, col="blue")
-	
-all = read.csv("SDM/data_files/all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs
-herb.all = all[all$DATASET=="herb",] #drop occupancy points
-pseudo = herb.all[herb.all$PRESABS==0,] #pull out pseudos
-dim(pseudo); table(pseudo$PRESABS)
-coordinates(pseudo) = ~Longitude + Latitude
-projection(pseudo) = CRS('+proj=longlat')
+## INPUTS
+# read in presence records
+  # these are from herbarium collections, thinned to reduce oversampled areas
+    dat <- read_csv("SDM/data_files/occurrences.thinned.csv")
+  # rename column
+    herb <- dat %>% rename(rowID = Species)
+  # convert to spatial points file
+    coordinates(herb) <- ~longitude+latitude
+    projection(herb) <- CRS('+proj=longlat')
+    
+  # these include occupancy dataset, all cleaned herbarium records, and 20K pseudoabs
+    all = read_csv("SDM/data_files/all.records.aug.31.csv")
+  # drop occupancy survey points
+    herb.all <- all %>% filter(DATASET=="herb")
+  # drop presences, retain only pseudos that were drawn previously ***THIS NEEDS TO CHANGE***
+    pseudo <- all %>% filter(DATASET=="herb" & PRESABS==0)
+  # convert to spatial points files
+    coordinates(pseudo) = ~Longitude + Latitude
+    projection(pseudo) = CRS('+proj=longlat')
 
 coordinates(herb.all) = ~Longitude + Latitude
 projection(herb.all) = CRS('+proj=longlat')
 
-
-######## END INITIALIZATION
 ################################################################################
-
-
 
 
 ################################################################################
