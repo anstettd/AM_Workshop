@@ -3,6 +3,14 @@
 ## PROGRAM FUNCTIONS: 
 	# Thin pseudoabsence records to match thinned replicates of herbarium dataset
 ## last update:  29 May 2014
+
+## Amy notes 11 Dec 2020: simplifications and changes needed for AM workshop
+  # Delete all setwd paths to use relative paths within R project
+  # Add missing code to draw pseudoabsences in the first place
+  # Randomly select 1 thinned presence file so that everything is not done across i=1:10 replicates
+  # No need to drop occupancy records; model can be built with full presence dataset
+  # Add instructions for downloading climate records and delete merges below where climate variables are pulled in from another file
+
 ###################################################################################
 
 
