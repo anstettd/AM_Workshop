@@ -1,25 +1,26 @@
-################################################################################# SCRIPT PURPOSE: 
-	# Generate pseudoabsence records 
+################################################################################# 
+### SCRIPT PURPOSE: Generate pseudoabsence records 
   # Based on methods used in Angert et al. 2018, Am Nat
   # Author: Amy Angert
   # last update:  11 Dec 2020
 
-# Simplifications and changes made for AM workshop
+## Simplifications and changes made for AM workshop
   # Converted to tidyverse syntax (unless manipulating spatial files)
   # Using relative paths within R project instead of setwd commands
   # Chose 1 thinned presence input file so that everything is not done across i=1:10 replicates (using i=6 from Am Nat paper, chosen at random)
 
-# Still to do
-  # Add missing code to draw pseudoabsences in the first place
-  # No need to drop occupancy records; model can be built with full presence dataset
-  # Add instructions for downloading climate records and delete merges below where climate variables are pulled in from another pre-existing file
+## Still to do
+  # Add missing code to draw background points in the first place
+  # Build model with full presence dataset instead of dropping occupancy points?
+  # Add instructions for downloading climate records
+  # Delete merges below where climate variables are pulled in from another pre-existing file
 
 ###############################################################################
 
 
 
 ############################################################################### 
-## LOAD LIBRARIES AND INPUTS
+### LOAD LIBRARIES AND INPUTS
 
 ## LIBRARIES
 library(tidyverse)
@@ -54,7 +55,14 @@ library(rgeos)
 
 
 ################################################################################
-## SUBSAMPLE PSEUDOS 
+### DRAW 20K BACKGROUND POINTS
+    
+## FIGURE OUT WHERE THIS CODE IS...    
+################################################################################
+    
+
+################################################################################
+### SUBSAMPLE FROM BACKGROUND POINTS TO MAKE PSEUDOABSENCES 
 
 ## RATIONALE FOR STEP 1: Pseudoabsences should fall in sampled regions yet not in occupied habitat. Here, the zerodist2 function is used to sample background points from within donut-shaped areas surrounding each presence record, so that resulting pseudoabsences are >0.6 km but <80 km from a presence.
 
