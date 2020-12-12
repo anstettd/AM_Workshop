@@ -103,7 +103,7 @@ pseua <- as.data.frame(pseua)
 pseub <- as.data.frame(pseub)
 pseuc <- as.data.frame(pseuc)
 
-# Bind rows & format for input for ClimateNA
+# Bind rows & format as input for ClimateNA
 # (required columns = ID1, ID2, lat, long, el)
 points.glmgam <- bind_rows(pres, pseua) %>% 
   mutate(ID2=MASTER.ID) %>% 
@@ -122,6 +122,8 @@ write_csv(points.brt, "SDM/data_files/points_brt.csv")
 
 ################################################################################
 
+# These files should be imported to ClimateNA graphical user interface
+# Download monthly temperature and precipitation records for each point
 
 
 	
