@@ -30,6 +30,7 @@ missing <- dat1[complete.cases(clim), ] # should be dim 0 if there are no missin
 
 ################################################################################# 
 ### CALCULATE DERIVED BIOCLIMATIC VARIABLES
+## 19 bioclimatic variables from Worldclim (https://www.worldclim.org/data/bioclim.html)
 
 ## Requires matrices of Tmin, Tmax, and Precip
 tmin <- clim %>% 
@@ -49,7 +50,10 @@ bio <- biovars(prec, tmin, tmax)
 bio <- data.frame(bio)
 
 # Bind back to pres/abs dataset
-bioclim <- cbind(clim, bio)
-write_csv(bioclim, "SDM/data_files/")
+bioclim <- cbind(clim, bio) %>% 
+  select(set=ID1, presabs=ID2, lat, long, el, 
+         bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, 
+         bio10, bio11, bio12, bio13, bio14, bio15, bio16, bio17, bio18, bio19)
+write_csv(bioclim, "SDM/data_files/biovars.csv")
 
 #################################################################################
