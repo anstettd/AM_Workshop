@@ -1,19 +1,18 @@
 ################################################################################# 
 ### SCRIPT PURPOSE: Generate pseudoabsence records 
-  # Based on methods used in Angert et al. 2018, Am Nat
+  # Modified from Angert et al. 2018, American Naturalist
   # Author: Amy Angert
-  # last update:  11 Dec 2020
+  # last update:  13 Dec 2020
 
 ## Simplifications and changes made for AM workshop
   # Converted to tidyverse syntax (unless manipulating spatial files)
   # Using relative paths within R project instead of setwd commands
   # Chose 1 thinned presence input file so that everything is not done across i=1:10 replicates (using i=6 from Am Nat paper, chosen at random)
   # Building model with full presence dataset (thinned herbarium records + occupancy points) instead of reserving occupancy points for testing
+  # Exporting one master set of points instead of separate sets for each ratio of pseudabsences:presences
 
 ## Still to do
   # Add missing code to draw background points in the first place
-  # Add instructions for downloading climate records
-  # Delete merges below where climate variables are pulled in from another pre-existing file
 
 ###############################################################################
 
@@ -75,21 +74,33 @@ psu2 = psu1[-drop[,1],]
     
 # 10:1 ratio abs:pres for GLM and GAM algorithms
 npsu.glm = 10*length(pres) 
-samp.glm = sample(1:nrow(psu2), npsu.glm, replace=FALSE) 	
+samp.glm = sample(1:nrow(psu2), npsu.glm, replace=FALSE) #subsample from anything meeting distance criteria	
 psu2.glm = psu2[samp.glm,]
-assign(paste("pseu","a",sep=""), psu2.glm)
+psu2.glm$set = "glm_gam"
+psu2.glm <- as.data.frame(psu2.glm)
 
 # 4:1 ratio abs:pres for RF and MAX algorithms
 npsu.rf = 4*length(pres) 
-samp.rf = sample(1:nrow(psu2), npsu.rf, replace=FALSE) 	
-psu2.rf = psu2[samp.rf,]
-assign(paste("pseu","b",sep=""), psu2.rf)
+samp.rf = sample(1:nrow(psu2.glm), npsu.rf, replace=FALSE) #subsample from those retained for GLM/GAM	
+psu2.rf = psu2.glm[samp.rf,]
+psu2.rf$set = "rf_max"
 
 # 1:1 ratio abs:pres for BRT algorithm
 npsu.brt = length(pres) 
-samp.brt = sample(1:nrow(psu2), npsu.brt, replace=FALSE) 	
-psu2.brt = psu2[samp.brt,]
-assign(paste("pseu","c",sep=""), psu2.brt)
+samp.brt = sample(1:nrow(psu2.rf), npsu.brt, replace=FALSE) #subsample from those retained for RF/MAX	
+psu2.brt = psu2.rf[samp.brt,]
+psu2.brt$set = "brt"
+
+## MERGE into one set that can be filtered for appropriate input to each algorithm
+# What we want is brt + (rf-brt) + (glm-rf)
+psu2.rf_brt <- anti_join(psu2.rf, psu2.brt, by="MASTER.ID") 
+psu2.glm_rf <- anti_join(psu2.glm, psu2.rf, by="MASTER.ID") 
+
+psu.all <- bind_rows(psu2.brt, psu2.rf_brt, psu2.glm_rf)
+
+# check numbers
+psu.all %>% count(set) #should have 303 brt, 1212-303=909 rf/max, 3030-1212=1818 glm/gam
+psu.all %>% n_distinct("MASTER.ID") #should each be unique, n=3030
 
 ################################################################################
 
@@ -99,31 +110,21 @@ assign(paste("pseu","c",sep=""), psu2.brt)
 
 # Remove spatial class
 pres <- as.data.frame(pres)
-pseua <- as.data.frame(pseua)
-pseub <- as.data.frame(pseub)
-pseuc <- as.data.frame(pseuc)
+pres$set <- "all"
 
 # Bind rows & format as input for ClimateNA
-# (required columns = ID1, ID2, lat, long, el)
-points.glmgam <- bind_rows(pres, pseua) %>% 
-  mutate(ID2=MASTER.ID) %>% 
-  dplyr::select(ID1=MASTER.ID, ID2, lat=Latitude, long=Longitude, el=Elevation)
-points.rfmax <- bind_rows(pres, pseub) %>% 
-  mutate(ID2=MASTER.ID) %>% 
-  dplyr::select(ID1=MASTER.ID, ID2, lat=Latitude, long=Longitude, el=Elevation)
-points.brt <- bind_rows(pres, pseuc) %>% 
-  mutate(ID2=MASTER.ID) %>% 
-  dplyr::select(ID1=MASTER.ID, ID2, lat=Latitude, long=Longitude, el=Elevation)
+# (required column names = ID1, ID2, lat, long, el; must have exactly and only these)
+points <- bind_rows(pres, psu.all) %>% 
+  dplyr::select(ID1=set, ID2=PRESABS, lat=Latitude, long=Longitude, el=Elevation)
 
-# Write to files
-write_csv(points.glmgam, "SDM/data_files/points_glmgam.csv")
-write_csv(points.rfmax, "SDM/data_files/points_rfmax.csv")
-write_csv(points.brt, "SDM/data_files/points_brt.csv")
+# Write to file
+write_csv(points, "SDM/data_files/points.csv")
 
 ################################################################################
 
-# These files should be imported to ClimateNA graphical user interface
-# Download monthly temperature and precipitation records for each point
+# These files should be imported into the ClimateNA graphical user interface
+# In ClimateNA, use the time series option to get 30-year average of monthly temperature and precipitation for 1961-1990
+# Save ClimateNA output as climatena.csv
 
 
 	
