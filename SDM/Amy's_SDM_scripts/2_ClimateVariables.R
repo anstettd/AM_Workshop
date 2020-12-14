@@ -20,7 +20,7 @@ library(tidyverse) # for data manipulation
 library(dismo) # for biovars function
 
 ## INPUTS
-clim <- read_csv("SDM/data_files/climatena.csv")
+clim <- read_csv("SDM/data_files/points_Normal_1961_1990MSY.csv")
 
 # Ensure no missing values
 missing <- dat1[complete.cases(clim), ] # should be dim 0 if there are no missing values
