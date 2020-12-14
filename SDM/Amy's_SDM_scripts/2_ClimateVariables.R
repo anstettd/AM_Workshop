@@ -26,7 +26,7 @@ library(dismo) # for biovars function
 clim <- read_csv("SDM/data_files/points_Normal_1961_1990MSY.csv")
 
 # Ensure no missing values
-missing <- dat1[complete.cases(clim), ] # should be dim 0 if there are no missing values
+complete <- clim[complete.cases(clim), ] # should be same dim as clim if there are no missing values
 
 ################################################################################# 
 
@@ -37,15 +37,15 @@ missing <- dat1[complete.cases(clim), ] # should be dim 0 if there are no missin
 
 ## Requires matrices of Tmin, Tmax, and Precip
 tmin <- clim %>% 
-  select(Tmin01, Tmin02, Tmin03, Tmin04, Tmin05, Tmin06, Tmin07, Tmin08, Tmin09, Tmin10, Tmin11, Tmin12) %>% 
+  dplyr::select(Tmin01, Tmin02, Tmin03, Tmin04, Tmin05, Tmin06, Tmin07, Tmin08, Tmin09, Tmin10, Tmin11, Tmin12) %>% 
   as.matrix()
 
 tmax <- clim %>% 
-  select(Tmax01, Tmax02, Tmax03, Tmax04, Tmax05, Tmax06, Tmax07, Tmax08, Tmax09, Tmax10, Tmax11, Tmax12) %>% 
+  dplyr::select(Tmax01, Tmax02, Tmax03, Tmax04, Tmax05, Tmax06, Tmax07, Tmax08, Tmax09, Tmax10, Tmax11, Tmax12) %>% 
   as.matrix()
 
 prec <- clim %>% 
-  select(PPT01, PPT02, PPT03, PPT04, PPT05, PPT06, PPT07, PPT08, PPT09, PPT10, PPT11, PPT12) %>% 
+  dplyr::select(PPT01, PPT02, PPT03, PPT04, PPT05, PPT06, PPT07, PPT08, PPT09, PPT10, PPT11, PPT12) %>% 
   as.matrix()
 
 ## Calculate bio1-bio19
@@ -54,7 +54,7 @@ bio <- data.frame(bio)
 
 # Bind back to pres/abs dataset
 bioclim <- cbind(clim, bio) %>% 
-  select(set=ID1, presabs=ID2, lat, long, el, 
+  dplyr::select(Master.ID=ID1, presabs=ID2, Latitude, Longitude, Elevation, 
          bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, 
          bio10, bio11, bio12, bio13, bio14, bio15, bio16, bio17, bio18, bio19)
 write_csv(bioclim, "SDM/data_files/biovars.csv")
