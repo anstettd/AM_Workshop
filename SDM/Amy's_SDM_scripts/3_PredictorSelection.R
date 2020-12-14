@@ -18,23 +18,24 @@
 rm(list = ls(all.names = TRUE))
 
 ## LIBRARIES
+library(tidyverse)
 library(GGally) # for visualizing correlation matrix
 
 ## INPUTS
 dat <- read_csv("SDM/data_files/biovars.csv")
 
 # Precipitation variables (bio12-bio19) should be log-transformed
-dat <- dat %>% transmute(bio12=log(bio12+0.5),
-                         bio13=log(bio13+0.5),
-                         bio14=log(bio14+0.5),
-                         bio15=log(bio15+0.5),
-                         bio16=log(bio16+0.5),
-                         bio17=log(bio17+0.5),
-                         bio18=log(bio18+0.5),
-                         bio19=log(bio19+0.5))
+dat <- dat %>% 
+  mutate(bio12=log(bio12+0.5),
+            bio13=log(bio13+0.5),
+            bio14=log(bio14+0.5),
+            bio15=log(bio15+0.5),
+            bio16=log(bio16+0.5),
+            bio17=log(bio17+0.5),
+            bio18=log(bio18+0.5),
+            bio19=log(bio19+0.5))
 
 ################################################################################
-
 
 
 ################################################################################
@@ -42,11 +43,12 @@ dat <- dat %>% transmute(bio12=log(bio12+0.5),
 
 # pull bioclim variables out into their own dataframe
 cor.dat <- dat %>% 
-  select(bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, bio10, 
+  dplyr::select(bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, bio10, 
          bio11, bio12, bio13, bio14, bio15, bio16, bio17, bio18, bio19)
 
 # scatterplot matrix with univariate distribution of each variable along diagonal
-ggpairs(cor.dat)
+cor.mat <- ggpairs(cor.dat)
+cor.mat
 
 ################################################################################
 
@@ -76,9 +78,10 @@ varimp.glm = function(tr.spp, tr.var, pres, pf, pl) {
 
 ## Set up inputs for VIP function
 tr.vip <- dat %>% # keep only Pres/Abs & bioclim predictors
-  select(presabs, 
+  dplyr::select(presabs, 
          bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, bio10, 
          bio11, bio12, bio13, bio14, bio15, bio16, bio17, bio18, bio19)
+tr.vip <- as.data.frame(tr.vip)
 pres=1                     # column number with presence:absence
 v.start=2                  # column number where predictor variables start
 v.stop=ncol(tr.vip)        # column number where predictor variables end
@@ -87,26 +90,25 @@ v.stop=ncol(tr.vip)        # column number where predictor variables end
 ## RUN VIP function
 dev.fit = varimp.glm(tr.vip, tr.vip, pres, v.start, v.stop)
 
+# spruce up labels
 x.labs=as.data.frame(names(tr.vip[2:v.stop]))
-
 dev.fit =cbind(as.data.frame(dev.fit), x.labs) # output matrix; col=1 AIC, col=2 Adj deviance
 names(dev.fit) = c("AIC", "AdjDev", "Var")
-dev.fit = dev.fit[order(dev.fit$AIC),]
-dev.fit
 
-## built basic barplot if desired
-d.max=ceiling(signif(max(dev.fit[,2]),2)*10)/10 # convoluted; max of y-axis
-ylim.r=range(0,d.max)                           # range y-axis
-x.labs=names(tr.vip[2:v.stop])                  # x-axis labels
-barplot(dev.fit[,2],col="darkgreen",ylim=ylim.r,
-  main="pred VIPs",ylab="adj.D2",names=x.labs)
-abline(h=0); abline(mean(dev.fit[,2]),0,lt=3) # ref lines; dash=mean adj.dev
+# sort by descending order of explanatory power
+dev.fit = dev.fit[order(dev.fit$AIC),]
+dev.fit 
+
+# basic barplot of explanatory power
+ggplot(dev.fit, aes(x=Var, y=AdjDev)) + geom_bar(stat="identity")
 
 ################################################################################
 
 
 ################################################################################
 ### VARIABLE SELECTION BASED ON IMPORTANCE AND COLLINEARITY
+
+## (NOTE: variable selection is altered from Angert et al. 2018, due to addition of occupancy dataset to training input &/or use of 1961-1990 normals)
 
 # Single best variable = bio15
 # bio15 has no |r|>0.7 with other bioclim
