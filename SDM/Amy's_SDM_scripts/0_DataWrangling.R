@@ -10,6 +10,9 @@
 ############################################################################### 
 ### LOAD LIBRARIES AND INPUTS
 
+## CLEAR WORKSPACE
+rm(list = ls(all.names = TRUE))
+
 ## LIBRARIES
 library(tidyverse)
 

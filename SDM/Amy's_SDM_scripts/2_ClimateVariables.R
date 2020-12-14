@@ -15,6 +15,9 @@
 ################################################################################# 
 ### LOAD LIBRARIES AND PREPARE INPUTS
 
+## CLEAR WORKSPACE
+rm(list = ls(all.names = TRUE))
+
 ## LIBRARIES
 library(tidyverse) # for data manipulation
 library(dismo) # for biovars function

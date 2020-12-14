@@ -11,6 +11,9 @@
 ###################################################################################
 ### LOAD LIBRARIES AND PREPARE INPUTS
 
+## CLEAR WORKSPACE
+rm(list = ls(all.names = TRUE))
+
 ## LIBRARIES
 library(randomForest) # for RF models
 library(PresenceAbsence) # for accuracy stats

@@ -14,6 +14,9 @@
 ################################################################################# 
 ### LOAD LIBRARIES AND PREPARE INPUTS
 
+## CLEAR WORKSPACE
+rm(list = ls(all.names = TRUE))
+
 ## LIBRARIES
 library(PresenceAbsence) # for accuracy stats
 library(DAAG) # for cross-validation sampling

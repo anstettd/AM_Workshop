@@ -14,6 +14,9 @@
 ################################################################################# 
 ### LOAD LIBRARIES AND PREPARE INPUTS
 
+## CLEAR WORKSPACE
+rm(list = ls(all.names = TRUE))
+
 ## LIBRARIES
 library(GGally) # for visualizing correlation matrix
 
