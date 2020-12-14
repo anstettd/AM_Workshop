@@ -59,8 +59,7 @@ projection(pseudo) = CRS('+proj=longlat')
 
 ################################################################################
 ### SUBSAMPLE FROM BACKGROUND POINTS TO MAKE PSEUDOABSENCES 
-
-## RATIONALE FOR STEP 1: Pseudoabsences should fall in sampled regions yet not in occupied habitat. Here, the zerodist2 function is used to sample background points from within donut-shaped areas surrounding each presence record, so that resulting pseudoabsences are >0.6 km but <80 km from a presence.
+## RATIONALE: Pseudoabsences should fall in sampled regions yet not in occupied habitat. Here, the zerodist2 function is used to sample background points from within donut-shaped areas surrounding each presence record, so that resulting pseudoabsences are >0.6 km but <80 km from a presence.
 
 # Keep any background points within 80 km of a presence record
 ok = zerodist2(pseudo, pres, 80)
@@ -70,37 +69,11 @@ psu1 = pseudo[unique(ok[,1]),] # not using tidyverse here - doesn't work on spat
 drop = zerodist2(pseudo, pres, 0.600)
 psu2 = psu1[-drop[,1],]
     
-## RATIONALE FOR STEP 2: Different ENM algorithms are optimized for different ratios of presence records relative to pseudoabsences.
-    
-# 10:1 ratio abs:pres for GLM and GAM algorithms
-npsu.glm = 10*length(pres) 
-samp.glm = sample(1:nrow(psu2), npsu.glm, replace=FALSE) #subsample from anything meeting distance criteria	
-psu2.glm = psu2[samp.glm,]
-psu2.glm$set = "glm_gam"
-psu2.glm <- as.data.frame(psu2.glm)
-
-# 4:1 ratio abs:pres for RF and MAX algorithms
-npsu.rf = 4*length(pres) 
-samp.rf = sample(1:nrow(psu2.glm), npsu.rf, replace=FALSE) #subsample from those retained for GLM/GAM	
-psu2.rf = psu2.glm[samp.rf,]
-psu2.rf$set = "rf_max"
-
-# 1:1 ratio abs:pres for BRT algorithm
-npsu.brt = length(pres) 
-samp.brt = sample(1:nrow(psu2.rf), npsu.brt, replace=FALSE) #subsample from those retained for RF/MAX	
-psu2.brt = psu2.rf[samp.brt,]
-psu2.brt$set = "brt"
-
-## MERGE into one set that can be filtered for appropriate input to each algorithm
-# What we want is brt + (rf-brt) + (glm-rf)
-psu2.rf_brt <- anti_join(psu2.rf, psu2.brt, by="MASTER.ID") 
-psu2.glm_rf <- anti_join(psu2.glm, psu2.rf, by="MASTER.ID") 
-
-psu.all <- bind_rows(psu2.brt, psu2.rf_brt, psu2.glm_rf)
-
-# check numbers
-psu.all %>% count(set) #should have 303 brt, 1212-303=909 rf/max, 3030-1212=1818 glm/gam
-psu.all %>% n_distinct("MASTER.ID") #should each be unique, n=3030
+# Randomly select n pseudoabsences, where n= number of presences (i.e., 1:1 ratio abs:pres)
+# (Angert et al. 2018 showed this matches natural prevalence and also reduces overfitting)
+npsu = length(pres) 
+samp = sample(1:nrow(psu2), npsu, replace=FALSE) 	
+psu2.use = psu2[samp,]
 
 ################################################################################
 
@@ -110,11 +83,11 @@ psu.all %>% n_distinct("MASTER.ID") #should each be unique, n=3030
 
 # Remove spatial class
 pres <- as.data.frame(pres)
-pres$set <- "all"
+psu2.use = as.data.frame(psu2.use)
 
 # Bind rows & format as input for ClimateNA
 # (required column names = ID1, ID2, lat, long, el; must have exactly and only these)
-points <- bind_rows(pres, psu.all) %>% 
+points <- bind_rows(pres, psu2.use) %>% 
   dplyr::select(ID1=set, ID2=PRESABS, lat=Latitude, long=Longitude, el=Elevation)
 
 # Write to file
