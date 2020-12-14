@@ -124,4 +124,4 @@ write_csv(points, "SDM/data_files/points.csv")
 
 # These files should be imported into the ClimateNA graphical user interface
 # In ClimateNA, use the time series option to get 30-year average of monthly temperature and precipitation for 1961-1990
-# Save ClimateNA output as climatena.csv
+# Save ClimateNA output with default name: points_Normal_1961_1990MSY.csv
