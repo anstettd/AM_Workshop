@@ -91,7 +91,7 @@ psu2.use = as.data.frame(psu2.use)
 # Bind rows & format as input for ClimateNA
 # (required column names = ID1, ID2, lat, long, el; must have exactly and only these)
 points <- bind_rows(pres, psu2.use) %>% 
-  dplyr::select(ID1=set, ID2=PRESABS, lat=Latitude, long=Longitude, el=Elevation)
+  dplyr::select(ID1=MASTER.ID, ID2=PRESABS, lat=Latitude, long=Longitude, el=Elevation)
 
 # Write to file
 write_csv(points, "SDM/data_files/points.csv")
