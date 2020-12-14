@@ -1,133 +1,51 @@
 ###################################################################################
-## Amy Angert
-## Modified from Thomas C. Edwards, Jr., "Species Distribution Modelling Using R"
-## PROGRAM FUNCTIONS: 
-##   For each of 10 replicate training data sets (thinned herbarium presences + matching pseudoabsences)
-##   	Build a random forest model
-## 	 	Attempt to reduce overfitting by 
-##	   		Using 1:1 ratio of pseudoabs:presence
-##	   		Using different random sample of pseudos for replicate model runs
-##   	Perform cross and external validation
-## last update:  22 April 2016 (Amy triple checking everything for final tables and figs)
+### SCRIPT PURPOSE: SDM based on random forest models of presence/absence ~ bioclimatic predictors
+# Modified from Angert et al. 2018, American Naturalist
+# Author: Amy Angert
+# last update:  14 Dec 2020
+
+## OVERALL WORKFLOW:
+#	Build RF model
+#	Perform resubstitution and cross-validation to assess accuracy
+
 ###################################################################################
+### LOAD LIBRARIES AND PREPARE INPUTS
 
-## load libraries now if desired; loaded below when needed
-#library(randomForest)
-#library(PresenceAbsence)
+## LIBRARIES
+library(randomForest) # for RF models
+library(PresenceAbsence) # for accuracy stats
+library(DAAG) # for cross-validation sampling
 
-## set pathnames
-#path.root="/Users/amylauren/Google Drive/Occupancy AmNat Amy" 
-#path.dat=paste(path.root, "/data files", sep="")
-#path.dat.fix = paste(path.dat, "/Fixed datafiles - Matthew Sept 4", sep="")
-#path.obj=paste(path.root, "/R objects", sep="")
-#path.fig=paste(path.root, "/figures", sep="")
-#path.cod=paste(path.root, "/R code", sep="")
+## INPUTS
+# read in file
+dat <- read_csv('SDM/data_files/sdm_input.csv')
 
-## set pathnames - Matthew
-#path.root = "C:/Users/DW/Desktop/temp.sept.30" 
-#path.dat = paste(path.root, "/data files", sep="")
-#path.dat.fix = paste(path.root, "/data files", sep="") # older files relocated to another directory
-#path.obj = paste(path.root, "/R objects", sep="")
-#path.eco = paste(path.obj, "/ecoregions.shp", sep="")
-#path.bio = paste(path.obj, "/wc0.5", sep="")
-#path.cod=paste(path.root, "/R code", sep="")
-#path.fig=paste(path.root, "/figures", sep="")
+# slim dataframe to conform to structure required by mod.form function
+# (see script modforms.R)
+dat.input <- dat %>% 
+  select(presabs, bio15, bio10, bio14, bio12, bio11, bio4, bio3, bio2)
+
+################################################################################
 
 
 ################################################################################
-######## START INITIALIZATION
+### RANDOM FORESTS MODEL
 
-## variables chosen based on dev and collinearity: bio15, lnbio10, lnbio14, lnbio12, bio11, bio4, lnbio3, bio2
-## replicate thinned datasets with pseudo:pres at 4:1
-## some variables are already ln-transformed
-## see file 'RCode_ThinPseudoAbs'
-## now just call in saved .csv files
-
-setwd(path.dat)
- 
-#for (i in 1:10) {
-#	dat = read.csv(paste("dat",i,".csv", sep=""))
-#	dat = dat[,c(4,59:61,67:69,71:72)] #column indices changed 9/4/14
-#	assign(paste("dat",i, sep=""), dat)
-#	}
-#rm(dat)
-
-#for (i in 1:10) {
-#	dat = read.csv(paste("dat",i,"b.csv", sep=""))
-#	dat = dat[,c(4,59:61,67:69,71:72)] #column indices changed 9/4/14
-#	assign(paste("dat",i, sep=""), dat)
-#	}
-#rm(dat)
-
-## use these (1:1 ratio)
-for (i in 1:10) {
-	dat = read.csv(paste("dat",i,"c.csv", sep=""))
-	dat = dat[,c(4,59:61,67:69,71:72)] #column indices changed 9/4/14
-	assign(paste("dat",i, sep=""), dat)
-	}
-rm(dat)
-
-## examine training data
-dim(dat1); dim(dat10)
-table(dat1$PRES); table(dat10$PRES)     
-head(dat1); head(dat10)                     
-str(dat1); str(dat10)                      
-
-## testing data
-all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences
-ext = all[all$DATASET=="occ",] #pull out occupancy dataset
-ext$bio3 = log(ext$bio3+0.5) #make needed ln-transforms of predictors
-ext$bio10 = log(ext$bio10+0.5)
-ext$bio12 = log(ext$bio12+0.5)
-ext$bio14 = log(ext$bio14+0.5)
-
-######## END INITIALIZATION
-################################################################################
-
-
-
-
-################################################################################
-######## {Do not re-run} START RF MODEL
-
-library(randomForest) 
-#setwd(path.cod)
 source("SDM/R_code/modforms.R")
 
-#setwd(path.obj)
-for (i in 1:10) {
-	dat = get(paste("dat", i, sep=""))
-	mod1.RF = randomForest(mod.form.lin(dat,1,2), importance=T, keep.forest=T, data=dat)           
-	assign(paste("RF.mod1.",i, sep=""), mod1.RF)
-	save(mod1.RF, file=paste("RF.mod1.",i,".pseudo11.Rda", sep=""))	
-	mod1.pred = predict(mod1.RF, type="prob")[,2] # predict from model
-	assign(paste("RF.mod1.",i,".pred", sep=""), mod1.pred)
-	}
+mod1.RF <- randomForest(mod.form.lin(dat.input, 1, 2), importance=T, keep.forest=T, data=dat.input)           
+save(mod1.RF, file="RF.mod1.Rda")	
 
-######## END RF MODEL
 ################################################################################
-
-
 
 
 ################################################################################
-######## {Start here} LOAD SAVED MODEL AND PREDICTIONS
+######## {If necessary} LOAD SAVED MODEL AND CALCULATE PREDICTIONS
 
-library(randomForest) 
-#setwd(path.obj)
+mod1.RF = get(load("RF.mod1.Rda"))
+mod1.pred = predict(mod1.RF, type="prob")[,2]
 
-for (i in 1:10) {
-	dat = get(paste("dat", i, sep=""))
-	mod1.RF = get(load(paste("SRF.mod1.",i,".pseudo11.Rda", sep="")))
-	assign(paste("RF.mod1.",i, sep=""), mod1.RF)
-	mod1.pred = predict(mod1.RF, type="prob")[,2]
-	assign(paste("RF.mod1.",i,".pred", sep=""), mod1.pred)
-	}
-
-
-######## END RF MODEL
 ################################################################################
-
 
 
 ################################################################################
