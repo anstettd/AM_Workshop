@@ -1,63 +1,33 @@
+###################################################################################
+### SCRIPT PURPOSE: SDM based on generalized additive model of presence/absence ~ bioclimatic predictors
+# Modified from Angert et al. 2018, American Naturalist
+# Author: Amy Angert
+# last update:  14 Dec 2020
+
+## OVERALL WORKFLOW:
+#	Build full and reduced model logistic GLMs
+#	Perform resubstitution and cross-validation to assess accuracy
 
 ###################################################################################
-## Amy Angert
-## Modified from Thomas C. Edwards, Jr., "Species Distribution Modelling Using R"
-## PROGRAM FUNCTIONS: 
-##   For each of 10 replicate training data sets (thinned herbarium presences + matching pseudoabsences)
-##		Build full and reduced GAM models
-##   	Perform resubstitution, cross-validation, and external validation to assess accuracy
-##		Calculate Miller's calibration statistics to assess reliability
-## last update:  22 April 2016 (Amy triple checking everything to make final figs and tables)
-###################################################################################
 
-## load libraries now if desired; loaded below when needed
-#library(PresenceAbsence)
-#library(DAAG)
-#library(gam)
-#library(car)
+### LOAD LIBRARIES AND PREPARE INPUTS
 
-## set pathnames
-#path.root="/Users/amylauren/Google Drive/Occupancy AmNat Amy" 
-#path.dat=paste(path.root, "/data files", sep="")
-#path.obj=paste(path.root, "/R objects", sep="")
-#path.fig=paste(path.root, "/figures", sep="")
-#path.cod=paste(path.root, "/R code", sep="")
+## LIBRARIES
+library(gam) # for GAM models
+library(PresenceAbsence) # for accuracy stats
+library(DAAG) # for cross-validation sampling
 
-## set pathnames - Matthew
-#path.root = "C:/Users/DW/Desktop/temp.sept.30" 
-#path.dat = paste(path.root, "/data files", sep="")
-#path.dat.fix = paste(path.root, "/data files", sep="") # older files relocated to another directory
-#path.obj = paste(path.root, "/R objects", sep="")
-#path.eco = paste(path.obj, "/ecoregions.shp", sep="")
-#path.bio = paste(path.obj, "/wc0.5", sep="")
-#path.cod=paste(path.root, "/R code", sep="")
-#path.fig=paste(path.root, "/figures", sep="")
+## INPUTS
+# read in file
+dat <- read_csv('SDM/data_files/sdm_input.csv')
 
+# if necessary, filter rows to appropriate ratio of pseudoabsences:presences 
+# (not necessary here; all rows are used in GLM)
 
-################################################################################
-######## START INITIALIZATION
-## import data
-## slim down variables to conform to structure required by mod.form function	
-## variables chosen based on dev and collinearity: bio15, lnbio10, lnbio14, lnbio12, bio11, bio4, lnbio3, bio2
-## variables requiring ln-transform are already transformed (see RCode_ThinPseudos)
-
-#setwd(path.dat) 
-
-#for (i in 1:10) {
-#	dat = read.csv(paste("dat",i,".csv", sep=""))
-#	dat = dat[,c(4,59:61,67:69,71:72)] #column indices changed 9/4/14
-#	dat = na.omit(dat) #for some reason many presences are now missing values for predictor variables
-#	assign(paste("dat",i, sep=""), dat)
-#	}
-#rm(dat)
-
-#for (i in 1:10) {
-#	dat = read.csv(paste("dat",i,"b.csv", sep=""))
-#	dat = dat[,c(4,59:61,67:69,71:72)] #column indices changed 9/4/14
-#	dat = na.omit(dat) #for some reason many presences are now missing values for predictor variables
-#	assign(paste("dat",i, sep=""), dat)
-#	}
-#rm(dat)
+# slim dataframe to conform to structure required by mod.form function
+# (see script modforms.R)
+dat.input <- dat %>% 
+  select(presabs, bio15, bio10, bio14, bio12, bio11, bio4, bio3, bio2)
 
 ## use these (1:1 ratio)
 for (i in 1:10) {
