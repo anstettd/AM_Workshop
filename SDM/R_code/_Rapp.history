@@ -1,2235 +1,0 @@
-setwd(path.obj)#
-for (i in 1:10) {#
-	mod.lr = get(load(paste("LR.mod2.",i,".pseudo11.Rda", sep="")))#
-	assign(paste("LR.mod2.",i, sep=""), mod.lr)#
-	mod.gam = get(load(paste("GAM.mod4.",i,".pseudo11.Rda", sep="")))#
-	assign(paste("GAM.mod4.",i, sep=""), mod.gam)#
-	mod.rf = get(load(paste("RF.mod1.",i,".pseudo11.Rda", sep="")))  #
-	assign(paste("RF.mod1.",i, sep=""), mod.rf)#
-	mod.brt = get(load(paste("BRT.mod4.",i,".pseudo11.Rda", sep="")))#
-	assign(paste("BRT.mod4.",i, sep=""), mod.brt)  #
-	mod.max = get(load(paste("MAX.mod1.",i,".pseudo11.Rda", sep="")))#
-	assign(paste("MAX.mod1.",i, sep=""), mod.max)  #
-	}
-ext.accs.lr = get(load("LR.mod2.extaccs.pseudo11.Rda")); cv.accs.lr <- get(load("LR.mod2.cvaccs.pseudo11.Rda")); accs.lr <- get(load("LR.mod2.accs.pseudo11.Rda"))#
-ext.accs.gam = get(load("GAM.mod4.extaccs.pseudo11.Rda")); cv.accs.gam = get(load("GAM.mod4.cvaccs.pseudo11.Rda")); accs.gam = get(load("GAM.mod4.accs.pseudo11.Rda"))#
-ext.accs.rf = get(load("RF.mod1.extaccs.pseudo11.Rda")); accs.rf = get(load("RF.mod1.accs.pseudo11.Rda"))#
-ext.accs.brt = get(load("BRT.mod4.extaccs.pseudo11.Rda")); cv.accs.brt = get(load("BRT.mod4.accs.pseudo11.Rda")); accs.brt = get(load("BRT.mod4.resubaccs.pseudo11.Rda"))#
-ext.accs.max = get(load("MAX.mod1.extaccs.pseudo11.Rda")); cv.accs.max = get(load("MAX.mod1.cvaccs.pseudo11.Rda")); accs.max = get(load("MAX.mod1.accs.pseudo11.Rda"))
-lr.cuts = ext.accs.lr[ext.accs.lr$thresh=="SensSpec", "threshold"]#
-gam.cuts = ext.accs.gam[ext.accs.gam$thresh=="SensSpec", "threshold"]#
-rf.cuts = ext.accs.rf[ext.accs.rf$thresh=="SensSpec", "threshold"]#
-brt.cuts = ext.accs.brt[ext.accs.brt$thresh=="SensSpec", "threshold"]#
-max.cuts = ext.accs.max[ext.accs.max$thresh=="SensSpec", "threshold"]#
-#
-cuts <- cbind(lr.cuts, gam.cuts, rf.cuts, brt.cuts, max.cuts)
-setwd(path.dat.fix)#
-all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences#
-occ = all[all$DATASET=="occ",] #pull out occupancy dataset#
-occ$bio3 = log(occ$bio3+0.5) #make needed ln-transforms of predictors#
-occ$bio10 = log(occ$bio10+0.5)#
-occ$bio12 = log(occ$bio12+0.5)#
-occ$bio14 = log(occ$bio14+0.5)
-setwd(path.dat)#
-all = read.csv("all.records.aug.31.csv") #includes occupancy dataset, cleaned herbarium records, and 20K pseudoabs drawn to match envir space of true absences#
-occ = all[all$DATASET=="occ",] #pull out occupancy dataset#
-occ$bio3 = log(occ$bio3+0.5) #make needed ln-transforms of predictors#
-occ$bio10 = log(occ$bio10+0.5)#
-occ$bio12 = log(occ$bio12+0.5)#
-occ$bio14 = log(occ$bio14+0.5)
-setwd(path.dat)#
-north = read.csv("north.csv")#
-center = read.csv("center.csv")#
-south = read.csv("south.csv")
-L.thresh = 400#
-H.thresh = 1200
-for (i in 1:10) {#
-	mod = get(paste("LR.mod2.",i, sep=""))#
-	LRprob = predict(mod, occ, type="response")#
-	occ = cbind(occ, LRprob)#
-	}   #
-for (i in 1:10) {#
-	mod = get(paste("LR.mod2.",i, sep=""))#
-	LRprob = predict(mod, north, type="response")#
-	north = cbind(north, LRprob)#
-	}   #
-for (i in 1:10) {#
-	mod = get(paste("LR.mod2.",i, sep=""))#
-	LRprob = predict(mod, center, type="response")#
-	center = cbind(center, LRprob)#
-	}   #
-for (i in 1:10) {#
-	mod = get(paste("LR.mod2.",i, sep=""))#
-	LRprob = predict(mod, south, type="response")#
-	south = cbind(south, LRprob)#
-	}   #
-## GAM predictions#
-## MUST load library gam for GAM prediction#
-library(gam)#
-for (i in 1:10) {#
-	mod = get(paste("GAM.mod4.",i, sep=""))#
-	GAMprob=predict(mod, occ, type="response")#
-	occ = cbind(occ, GAMprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("GAM.mod4.",i, sep=""))#
-	GAMprob=predict(mod, north, type="response")#
-	north = cbind(north, GAMprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("GAM.mod4.",i, sep=""))#
-	GAMprob=predict(mod, center, type="response")#
-	center = cbind(center, GAMprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("GAM.mod4.",i, sep=""))#
-	GAMprob=predict(mod, south, type="response")#
-	south = cbind(south, GAMprob)#
-	}
-library(randomForest) #
-for (i in 1:10) {#
-	mod = get(paste("RF.mod1.",i, sep=""))#
-	RFprob=predict(mod, occ, type="prob", fun=predict, index=2, overwrite=T)#
-	occ = cbind(occ, RFprob[,2])#
-	}#
-#names(occ)[96:105] = "RFprob"#
-for (i in 1:10) {#
-	mod = get(paste("RF.mod1.",i, sep=""))#
-	RFprob=predict(mod, north, type="prob", fun=predict, index=2, overwrite=T)#
-	north = cbind(north, RFprob[,2])#
-	}#
-#names(north)[96:105] = "RFprob"#
-for (i in 1:10) {#
-	mod = get(paste("RF.mod1.",i, sep=""))#
-	RFprob=predict(mod, center, type="prob", fun=predict, index=2, overwrite=T)#
-	center = cbind(center, RFprob[,2])#
-	}#
-#names(center)[96:105] = "RFprob"#
-for (i in 1:10) {#
-	mod = get(paste("RF.mod1.",i, sep=""))#
-	RFprob=predict(mod, south, type="prob", fun=predict, index=2, overwrite=T)#
-	south = cbind(south, RFprob[,2])#
-	}#
-#names(south)[96:105] = "RFprob"
-library(dismo)#
-library(gbm)#
-for (i in 1:10) {#
-	mod = get(paste("BRT.mod4.",i, sep=""))#
-	BRTprob=predict(mod, occ, n.trees=mod$gbm.call$best.trees, type="response") #
-	occ = cbind(occ, BRTprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("BRT.mod4.",i, sep=""))#
-	BRTprob=predict(mod, north, n.trees=mod$gbm.call$best.trees, type="response") #
-	north = cbind(north, BRTprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("BRT.mod4.",i, sep=""))#
-	BRTprob=predict(mod, center, n.trees=mod$gbm.call$best.trees, type="response") #
-	center = cbind(center, BRTprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("BRT.mod4.",i, sep=""))#
-	BRTprob=predict(mod, south, n.trees=mod$gbm.call$best.trees, type="response") #
-	south = cbind(south, BRTprob)#
-	}
-library(dismo) #
-for (i in 1:10) {#
-	mod = get(paste("MAX.mod1.",i, sep=""))#
-	MAXprob=predict(mod, occ, overwrite=T) #
-	occ = cbind(occ, MAXprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("MAX.mod1.",i, sep=""))#
-	MAXprob=predict(mod, north, overwrite=T) #
-	north = cbind(north, MAXprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("MAX.mod1.",i, sep=""))#
-	MAXprob=predict(mod, center, overwrite=T) #
-	center = cbind(center, MAXprob)#
-	}#
-for (i in 1:10) {#
-	mod = get(paste("MAX.mod1.",i, sep=""))#
-	MAXprob=predict(mod, south, overwrite=T) #
-	south = cbind(south, MAXprob)#
-	}
-occ$LRave = NA #
-occ$GAMave = NA #
-occ$RFave = NA #
-occ$BRTave = NA #
-occ$MAXave = NA #
-occ$Ens1 = NA #average over all models#
-occ$Ens2 = NA #average excluding BRT #
-occ$Ens3 = NA #average of (semi)parametric models#
-#
-for (i in 1:dim(occ)[1]) {#
-	occ[i,"LRave"] = mean(c(occ[i,76],occ[i,77],occ[i,78],occ[i,79],occ[i,80],occ[i,81],occ[i,82],occ[i,83],occ[i,84],occ[i,85]))#
-	occ[i,"GAMave"] = mean(c(occ[i,86],occ[i,87],occ[i,88],occ[i,89],occ[i,90],occ[i,91],occ[i,92],occ[i,93],occ[i,94],occ[i,95]))#
-	occ[i,"RFave"] = mean(c(occ[i,96],occ[i,97],occ[i,98],occ[i,99],occ[i,100],occ[i,101],occ[i,102],occ[i,103],occ[i,104],occ[i,105]))#
-	occ[i,"BRTave"] = mean(c(occ[i,106],occ[i,107],occ[i,108],occ[i,109],occ[i,110],occ[i,111],occ[i,112],occ[i,113],occ[i,114],occ[i,115]))#
-	occ[i,"MAXave"] = mean(c(occ[i,116],occ[i,117],occ[i,118],occ[i,119],occ[i,120],occ[i,121],occ[i,122],occ[i,123],occ[i,124],occ[i,125]))#
-	occ[i,"Ens1"] = mean(c(occ[i,"LRave"],occ[i,"GAMave"],occ[i,"RFave"],occ[i,"BRTave"]),occ[i,"MAXave"]) #
-	occ[i,"Ens2"] = mean(c(occ[i,"RFave"],occ[i,"BRTave"],occ[i,"MAXave"]))	#
-	occ[i,"Ens3"] = mean(c(occ[i,"LRave"],occ[i,"GAMave"]))	#
-	}#
-head(occ)#
-#
-LRvec = c()#
-GAMvec = c()#
-RFvec = c()#
-BRTvec = c()#
-MAXvec = c()#
-for (i in 1:10) {#
-	LRname = paste("LRprob",i,sep="")#
-	LRvec[i] = LRname#
-	GAMname = paste("GAMprob",i,sep="")#
-	GAMvec[i] = GAMname#
-	RFname = paste("RFprob",i,sep="")#
-	RFvec[i] = RFname#
-	BRTname = paste("BRTprob",i,sep="")#
-	BRTvec[i] = BRTname#
-	MAXname = paste("MAXprob",i,sep="")#
-	MAXvec[i] = MAXname#
-	}#
-names(occ)[76:85] = LRvec#
-names(occ)[86:95] = GAMvec#
-names(occ)[96:105] = RFvec#
-names(occ)[106:115] = BRTvec#
-names(occ)[116:125] = MAXvec#
-#
-north$LRave = NA #
-north$GAMave = NA #
-north$RFave = NA #
-north$BRTave = NA #
-north$MAXave = NA #
-north$Ens1 = NA #average over all models#
-north$Ens2 = NA #average excluding BRT #
-north$Ens3 = NA #average of (semi)parametric models#
-#
-for (i in 1:dim(north)[1]) {#
-	north[i,"LRave"] = mean(c(north[i,86],north[i,77],north[i,78],north[i,79],north[i,80],north[i,81],north[i,82],north[i,83],north[i,84],north[i,85]))#
-	north[i,"GAMave"] = mean(c(north[i,96],north[i,87],north[i,88],north[i,89],north[i,90],north[i,91],north[i,92],north[i,93],north[i,94],north[i,95]))#
-	north[i,"RFave"] = mean(c(north[i,106],north[i,97],north[i,98],north[i,99],north[i,100],north[i,101],north[i,102],north[i,103],north[i,	104],north[i,105]))#
-	north[i,"BRTave"] = mean(c(north[i,116],north[i,107],north[i,108],north[i,109],north[i,110],north[i,111],north[i,112],north[i,113],north[i,	114],north[i,115]))#
-	north[i,"MAXave"] = mean(c(north[i,126],north[i,117],north[i,118],north[i,119],north[i,120],north[i,121],north[i,122],north[i,123],north[i,	124],north[i,125]))#
-	north[i,"Ens1"] = mean(c(north[i,"LRave"],north[i,"GAMave"],north[i,"RFave"],north[i,"BRTave"],north[i,"MAXave"])) #
-	north[i,"Ens2"] = mean(c(north[i,"RFave"],north[i,"BRTave"],north[i,"MAXave"]))	#
-	north[i,"Ens3"] = mean(c(north[i,"LRave"],north[i,"GAMave"]))	#
-	}#
-head(north)#
-#
-names(north)[77:86] = LRvec#
-names(north)[87:96] = GAMvec#
-names(north)[97:106] = RFvec#
-names(north)[107:116] = BRTvec#
-names(north)[117:126] = MAXvec#
-#
-center$LRave = NA #
-center$GAMave = NA #
-center$RFave = NA #
-center$BRTave = NA #
-center$MAXave = NA #
-center$Ens1 = NA #average over all models#
-center$Ens2 = NA #average excluding BRT #
-center$Ens3 = NA #average of (semi)parametric models#
-#
-for (i in 1:dim(center)[1]) {#
-	center[i,"LRave"] = mean(c(center[i,86],center[i,77],center[i,78],center[i,79],center[i,80],center[i,81],center[i,82],center[i,83],center[i,						84],center[i,85]))#
-	center[i,"GAMave"] = mean(c(center[i,96],center[i,87],center[i,88],center[i,89],center[i,90],center[i,91],center[i,92],center[i,93],center[i,						94],center[i,95]))#
-	center[i,"RFave"] = mean(c(center[i,106],center[i,97],center[i,98],center[i,99],center[i,100],center[i,101],center[i,102],center[i,103],center[i,104],center[i,105]))#
-	center[i,"BRTave"] = mean(c(center[i,116],center[i,107],center[i,108],center[i,109],center[i,110],center[i,111],center[i,112],center[i,113],center[i,	114],center[i,115]))#
-	center[i,"MAXave"] = mean(c(center[i,126],center[i,117],center[i,118],center[i,119],center[i,120],center[i,121],center[i,122],center[i,123],center[i,	124],center[i,125]))#
-	center[i,"Ens1"] = mean(c(center[i,"LRave"],center[i,"GAMave"],center[i,"RFave"],center[i,"BRTave"],center[i,"MAXave"])) #
-	center[i,"Ens2"] = mean(c(center[i,"RFave"],center[i,"BRTave"],center[i,"MAXave"]))	#
-	center[i,"Ens3"] = mean(c(center[i,"LRave"],center[i,"GAMave"]))	#
-	}#
-head(center)#
-#
-names(center)[77:86] = LRvec#
-names(center)[87:96] = GAMvec#
-names(center)[97:106] = RFvec#
-names(center)[107:116] = BRTvec#
-names(center)[117:126] = MAXvec#
-#
-south$LRave = NA #
-south$GAMave = NA #
-south$RFave = NA #
-south$BRTave = NA #
-south$MAXave = NA #
-south$Ens1 = NA #average over all models#
-south$Ens2 = NA #average excluding BRT #
-south$Ens3 = NA #average of (semi)parametric models#
-#
-for (i in 1:dim(south)[1]) {#
-	south[i,"LRave"] = mean(c(south[i,86],south[i,77],south[i,78],south[i,79],south[i,80],south[i,81],south[i,82],south[i,83],south[i,84],south[i,85]))#
-	south[i,"GAMave"] = mean(c(south[i,96],south[i,87],south[i,88],south[i,89],south[i,90],south[i,91],south[i,92],south[i,93],south[i,94],south[i,95]))#
-	south[i,"RFave"] = mean(c(south[i,106],south[i,97],south[i,98],south[i,99],south[i,100],south[i,101],south[i,102],south[i,103],south[i,	104],south[i,105]))#
-	south[i,"BRTave"] = mean(c(south[i,116],south[i,107],south[i,108],south[i,109],south[i,110],south[i,111],south[i,112],south[i,113],south[i,	114],south[i,115]))#
-	south[i,"MAXave"] = mean(c(south[i,126],south[i,117],south[i,118],south[i,119],south[i,120],south[i,121],south[i,122],south[i,123],south[i,	124],south[i,125]))#
-	south[i,"Ens1"] = mean(c(south[i,"LRave"],south[i,"GAMave"],south[i,"RFave"],south[i,"BRTave"],south[i,"MAXave"])) #
-	south[i,"Ens2"] = mean(c(south[i,"RFave"],south[i,"BRTave"],south[i,"MAXave"]))	#
-	south[i,"Ens3"] = mean(c(south[i,"LRave"],south[i,"GAMave"]))	#
-	}#
-head(south)#
-#
-names(south)[77:86] = LRvec#
-names(south)[87:96] = GAMvec#
-names(south)[97:106] = RFvec#
-names(south)[107:116] = BRTvec#
-names(south)[117:126] = MAXvec#
-#
-high <- occ[occ$Elevation > H.thresh,]#
-low <- occ[occ$Elevation < L.thresh,]#
-mid <- occ[occ$Elevation >= L.thresh & occ$Elevation <= H.thresh,]#
-######## END PREDICTION PROBABILITY
-pres = occ[occ$PRESABS==1,]; dim(pres)#
-abs = occ[occ$PRESABS==0,]; dim(abs)
-pred.pres.lat = data.frame(Latitude = seq(min(pres$Latitude, na.rm=T), max(pres$Latitude, na.rm=T), by=0.2))#
-pred.abs.lat = data.frame(Latitude = seq(min(abs$Latitude, na.rm=T), max(abs$Latitude, na.rm=T), by=0.2))
-LR.ave.pres.mod = lm(LRave ~ Latitude + I(Latitude^2), data=pres)#
-LR.ave.pres.pred = predict(LR.ave.pres.mod, pred.pres.lat, type="response")#
-LR.1.pres.mod = lm(LRprob1 ~ Latitude + I(Latitude^2), data=pres)#
-LR.1.pres.pred = predict(LR.1.pres.mod, pred.pres.lat, type="response")#
-LR.2.pres.mod = lm(LRprob2 ~ Latitude + I(Latitude^2), data=pres)#
-LR.2.pres.pred = predict(LR.2.pres.mod, pred.pres.lat, type="response")#
-LR.3.pres.mod = lm(LRprob3 ~ Latitude + I(Latitude^2), data=pres)#
-LR.3.pres.pred = predict(LR.3.pres.mod, pred.pres.lat, type="response")#
-LR.4.pres.mod = lm(LRprob4 ~ Latitude + I(Latitude^2), data=pres)#
-LR.4.pres.pred = predict(LR.4.pres.mod, pred.pres.lat, type="response")#
-LR.5.pres.mod = lm(LRprob5 ~ Latitude + I(Latitude^2), data=pres)#
-LR.5.pres.pred = predict(LR.5.pres.mod, pred.pres.lat, type="response")#
-LR.6.pres.mod = lm(LRprob6 ~ Latitude + I(Latitude^2), data=pres)#
-LR.6.pres.pred = predict(LR.6.pres.mod, pred.pres.lat, type="response")#
-LR.7.pres.mod = lm(LRprob7 ~ Latitude + I(Latitude^2), data=pres)#
-LR.7.pres.pred = predict(LR.7.pres.mod, pred.pres.lat, type="response")#
-LR.8.pres.mod = lm(LRprob8 ~ Latitude + I(Latitude^2), data=pres)#
-LR.8.pres.pred = predict(LR.8.pres.mod, pred.pres.lat, type="response")#
-LR.9.pres.mod = lm(LRprob9 ~ Latitude + I(Latitude^2), data=pres)#
-LR.9.pres.pred = predict(LR.9.pres.mod, pred.pres.lat, type="response")#
-LR.10.pres.mod = lm(LRprob10 ~ Latitude + I(Latitude^2), data=pres)#
-LR.10.pres.pred = predict(LR.10.pres.mod, pred.pres.lat, type="response")#
-LR.ave.abs.mod = lm(LRave ~ Latitude + I(Latitude^2), data=abs)#
-LR.ave.abs.pred = predict(LR.ave.abs.mod, pred.abs.lat, type="response")#
-LR.1.abs.mod = lm(LRprob1 ~ Latitude + I(Latitude^2), data=abs)#
-LR.1.abs.pred = predict(LR.1.abs.mod, pred.abs.lat, type="response")#
-LR.2.abs.mod = lm(LRprob2 ~ Latitude + I(Latitude^2), data=abs)#
-LR.2.abs.pred = predict(LR.2.abs.mod, pred.abs.lat, type="response")#
-LR.3.abs.mod = lm(LRprob3 ~ Latitude + I(Latitude^2), data=abs)#
-LR.3.abs.pred = predict(LR.3.abs.mod, pred.abs.lat, type="response")#
-LR.4.abs.mod = lm(LRprob4 ~ Latitude + I(Latitude^2), data=abs)#
-LR.4.abs.pred = predict(LR.4.abs.mod, pred.abs.lat, type="response")#
-LR.5.abs.mod = lm(LRprob5 ~ Latitude + I(Latitude^2), data=abs)#
-LR.5.abs.pred = predict(LR.5.abs.mod, pred.abs.lat, type="response")#
-LR.6.abs.mod = lm(LRprob6 ~ Latitude + I(Latitude^2), data=abs)#
-LR.6.abs.pred = predict(LR.6.abs.mod, pred.abs.lat, type="response")#
-LR.7.abs.mod = lm(LRprob7 ~ Latitude + I(Latitude^2), data=abs)#
-LR.7.abs.pred = predict(LR.7.abs.mod, pred.abs.lat, type="response")#
-LR.8.abs.mod = lm(LRprob8 ~ Latitude + I(Latitude^2), data=abs)#
-LR.8.abs.pred = predict(LR.8.abs.mod, pred.abs.lat, type="response")#
-LR.9.abs.mod = lm(LRprob9 ~ Latitude + I(Latitude^2), data=abs)#
-LR.9.abs.pred = predict(LR.9.abs.mod, pred.abs.lat, type="response")#
-LR.10.abs.mod = lm(LRprob10 ~ Latitude + I(Latitude^2), data=abs)#
-LR.10.abs.pred = predict(LR.10.abs.mod, pred.abs.lat, type="response")#
-summary(LR.ave.pres.mod)#
-summary(LR.ave.abs.mod)
-GAM.ave.pres.mod = lm(GAMave ~ Latitude + I(Latitude^2), data=pres)#
-GAM.ave.pres.pred = predict(GAM.ave.pres.mod, pred.pres.lat, type="response")#
-GAM.1.pres.mod = lm(GAMprob1 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.1.pres.pred = predict(GAM.1.pres.mod, pred.pres.lat, type="response")#
-GAM.2.pres.mod = lm(GAMprob2 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.2.pres.pred = predict(GAM.2.pres.mod, pred.pres.lat, type="response")#
-GAM.3.pres.mod = lm(GAMprob3 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.3.pres.pred = predict(GAM.3.pres.mod, pred.pres.lat, type="response")#
-GAM.4.pres.mod = lm(GAMprob4 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.4.pres.pred = predict(GAM.4.pres.mod, pred.pres.lat, type="response")#
-GAM.5.pres.mod = lm(GAMprob5 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.5.pres.pred = predict(GAM.5.pres.mod, pred.pres.lat, type="response")#
-GAM.6.pres.mod = lm(GAMprob6 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.6.pres.pred = predict(GAM.6.pres.mod, pred.pres.lat, type="response")#
-GAM.7.pres.mod = lm(GAMprob7 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.7.pres.pred = predict(GAM.7.pres.mod, pred.pres.lat, type="response")#
-GAM.8.pres.mod = lm(GAMprob8 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.8.pres.pred = predict(GAM.8.pres.mod, pred.pres.lat, type="response")#
-GAM.9.pres.mod = lm(GAMprob9 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.9.pres.pred = predict(GAM.9.pres.mod, pred.pres.lat, type="response")#
-GAM.10.pres.mod = lm(GAMprob10 ~ Latitude + I(Latitude^2), data=pres)#
-GAM.10.pres.pred = predict(GAM.10.pres.mod, pred.pres.lat, type="response")#
-GAM.ave.abs.mod = lm(GAMave ~ Latitude + I(Latitude^2), data=abs)#
-GAM.ave.abs.pred = predict(GAM.ave.abs.mod, pred.abs.lat, type="response")#
-GAM.1.abs.mod = lm(GAMprob1 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.1.abs.pred = predict(GAM.1.abs.mod, pred.abs.lat, type="response")#
-GAM.2.abs.mod = lm(GAMprob2 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.2.abs.pred = predict(GAM.2.abs.mod, pred.abs.lat, type="response")#
-GAM.3.abs.mod = lm(GAMprob3 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.3.abs.pred = predict(GAM.3.abs.mod, pred.abs.lat, type="response")#
-GAM.4.abs.mod = lm(GAMprob4 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.4.abs.pred = predict(GAM.4.abs.mod, pred.abs.lat, type="response")#
-GAM.5.abs.mod = lm(GAMprob5 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.5.abs.pred = predict(GAM.5.abs.mod, pred.abs.lat, type="response")#
-GAM.6.abs.mod = lm(GAMprob6 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.6.abs.pred = predict(GAM.6.abs.mod, pred.abs.lat, type="response")#
-GAM.7.abs.mod = lm(GAMprob7 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.7.abs.pred = predict(GAM.7.abs.mod, pred.abs.lat, type="response")#
-GAM.8.abs.mod = lm(GAMprob8 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.8.abs.pred = predict(GAM.8.abs.mod, pred.abs.lat, type="response")#
-GAM.9.abs.mod = lm(GAMprob9 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.9.abs.pred = predict(GAM.9.abs.mod, pred.abs.lat, type="response")#
-GAM.10.abs.mod = lm(GAMprob10 ~ Latitude + I(Latitude^2), data=abs)#
-GAM.10.abs.pred = predict(GAM.10.abs.mod, pred.abs.lat, type="response")#
-summary(GAM.ave.pres.mod)#
-summary(GAM.ave.abs.mod)
-RF.ave.pres.mod = lm(RFave ~ Latitude + I(Latitude^2), data=pres)#
-RF.ave.pres.pred = predict(RF.ave.pres.mod, pred.pres.lat, type="response")#
-RF.1.pres.mod = lm(RFprob1 ~ Latitude + I(Latitude^2), data=pres)#
-RF.1.pres.pred = predict(RF.1.pres.mod, pred.pres.lat, type="response")#
-RF.2.pres.mod = lm(RFprob2 ~ Latitude + I(Latitude^2), data=pres)#
-RF.2.pres.pred = predict(RF.2.pres.mod, pred.pres.lat, type="response")#
-RF.3.pres.mod = lm(RFprob3 ~ Latitude + I(Latitude^2), data=pres)#
-RF.3.pres.pred = predict(RF.3.pres.mod, pred.pres.lat, type="response")#
-RF.4.pres.mod = lm(RFprob4 ~ Latitude + I(Latitude^2), data=pres)#
-RF.4.pres.pred = predict(RF.4.pres.mod, pred.pres.lat, type="response")#
-RF.5.pres.mod = lm(RFprob5 ~ Latitude + I(Latitude^2), data=pres)#
-RF.5.pres.pred = predict(RF.5.pres.mod, pred.pres.lat, type="response")#
-RF.6.pres.mod = lm(RFprob6 ~ Latitude + I(Latitude^2), data=pres)#
-RF.6.pres.pred = predict(RF.6.pres.mod, pred.pres.lat, type="response")#
-RF.7.pres.mod = lm(RFprob7 ~ Latitude + I(Latitude^2), data=pres)#
-RF.7.pres.pred = predict(RF.7.pres.mod, pred.pres.lat, type="response")#
-RF.8.pres.mod = lm(RFprob8 ~ Latitude + I(Latitude^2), data=pres)#
-RF.8.pres.pred = predict(RF.8.pres.mod, pred.pres.lat, type="response")#
-RF.9.pres.mod = lm(RFprob9 ~ Latitude + I(Latitude^2), data=pres)#
-RF.9.pres.pred = predict(RF.9.pres.mod, pred.pres.lat, type="response")#
-RF.10.pres.mod = lm(RFprob10 ~ Latitude + I(Latitude^2), data=pres)#
-RF.10.pres.pred = predict(RF.10.pres.mod, pred.pres.lat, type="response")#
-RF.ave.abs.mod = lm(RFave ~ Latitude + I(Latitude^2), data=abs)#
-RF.ave.abs.pred = predict(RF.ave.abs.mod, pred.abs.lat, type="response")#
-RF.1.abs.mod = lm(RFprob1 ~ Latitude + I(Latitude^2), data=abs)#
-RF.1.abs.pred = predict(RF.1.abs.mod, pred.abs.lat, type="response")#
-RF.2.abs.mod = lm(RFprob2 ~ Latitude + I(Latitude^2), data=abs)#
-RF.2.abs.pred = predict(RF.2.abs.mod, pred.abs.lat, type="response")#
-RF.3.abs.mod = lm(RFprob3 ~ Latitude + I(Latitude^2), data=abs)#
-RF.3.abs.pred = predict(RF.3.abs.mod, pred.abs.lat, type="response")#
-RF.4.abs.mod = lm(RFprob4 ~ Latitude + I(Latitude^2), data=abs)#
-RF.4.abs.pred = predict(RF.4.abs.mod, pred.abs.lat, type="response")#
-RF.5.abs.mod = lm(RFprob5 ~ Latitude + I(Latitude^2), data=abs)#
-RF.5.abs.pred = predict(RF.5.abs.mod, pred.abs.lat, type="response")#
-RF.6.abs.mod = lm(RFprob6 ~ Latitude + I(Latitude^2), data=abs)#
-RF.6.abs.pred = predict(RF.6.abs.mod, pred.abs.lat, type="response")#
-RF.7.abs.mod = lm(RFprob7 ~ Latitude + I(Latitude^2), data=abs)#
-RF.7.abs.pred = predict(RF.7.abs.mod, pred.abs.lat, type="response")#
-RF.8.abs.mod = lm(RFprob8 ~ Latitude + I(Latitude^2), data=abs)#
-RF.8.abs.pred = predict(RF.8.abs.mod, pred.abs.lat, type="response")#
-RF.9.abs.mod = lm(RFprob9 ~ Latitude + I(Latitude^2), data=abs)#
-RF.9.abs.pred = predict(RF.9.abs.mod, pred.abs.lat, type="response")#
-RF.10.abs.mod = lm(RFprob10 ~ Latitude + I(Latitude^2), data=abs)#
-RF.10.abs.pred = predict(RF.10.abs.mod, pred.abs.lat, type="response")#
-summary(RF.ave.pres.mod)#
-summary(RF.ave.abs.mod)
-BRT.ave.pres.mod = lm(BRTave ~ Latitude + I(Latitude^2), data=pres)#
-BRT.ave.pres.pred = predict(BRT.ave.pres.mod, pred.pres.lat, type="response")#
-BRT.1.pres.mod = lm(BRTprob1 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.1.pres.pred = predict(BRT.1.pres.mod, pred.pres.lat, type="response")#
-BRT.2.pres.mod = lm(BRTprob2 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.2.pres.pred = predict(BRT.2.pres.mod, pred.pres.lat, type="response")#
-BRT.3.pres.mod = lm(BRTprob3 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.3.pres.pred = predict(BRT.3.pres.mod, pred.pres.lat, type="response")#
-BRT.4.pres.mod = lm(BRTprob4 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.4.pres.pred = predict(BRT.4.pres.mod, pred.pres.lat, type="response")#
-BRT.5.pres.mod = lm(BRTprob5 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.5.pres.pred = predict(BRT.5.pres.mod, pred.pres.lat, type="response")#
-BRT.6.pres.mod = lm(BRTprob6 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.6.pres.pred = predict(BRT.6.pres.mod, pred.pres.lat, type="response")#
-BRT.7.pres.mod = lm(BRTprob7 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.7.pres.pred = predict(BRT.7.pres.mod, pred.pres.lat, type="response")#
-BRT.8.pres.mod = lm(BRTprob8 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.8.pres.pred = predict(BRT.8.pres.mod, pred.pres.lat, type="response")#
-BRT.9.pres.mod = lm(BRTprob9 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.9.pres.pred = predict(BRT.9.pres.mod, pred.pres.lat, type="response")#
-BRT.10.pres.mod = lm(BRTprob10 ~ Latitude + I(Latitude^2), data=pres)#
-BRT.10.pres.pred = predict(BRT.10.pres.mod, pred.pres.lat, type="response")#
-BRT.ave.abs.mod = lm(BRTave ~ Latitude + I(Latitude^2), data=abs)#
-BRT.ave.abs.pred = predict(BRT.ave.abs.mod, pred.abs.lat, type="response")#
-BRT.1.abs.mod = lm(BRTprob1 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.1.abs.pred = predict(BRT.1.abs.mod, pred.abs.lat, type="response")#
-BRT.2.abs.mod = lm(BRTprob2 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.2.abs.pred = predict(BRT.2.abs.mod, pred.abs.lat, type="response")#
-BRT.3.abs.mod = lm(BRTprob3 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.3.abs.pred = predict(BRT.3.abs.mod, pred.abs.lat, type="response")#
-BRT.4.abs.mod = lm(BRTprob4 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.4.abs.pred = predict(BRT.4.abs.mod, pred.abs.lat, type="response")#
-BRT.5.abs.mod = lm(BRTprob5 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.5.abs.pred = predict(BRT.5.abs.mod, pred.abs.lat, type="response")#
-BRT.6.abs.mod = lm(BRTprob6 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.6.abs.pred = predict(BRT.6.abs.mod, pred.abs.lat, type="response")#
-BRT.7.abs.mod = lm(BRTprob7 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.7.abs.pred = predict(BRT.7.abs.mod, pred.abs.lat, type="response")#
-BRT.8.abs.mod = lm(BRTprob8 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.8.abs.pred = predict(BRT.8.abs.mod, pred.abs.lat, type="response")#
-BRT.9.abs.mod = lm(BRTprob9 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.9.abs.pred = predict(BRT.9.abs.mod, pred.abs.lat, type="response")#
-BRT.10.abs.mod = lm(BRTprob10 ~ Latitude + I(Latitude^2), data=abs)#
-BRT.10.abs.pred = predict(BRT.10.abs.mod, pred.abs.lat, type="response")#
-summary(BRT.ave.pres.mod)#
-summary(BRT.ave.abs.mod)
-MAX.ave.pres.mod = lm(MAXave ~ Latitude + I(Latitude^2), data=pres)#
-MAX.ave.pres.pred = predict(MAX.ave.pres.mod, pred.pres.lat, type="response")#
-MAX.1.pres.mod = lm(MAXprob1 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.1.pres.pred = predict(MAX.1.pres.mod, pred.pres.lat, type="response")#
-MAX.2.pres.mod = lm(MAXprob2 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.2.pres.pred = predict(MAX.2.pres.mod, pred.pres.lat, type="response")#
-MAX.3.pres.mod = lm(MAXprob3 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.3.pres.pred = predict(MAX.3.pres.mod, pred.pres.lat, type="response")#
-MAX.4.pres.mod = lm(MAXprob4 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.4.pres.pred = predict(MAX.4.pres.mod, pred.pres.lat, type="response")#
-MAX.5.pres.mod = lm(MAXprob5 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.5.pres.pred = predict(MAX.5.pres.mod, pred.pres.lat, type="response")#
-MAX.6.pres.mod = lm(MAXprob6 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.6.pres.pred = predict(MAX.6.pres.mod, pred.pres.lat, type="response")#
-MAX.7.pres.mod = lm(MAXprob7 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.7.pres.pred = predict(MAX.7.pres.mod, pred.pres.lat, type="response")#
-MAX.8.pres.mod = lm(MAXprob8 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.8.pres.pred = predict(MAX.8.pres.mod, pred.pres.lat, type="response")#
-MAX.9.pres.mod = lm(MAXprob9 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.9.pres.pred = predict(MAX.9.pres.mod, pred.pres.lat, type="response")#
-MAX.10.pres.mod = lm(MAXprob10 ~ Latitude + I(Latitude^2), data=pres)#
-MAX.10.pres.pred = predict(MAX.10.pres.mod, pred.pres.lat, type="response")#
-MAX.ave.abs.mod = lm(MAXave ~ Latitude + I(Latitude^2), data=abs)#
-MAX.ave.abs.pred = predict(MAX.ave.abs.mod, pred.abs.lat, type="response")#
-MAX.1.abs.mod = lm(MAXprob1 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.1.abs.pred = predict(MAX.1.abs.mod, pred.abs.lat, type="response")#
-MAX.2.abs.mod = lm(MAXprob2 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.2.abs.pred = predict(MAX.2.abs.mod, pred.abs.lat, type="response")#
-MAX.3.abs.mod = lm(MAXprob3 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.3.abs.pred = predict(MAX.3.abs.mod, pred.abs.lat, type="response")#
-MAX.4.abs.mod = lm(MAXprob4 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.4.abs.pred = predict(MAX.4.abs.mod, pred.abs.lat, type="response")#
-MAX.5.abs.mod = lm(MAXprob5 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.5.abs.pred = predict(MAX.5.abs.mod, pred.abs.lat, type="response")#
-MAX.6.abs.mod = lm(MAXprob6 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.6.abs.pred = predict(MAX.6.abs.mod, pred.abs.lat, type="response")#
-MAX.7.abs.mod = lm(MAXprob7 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.7.abs.pred = predict(MAX.7.abs.mod, pred.abs.lat, type="response")#
-MAX.8.abs.mod = lm(MAXprob8 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.8.abs.pred = predict(MAX.8.abs.mod, pred.abs.lat, type="response")#
-MAX.9.abs.mod = lm(MAXprob9 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.9.abs.pred = predict(MAX.9.abs.mod, pred.abs.lat, type="response")#
-MAX.10.abs.mod = lm(MAXprob10 ~ Latitude + I(Latitude^2), data=abs)#
-MAX.10.abs.pred = predict(MAX.10.abs.mod, pred.abs.lat, type="response")#
-summary(MAX.ave.pres.mod)#
-summary(MAX.ave.abs.mod)
-pres = occ[occ$PRESABS==1,]; dim(pres)#
-abs = occ[occ$PRESABS==0,]; dim(abs)
-pred.pres.el = data.frame(Elevation = seq(min(pres$Elevation, na.rm=T), max(pres$Elevation, na.rm=T), by=50))#
-pred.abs.el = data.frame(Elevation = seq(min(abs$Elevation, na.rm=T), max(abs$Elevation, na.rm=T), by=50))
-LR.ave.pres.mod.el = lm(LRave ~ Elevation + I(Elevation^2), data=pres)#
-LR.ave.pres.pred.el = predict(LR.ave.pres.mod.el, pred.pres.el, type="response")#
-LR.1.pres.mod.el = lm(LRprob1 ~ Elevation + I(Elevation^2), data=pres)#
-LR.1.pres.pred.el = predict(LR.1.pres.mod.el, pred.pres.el, type="response")#
-LR.2.pres.mod.el = lm(LRprob2 ~ Elevation + I(Elevation^2), data=pres)#
-LR.2.pres.pred.el = predict(LR.2.pres.mod.el, pred.pres.el, type="response")#
-LR.3.pres.mod.el = lm(LRprob3 ~ Elevation + I(Elevation^2), data=pres)#
-LR.3.pres.pred.el = predict(LR.3.pres.mod.el, pred.pres.el, type="response")#
-LR.4.pres.mod.el = lm(LRprob4 ~ Elevation + I(Elevation^2), data=pres)#
-LR.4.pres.pred.el = predict(LR.4.pres.mod.el, pred.pres.el, type="response")#
-LR.5.pres.mod.el = lm(LRprob5 ~ Elevation + I(Elevation^2), data=pres)#
-LR.5.pres.pred.el = predict(LR.5.pres.mod.el, pred.pres.el, type="response")#
-LR.6.pres.mod.el = lm(LRprob6 ~ Elevation + I(Elevation^2), data=pres)#
-LR.6.pres.pred.el = predict(LR.6.pres.mod.el, pred.pres.el, type="response")#
-LR.7.pres.mod.el = lm(LRprob7 ~ Elevation + I(Elevation^2), data=pres)#
-LR.7.pres.pred.el = predict(LR.7.pres.mod.el, pred.pres.el, type="response")#
-LR.8.pres.mod.el = lm(LRprob8 ~ Elevation + I(Elevation^2), data=pres)#
-LR.8.pres.pred.el = predict(LR.8.pres.mod.el, pred.pres.el, type="response")#
-LR.9.pres.mod.el = lm(LRprob9 ~ Elevation + I(Elevation^2), data=pres)#
-LR.9.pres.pred.el = predict(LR.9.pres.mod.el, pred.pres.el, type="response")#
-LR.10.pres.mod.el = lm(LRprob10 ~ Elevation + I(Elevation^2), data=pres)#
-LR.10.pres.pred.el = predict(LR.10.pres.mod.el, pred.pres.el, type="response")#
-LR.ave.abs.mod.el = lm(LRave ~ Elevation + I(Elevation^2), data=abs)#
-LR.ave.abs.pred.el = predict(LR.ave.abs.mod.el, pred.abs.el, type="response")#
-LR.1.abs.mod.el = lm(LRprob1 ~ Elevation + I(Elevation^2), data=abs)#
-LR.1.abs.pred.el = predict(LR.1.abs.mod.el, pred.abs.el, type="response")#
-LR.2.abs.mod.el = lm(LRprob2 ~ Elevation + I(Elevation^2), data=abs)#
-LR.2.abs.pred.el = predict(LR.2.abs.mod.el, pred.abs.el, type="response")#
-LR.3.abs.mod.el = lm(LRprob3 ~ Elevation + I(Elevation^2), data=abs)#
-LR.3.abs.pred.el = predict(LR.3.abs.mod.el, pred.abs.el, type="response")#
-LR.4.abs.mod.el = lm(LRprob4 ~ Elevation + I(Elevation^2), data=abs)#
-LR.4.abs.pred.el = predict(LR.4.abs.mod.el, pred.abs.el, type="response")#
-LR.5.abs.mod.el = lm(LRprob5 ~ Elevation + I(Elevation^2), data=abs)#
-LR.5.abs.pred.el = predict(LR.5.abs.mod.el, pred.abs.el, type="response")#
-LR.6.abs.mod.el = lm(LRprob6 ~ Elevation + I(Elevation^2), data=abs)#
-LR.6.abs.pred.el = predict(LR.6.abs.mod.el, pred.abs.el, type="response")#
-LR.7.abs.mod.el = lm(LRprob7 ~ Elevation + I(Elevation^2), data=abs)#
-LR.7.abs.pred.el = predict(LR.7.abs.mod.el, pred.abs.el, type="response")#
-LR.8.abs.mod.el = lm(LRprob8 ~ Elevation + I(Elevation^2), data=abs)#
-LR.8.abs.pred.el = predict(LR.8.abs.mod.el, pred.abs.el, type="response")#
-LR.9.abs.mod.el = lm(LRprob9 ~ Elevation + I(Elevation^2), data=abs)#
-LR.9.abs.pred.el = predict(LR.9.abs.mod.el, pred.abs.el, type="response")#
-LR.10.abs.mod.el = lm(LRprob10 ~ Elevation + I(Elevation^2), data=abs)#
-LR.10.abs.pred.el = predict(LR.10.abs.mod.el, pred.abs.el, type="response")#
-summary(LR.ave.pres.mod.el)#
-summary(LR.ave.abs.mod.el)#
-#
-# GAM models#
-GAM.ave.pres.mod.el = lm(GAMave ~ Elevation + I(Elevation^2), data=pres)#
-GAM.ave.pres.pred.el = predict(GAM.ave.pres.mod.el, pred.pres.el, type="response")#
-GAM.1.pres.mod.el = lm(GAMprob1 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.1.pres.pred.el = predict(GAM.1.pres.mod.el, pred.pres.el, type="response")#
-GAM.2.pres.mod.el = lm(GAMprob2 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.2.pres.pred.el = predict(GAM.2.pres.mod.el, pred.pres.el, type="response")#
-GAM.3.pres.mod.el = lm(GAMprob3 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.3.pres.pred.el = predict(GAM.3.pres.mod.el, pred.pres.el, type="response")#
-GAM.4.pres.mod.el = lm(GAMprob4 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.4.pres.pred.el = predict(GAM.4.pres.mod.el, pred.pres.el, type="response")#
-GAM.5.pres.mod.el = lm(GAMprob5 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.5.pres.pred.el = predict(GAM.5.pres.mod.el, pred.pres.el, type="response")#
-GAM.6.pres.mod.el = lm(GAMprob6 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.6.pres.pred.el = predict(GAM.6.pres.mod.el, pred.pres.el, type="response")#
-GAM.7.pres.mod.el = lm(GAMprob7 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.7.pres.pred.el = predict(GAM.7.pres.mod.el, pred.pres.el, type="response")#
-GAM.8.pres.mod.el = lm(GAMprob8 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.8.pres.pred.el = predict(GAM.8.pres.mod.el, pred.pres.el, type="response")#
-GAM.9.pres.mod.el = lm(GAMprob9 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.9.pres.pred.el = predict(GAM.9.pres.mod.el, pred.pres.el, type="response")#
-GAM.10.pres.mod.el = lm(GAMprob10 ~ Elevation + I(Elevation^2), data=pres)#
-GAM.10.pres.pred.el = predict(GAM.10.pres.mod.el, pred.pres.el, type="response")#
-GAM.ave.abs.mod.el = lm(GAMave ~ Elevation + I(Elevation^2), data=abs)#
-GAM.ave.abs.pred.el = predict(GAM.ave.abs.mod.el, pred.abs.el, type="response")#
-GAM.1.abs.mod.el = lm(GAMprob1 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.1.abs.pred.el = predict(GAM.1.abs.mod.el, pred.abs.el, type="response")#
-GAM.2.abs.mod.el = lm(GAMprob2 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.2.abs.pred.el = predict(GAM.2.abs.mod.el, pred.abs.el, type="response")#
-GAM.3.abs.mod.el = lm(GAMprob3 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.3.abs.pred.el = predict(GAM.3.abs.mod.el, pred.abs.el, type="response")#
-GAM.4.abs.mod.el = lm(GAMprob4 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.4.abs.pred.el = predict(GAM.4.abs.mod.el, pred.abs.el, type="response")#
-GAM.5.abs.mod.el = lm(GAMprob5 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.5.abs.pred.el = predict(GAM.5.abs.mod.el, pred.abs.el, type="response")#
-GAM.6.abs.mod.el = lm(GAMprob6 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.6.abs.pred.el = predict(GAM.6.abs.mod.el, pred.abs.el, type="response")#
-GAM.7.abs.mod.el = lm(GAMprob7 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.7.abs.pred.el = predict(GAM.7.abs.mod.el, pred.abs.el, type="response")#
-GAM.8.abs.mod.el = lm(GAMprob8 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.8.abs.pred.el = predict(GAM.8.abs.mod.el, pred.abs.el, type="response")#
-GAM.9.abs.mod.el = lm(GAMprob9 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.9.abs.pred.el = predict(GAM.9.abs.mod.el, pred.abs.el, type="response")#
-GAM.10.abs.mod.el = lm(GAMprob10 ~ Elevation + I(Elevation^2), data=abs)#
-GAM.10.abs.pred.el = predict(GAM.10.abs.mod.el, pred.abs.el, type="response")#
-summary(GAM.ave.pres.mod.el)#
-summary(GAM.ave.abs.mod.el)#
-#
-# RF models#
-RF.ave.pres.mod.el = lm(RFave ~ Elevation + I(Elevation^2), data=pres)#
-RF.ave.pres.pred.el = predict(RF.ave.pres.mod.el, pred.pres.el, type="response")#
-RF.1.pres.mod.el = lm(RFprob1 ~ Elevation + I(Elevation^2), data=pres)#
-RF.1.pres.pred.el = predict(RF.1.pres.mod.el, pred.pres.el, type="response")#
-RF.2.pres.mod.el = lm(RFprob2 ~ Elevation + I(Elevation^2), data=pres)#
-RF.2.pres.pred.el = predict(RF.2.pres.mod.el, pred.pres.el, type="response")#
-RF.3.pres.mod.el = lm(RFprob3 ~ Elevation + I(Elevation^2), data=pres)#
-RF.3.pres.pred.el = predict(RF.3.pres.mod.el, pred.pres.el, type="response")#
-RF.4.pres.mod.el = lm(RFprob4 ~ Elevation + I(Elevation^2), data=pres)#
-RF.4.pres.pred.el = predict(RF.4.pres.mod.el, pred.pres.el, type="response")#
-RF.5.pres.mod.el = lm(RFprob5 ~ Elevation + I(Elevation^2), data=pres)#
-RF.5.pres.pred.el = predict(RF.5.pres.mod.el, pred.pres.el, type="response")#
-RF.6.pres.mod.el = lm(RFprob6 ~ Elevation + I(Elevation^2), data=pres)#
-RF.6.pres.pred.el = predict(RF.6.pres.mod.el, pred.pres.el, type="response")#
-RF.7.pres.mod.el = lm(RFprob7 ~ Elevation + I(Elevation^2), data=pres)#
-RF.7.pres.pred.el = predict(RF.7.pres.mod.el, pred.pres.el, type="response")#
-RF.8.pres.mod.el = lm(RFprob8 ~ Elevation + I(Elevation^2), data=pres)#
-RF.8.pres.pred.el = predict(RF.8.pres.mod.el, pred.pres.el, type="response")#
-RF.9.pres.mod.el = lm(RFprob9 ~ Elevation + I(Elevation^2), data=pres)#
-RF.9.pres.pred.el = predict(RF.9.pres.mod.el, pred.pres.el, type="response")#
-RF.10.pres.mod.el = lm(RFprob10 ~ Elevation + I(Elevation^2), data=pres)#
-RF.10.pres.pred.el = predict(RF.10.pres.mod.el, pred.pres.el, type="response")#
-RF.ave.abs.mod.el = lm(RFave ~ Elevation + I(Elevation^2), data=abs)#
-RF.ave.abs.pred.el = predict(RF.ave.abs.mod.el, pred.abs.el, type="response")#
-RF.1.abs.mod.el = lm(RFprob1 ~ Elevation + I(Elevation^2), data=abs)#
-RF.1.abs.pred.el = predict(RF.1.abs.mod.el, pred.abs.el, type="response")#
-RF.2.abs.mod.el = lm(RFprob2 ~ Elevation + I(Elevation^2), data=abs)#
-RF.2.abs.pred.el = predict(RF.2.abs.mod.el, pred.abs.el, type="response")#
-RF.3.abs.mod.el = lm(RFprob3 ~ Elevation + I(Elevation^2), data=abs)#
-RF.3.abs.pred.el = predict(RF.3.abs.mod.el, pred.abs.el, type="response")#
-RF.4.abs.mod.el = lm(RFprob4 ~ Elevation + I(Elevation^2), data=abs)#
-RF.4.abs.pred.el = predict(RF.4.abs.mod.el, pred.abs.el, type="response")#
-RF.5.abs.mod.el = lm(RFprob5 ~ Elevation + I(Elevation^2), data=abs)#
-RF.5.abs.pred.el = predict(RF.5.abs.mod.el, pred.abs.el, type="response")#
-RF.6.abs.mod.el = lm(RFprob6 ~ Elevation + I(Elevation^2), data=abs)#
-RF.6.abs.pred.el = predict(RF.6.abs.mod.el, pred.abs.el, type="response")#
-RF.7.abs.mod.el = lm(RFprob7 ~ Elevation + I(Elevation^2), data=abs)#
-RF.7.abs.pred.el = predict(RF.7.abs.mod.el, pred.abs.el, type="response")#
-RF.8.abs.mod.el = lm(RFprob8 ~ Elevation + I(Elevation^2), data=abs)#
-RF.8.abs.pred.el = predict(RF.8.abs.mod.el, pred.abs.el, type="response")#
-RF.9.abs.mod.el = lm(RFprob9 ~ Elevation + I(Elevation^2), data=abs)#
-RF.9.abs.pred.el = predict(RF.9.abs.mod.el, pred.abs.el, type="response")#
-RF.10.abs.mod.el = lm(RFprob10 ~ Elevation + I(Elevation^2), data=abs)#
-RF.10.abs.pred.el = predict(RF.10.abs.mod.el, pred.abs.el, type="response")#
-summary(RF.ave.pres.mod.el)#
-summary(RF.ave.abs.mod.el)#
-#
-# BRT models#
-BRT.ave.pres.mod.el = lm(BRTave ~ Elevation + I(Elevation^2), data=pres)#
-BRT.ave.pres.pred.el = predict(BRT.ave.pres.mod.el, pred.pres.el, type="response")#
-BRT.1.pres.mod.el = lm(BRTprob1 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.1.pres.pred.el = predict(BRT.1.pres.mod.el, pred.pres.el, type="response")#
-BRT.2.pres.mod.el = lm(BRTprob2 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.2.pres.pred.el = predict(BRT.2.pres.mod.el, pred.pres.el, type="response")#
-BRT.3.pres.mod.el = lm(BRTprob3 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.3.pres.pred.el = predict(BRT.3.pres.mod.el, pred.pres.el, type="response")#
-BRT.4.pres.mod.el = lm(BRTprob4 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.4.pres.pred.el = predict(BRT.4.pres.mod.el, pred.pres.el, type="response")#
-BRT.5.pres.mod.el = lm(BRTprob5 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.5.pres.pred.el = predict(BRT.5.pres.mod.el, pred.pres.el, type="response")#
-BRT.6.pres.mod.el = lm(BRTprob6 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.6.pres.pred.el = predict(BRT.6.pres.mod.el, pred.pres.el, type="response")#
-BRT.7.pres.mod.el = lm(BRTprob7 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.7.pres.pred.el = predict(BRT.7.pres.mod.el, pred.pres.el, type="response")#
-BRT.8.pres.mod.el = lm(BRTprob8 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.8.pres.pred.el = predict(BRT.8.pres.mod.el, pred.pres.el, type="response")#
-BRT.9.pres.mod.el = lm(BRTprob9 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.9.pres.pred.el = predict(BRT.9.pres.mod.el, pred.pres.el, type="response")#
-BRT.10.pres.mod.el = lm(BRTprob10 ~ Elevation + I(Elevation^2), data=pres)#
-BRT.10.pres.pred.el = predict(BRT.10.pres.mod.el, pred.pres.el, type="response")#
-BRT.ave.abs.mod.el = lm(BRTave ~ Elevation + I(Elevation^2), data=abs)#
-BRT.ave.abs.pred.el = predict(BRT.ave.abs.mod.el, pred.abs.el, type="response")#
-BRT.1.abs.mod.el = lm(BRTprob1 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.1.abs.pred.el = predict(BRT.1.abs.mod.el, pred.abs.el, type="response")#
-BRT.2.abs.mod.el = lm(BRTprob2 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.2.abs.pred.el = predict(BRT.2.abs.mod.el, pred.abs.el, type="response")#
-BRT.3.abs.mod.el = lm(BRTprob3 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.3.abs.pred.el = predict(BRT.3.abs.mod.el, pred.abs.el, type="response")#
-BRT.4.abs.mod.el = lm(BRTprob4 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.4.abs.pred.el = predict(BRT.4.abs.mod.el, pred.abs.el, type="response")#
-BRT.5.abs.mod.el = lm(BRTprob5 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.5.abs.pred.el = predict(BRT.5.abs.mod.el, pred.abs.el, type="response")#
-BRT.6.abs.mod.el = lm(BRTprob6 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.6.abs.pred.el = predict(BRT.6.abs.mod.el, pred.abs.el, type="response")#
-BRT.7.abs.mod.el = lm(BRTprob7 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.7.abs.pred.el = predict(BRT.7.abs.mod.el, pred.abs.el, type="response")#
-BRT.8.abs.mod.el = lm(BRTprob8 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.8.abs.pred.el = predict(BRT.8.abs.mod.el, pred.abs.el, type="response")#
-BRT.9.abs.mod.el = lm(BRTprob9 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.9.abs.pred.el = predict(BRT.9.abs.mod.el, pred.abs.el, type="response")#
-BRT.10.abs.mod.el = lm(BRTprob10 ~ Elevation + I(Elevation^2), data=abs)#
-BRT.10.abs.pred.el = predict(BRT.10.abs.mod.el, pred.abs.el, type="response")#
-summary(BRT.ave.pres.mod.el)#
-summary(BRT.ave.abs.mod.el)#
-#
-# MAX models#
-MAX.ave.pres.mod.el = lm(MAXave ~ Elevation + I(Elevation^2), data=pres)#
-MAX.ave.pres.pred.el = predict(MAX.ave.pres.mod.el, pred.pres.el, type="response")#
-MAX.1.pres.mod.el = lm(MAXprob1 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.1.pres.pred.el = predict(MAX.1.pres.mod.el, pred.pres.el, type="response")#
-MAX.2.pres.mod.el = lm(MAXprob2 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.2.pres.pred.el = predict(MAX.2.pres.mod.el, pred.pres.el, type="response")#
-MAX.3.pres.mod.el = lm(MAXprob3 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.3.pres.pred.el = predict(MAX.3.pres.mod.el, pred.pres.el, type="response")#
-MAX.4.pres.mod.el = lm(MAXprob4 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.4.pres.pred.el = predict(MAX.4.pres.mod.el, pred.pres.el, type="response")#
-MAX.5.pres.mod.el = lm(MAXprob5 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.5.pres.pred.el = predict(MAX.5.pres.mod.el, pred.pres.el, type="response")#
-MAX.6.pres.mod.el = lm(MAXprob6 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.6.pres.pred.el = predict(MAX.6.pres.mod.el, pred.pres.el, type="response")#
-MAX.7.pres.mod.el = lm(MAXprob7 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.7.pres.pred.el = predict(MAX.7.pres.mod.el, pred.pres.el, type="response")#
-MAX.8.pres.mod.el = lm(MAXprob8 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.8.pres.pred.el = predict(MAX.8.pres.mod.el, pred.pres.el, type="response")#
-MAX.9.pres.mod.el = lm(MAXprob9 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.9.pres.pred.el = predict(MAX.9.pres.mod.el, pred.pres.el, type="response")#
-MAX.10.pres.mod.el = lm(MAXprob10 ~ Elevation + I(Elevation^2), data=pres)#
-MAX.10.pres.pred.el = predict(MAX.10.pres.mod.el, pred.pres.el, type="response")#
-MAX.ave.abs.mod.el = lm(MAXave ~ Elevation + I(Elevation^2), data=abs)#
-MAX.ave.abs.pred.el = predict(MAX.ave.abs.mod.el, pred.abs.el, type="response")#
-MAX.1.abs.mod.el = lm(MAXprob1 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.1.abs.pred.el = predict(MAX.1.abs.mod.el, pred.abs.el, type="response")#
-MAX.2.abs.mod.el = lm(MAXprob2 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.2.abs.pred.el = predict(MAX.2.abs.mod.el, pred.abs.el, type="response")#
-MAX.3.abs.mod.el = lm(MAXprob3 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.3.abs.pred.el = predict(MAX.3.abs.mod.el, pred.abs.el, type="response")#
-MAX.4.abs.mod.el = lm(MAXprob4 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.4.abs.pred.el = predict(MAX.4.abs.mod.el, pred.abs.el, type="response")#
-MAX.5.abs.mod.el = lm(MAXprob5 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.5.abs.pred.el = predict(MAX.5.abs.mod.el, pred.abs.el, type="response")#
-MAX.6.abs.mod.el = lm(MAXprob6 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.6.abs.pred.el = predict(MAX.6.abs.mod.el, pred.abs.el, type="response")#
-MAX.7.abs.mod.el = lm(MAXprob7 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.7.abs.pred.el = predict(MAX.7.abs.mod.el, pred.abs.el, type="response")#
-MAX.8.abs.mod.el = lm(MAXprob8 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.8.abs.pred.el = predict(MAX.8.abs.mod.el, pred.abs.el, type="response")#
-MAX.9.abs.mod.el = lm(MAXprob9 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.9.abs.pred.el = predict(MAX.9.abs.mod.el, pred.abs.el, type="response")#
-MAX.10.abs.mod.el = lm(MAXprob10 ~ Elevation + I(Elevation^2), data=abs)#
-MAX.10.abs.pred.el = predict(MAX.10.abs.mod.el, pred.abs.el, type="response")#
-summary(MAX.ave.pres.mod.el)#
-summary(MAX.ave.abs.mod.el)
-options( scipen = 2 )#
-options( digits = 2 )#
-mods <- c("LR","GAM","RF","BRT","MAX")#
-latPresBind <- c()#
-latAbsBind <- c()#
-	# start with latitude#
-	for(i in 1:length(mods)){#
-		# presence records #
-		tempy <- get(paste(mods[i], ".ave.pres.mod", sep=""))#
-		lat <- coef(tempy)[2] # Latitude coef #
-		lat2 <- coef(tempy)[3] # Latitude^2 coef #
-		lat_p <- anova(tempy)$"Pr(>F)"[2] # P-value latitude test the null hypothesis of zero slope with the ANOVA table#
-		lat2_p <- anova(tempy)$"Pr(>F)"[3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-			# change p vals to little start codes#
-			ifelse(lat_p < 0.001 & lat_p > 0, lat_p <- "***", lat_p <- lat_p) #
-			ifelse(lat_p < 0.01 & lat_p > 0.001, lat_p <- "**", lat_p <- lat_p) #
-			ifelse(lat_p < 0.05 & lat_p > 0.01, lat_p <- "*", lat_p <- lat_p) #
-			ifelse(lat_p < 0.10 & lat_p > 0.05, lat_p <- ".", lat_p <- lat_p) #
-			ifelse(lat_p < 1.00 & lat_p > 0.10, lat_p <- " ", lat_p <- lat_p) #
-			ifelse(lat2_p < 0.001 & lat2_p > 0, lat2_p <- "***", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.01 & lat2_p > 0.001, lat2_p <- "**", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.05 & lat2_p > 0.01, lat2_p <- "*", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.10 & lat2_p > 0.05, lat2_p <- ".", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 1.00 & lat2_p > 0.10, lat2_p <- " ", lat2_p <- lat2_p) #
-				load("default_options.rda")#
-				options(default_options)#
-		Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-		options( scipen = 2 )#
-		options( digits = 2 )#
-		lat <- paste(format(lat, scientific = TRUE), lat_p, sep="")#
-		lat2 <- paste(format(as.numeric(lat2), scientific = TRUE), lat2_p, sep="")#
-		name <- mods[i]#
-		group <- as.matrix(c(name, lat, lat2, Adj_R_sqrd))#
-		latPresBind <- cbind(latPresBind, group)#
-	# now do absences #
-			tempy <- get(paste(mods[i], ".ave.abs.mod", sep=""))#
-		lat <- coef(tempy)[2] # Latitude coef #
-		lat2 <- coef(tempy)[3] # Latitude^2 coef #
-		lat_p <- anova(tempy)$"Pr(>F)"[2] # P-value latitude test the null hypothesis of zero slope with the ANOVA table#
-		lat2_p <- anova(tempy)$"Pr(>F)"[3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-			# change p vals to little start codes#
-			ifelse(lat_p < 0.001 & lat_p > 0, lat_p <- "***", lat_p <- lat_p) #
-			ifelse(lat_p < 0.01 & lat_p > 0.001, lat_p <- "**", lat_p <- lat_p) #
-			ifelse(lat_p < 0.05 & lat_p > 0.01, lat_p <- "*", lat_p <- lat_p) #
-			ifelse(lat_p < 0.10 & lat_p > 0.05, lat_p <- ".", lat_p <- lat_p) #
-			ifelse(lat_p < 1.00 & lat_p > 0.10, lat_p <- " ", lat_p <- lat_p) #
-			ifelse(lat2_p < 0.001 & lat2_p > 0, lat2_p <- "***", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.01 & lat2_p > 0.001, lat2_p <- "**", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.05 & lat2_p > 0.01, lat2_p <- "*", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.10 & lat2_p > 0.05, lat2_p <- ".", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 1.00 & lat2_p > 0.10, lat2_p <- " ", lat2_p <- lat2_p) #
-			options( scipen = 2 )#
-			options( digits = 2 )#
-		lat <- paste(format(lat, scientific = TRUE), lat_p, sep="")#
-		lat2 <- paste(format(as.numeric(lat2), scientific = TRUE), lat2_p, sep="")#
-		name <- mods[i]#
-				load("default_options.rda")#
-				options(default_options)#
-		Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-		group <- as.matrix(c(lat, lat2, Adj_R_sqrd))#
-		latAbsBind <- cbind(latAbsBind, group)#
-	}#
-	latty <- rbind(latPresBind, latAbsBind); latty#
-		elPresBind <- c()#
-		elAbsBind <- c()#
-	# end with elevation #
-		for(i in 1:length(mods)){#
-			# presence records #
-			tempy <- get(paste(mods[i], ".ave.pres.mod.el", sep=""))#
-			el <- coef(tempy)[2] # elitude coef #
-			el2 <- coef(tempy)[3] # elitude^2 coef #
-			el_p <- anova(tempy)$"Pr(>F)"[2] # P-value elitude test the null hypothesis of zero slope with the ANOVA table#
-			el2_p <- anova(tempy)$"Pr(>F)"[3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-				# change p vals to little start codes#
-				ifelse(el_p < 0.001 & el_p > 0, el_p <- "***", el_p <- el_p) #
-				ifelse(el_p < 0.01 & el_p > 0.001, el_p <- "**", el_p <- el_p) #
-				ifelse(el_p < 0.05 & el_p > 0.01, el_p <- "*", el_p <- el_p) #
-				ifelse(el_p < 0.10 & el_p > 0.05, el_p <- ".", el_p <- el_p) #
-				ifelse(el_p < 1.00 & el_p > 0.10, el_p <- " ", el_p <- el_p) #
-				ifelse(el2_p < 0.001 & el2_p > 0, el2_p <- "***", el2_p <- el2_p) #
-				ifelse(el2_p < 0.01 & el2_p > 0.001, el2_p <- "**", el2_p <- el2_p) #
-				ifelse(el2_p < 0.05 & el2_p > 0.01, el2_p <- "*", el2_p <- el2_p) #
-				ifelse(el2_p < 0.10 & el2_p > 0.05, el2_p <- ".", el2_p <- el2_p) #
-				ifelse(el2_p < 1.00 & el2_p > 0.10, el2_p <- " ", el2_p <- el2_p) #
-					load("default_options.rda")#
-					options(default_options)#
-			Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-			options( scipen = 2 )#
-			options( digits = 2 )#
-			el <- paste(format(el, scientific = TRUE), el_p, sep="")#
-			el2 <- paste(format(as.numeric(el2), scientific = TRUE), el2_p, sep="")#
-			name <- mods[i]#
-			group <- as.matrix(c(el, el2, Adj_R_sqrd))#
-			elPresBind <- cbind(elPresBind, group)#
-		# now do absences #
-				tempy <- get(paste(mods[i], ".ave.abs.mod.el", sep=""))#
-			el <- coef(tempy)[2] # elitude coef #
-			el2 <- coef(tempy)[3] # elitude^2 coef #
-			el_p <- anova(tempy)$"Pr(>F)"[2] # P-value elitude test the null hypothesis of zero slope with the ANOVA table#
-			el2_p <- anova(tempy)$"Pr(>F)"[3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-				# change p vals to little start codes#
-				ifelse(el_p < 0.001 & el_p > 0, el_p <- "***", el_p <- el_p) #
-				ifelse(el_p < 0.01 & el_p > 0.001, el_p <- "**", el_p <- el_p) #
-				ifelse(el_p < 0.05 & el_p > 0.01, el_p <- "*", el_p <- el_p) #
-				ifelse(el_p < 0.10 & el_p > 0.05, el_p <- ".", el_p <- el_p) #
-				ifelse(el_p < 1.00 & el_p > 0.10, el_p <- " ", el_p <- el_p) #
-				ifelse(el2_p < 0.001 & el2_p > 0, el2_p <- "***", el2_p <- el2_p) #
-				ifelse(el2_p < 0.01 & el2_p > 0.001, el2_p <- "**", el2_p <- el2_p) #
-				ifelse(el2_p < 0.05 & el2_p > 0.01, el2_p <- "*", el2_p <- el2_p) #
-				ifelse(el2_p < 0.10 & el2_p > 0.05, el2_p <- ".", el2_p <- el2_p) #
-				ifelse(el2_p < 1.00 & el2_p > 0.10, el2_p <- " ", el2_p <- el2_p) #
-				options( scipen = 2 )#
-				options( digits = 2 )#
-			el <- paste(format(el, scientific = TRUE), el_p, sep="")#
-			el2 <- paste(format(as.numeric(el2), scientific = TRUE), el2_p, sep="")#
-			name <- mods[i]#
-					load("default_options.rda")#
-					options(default_options)#
-			Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-			group <- as.matrix(c(el, el2, Adj_R_sqrd))#
-			elAbsBind <- cbind(elAbsBind, group)#
-		}#
-		my_els <- rbind(elPresBind, elAbsBind); my_els#
-		both <- rbind(latty,my_els)#
-	second <- c("",	"Latitude", "Latitude2", "Adj. R2", "Latitude", "Latitude2", "Adj. R2", "Elevation", "Elevation2", "Adj. R2", "Elevation", "Elevation2", "Adj. R2")#
-	First <- c("", "Presence", "", "", "Absence", "", "", "Presence", "", "", "Absence", "", "") #
-	both <- cbind(second, both)#
-	both <- cbind(First, both)#
-	both <- data.frame(both)#
-	colnames(both) = ""#
-	tableE2 <- both
-tableE2
-options( scipen = 2 )#
-options( digits = 2 )#
-mods <- c("LR","GAM","RF","BRT","MAX")#
-latPresBind <- c()#
-latAbsBind <- c()
-getwd()
-default_options = options()
-setwd(path.obj)
-options( scipen = 2 )#
-options( digits = 2 )#
-mods <- c("LR","GAM","RF","BRT","MAX")#
-latPresBind <- c()#
-latAbsBind <- c()#
-	# start with latitude#
-	for(i in 1:length(mods)){#
-		# presence records #
-		tempy <- get(paste(mods[i], ".ave.pres.mod", sep=""))#
-		lat <- coef(tempy)[2] # Latitude coef #
-		lat2 <- coef(tempy)[3] # Latitude^2 coef #
-		lat_p <- anova(tempy)$"Pr(>F)"[2] # P-value latitude test the null hypothesis of zero slope with the ANOVA table#
-		lat2_p <- anova(tempy)$"Pr(>F)"[3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-			# change p vals to little start codes#
-			ifelse(lat_p < 0.001 & lat_p > 0, lat_p <- "***", lat_p <- lat_p) #
-			ifelse(lat_p < 0.01 & lat_p > 0.001, lat_p <- "**", lat_p <- lat_p) #
-			ifelse(lat_p < 0.05 & lat_p > 0.01, lat_p <- "*", lat_p <- lat_p) #
-			ifelse(lat_p < 0.10 & lat_p > 0.05, lat_p <- ".", lat_p <- lat_p) #
-			ifelse(lat_p < 1.00 & lat_p > 0.10, lat_p <- " ", lat_p <- lat_p) #
-			ifelse(lat2_p < 0.001 & lat2_p > 0, lat2_p <- "***", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.01 & lat2_p > 0.001, lat2_p <- "**", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.05 & lat2_p > 0.01, lat2_p <- "*", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.10 & lat2_p > 0.05, lat2_p <- ".", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 1.00 & lat2_p > 0.10, lat2_p <- " ", lat2_p <- lat2_p) #
-				load("default_options.rda")#
-				options(default_options)#
-		Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-		options( scipen = 2 )#
-		options( digits = 2 )#
-		lat <- paste(format(lat, scientific = TRUE), lat_p, sep="")#
-		lat2 <- paste(format(as.numeric(lat2), scientific = TRUE), lat2_p, sep="")#
-		name <- mods[i]#
-		group <- as.matrix(c(name, lat, lat2, Adj_R_sqrd))#
-		latPresBind <- cbind(latPresBind, group)#
-	# now do absences #
-			tempy <- get(paste(mods[i], ".ave.abs.mod", sep=""))#
-		lat <- coef(tempy)[2] # Latitude coef #
-		lat2 <- coef(tempy)[3] # Latitude^2 coef #
-		lat_p <- anova(tempy)$"Pr(>F)"[2] # P-value latitude test the null hypothesis of zero slope with the ANOVA table#
-		lat2_p <- anova(tempy)$"Pr(>F)"[3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-			# change p vals to little start codes#
-			ifelse(lat_p < 0.001 & lat_p > 0, lat_p <- "***", lat_p <- lat_p) #
-			ifelse(lat_p < 0.01 & lat_p > 0.001, lat_p <- "**", lat_p <- lat_p) #
-			ifelse(lat_p < 0.05 & lat_p > 0.01, lat_p <- "*", lat_p <- lat_p) #
-			ifelse(lat_p < 0.10 & lat_p > 0.05, lat_p <- ".", lat_p <- lat_p) #
-			ifelse(lat_p < 1.00 & lat_p > 0.10, lat_p <- " ", lat_p <- lat_p) #
-			ifelse(lat2_p < 0.001 & lat2_p > 0, lat2_p <- "***", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.01 & lat2_p > 0.001, lat2_p <- "**", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.05 & lat2_p > 0.01, lat2_p <- "*", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.10 & lat2_p > 0.05, lat2_p <- ".", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 1.00 & lat2_p > 0.10, lat2_p <- " ", lat2_p <- lat2_p) #
-			options( scipen = 2 )#
-			options( digits = 2 )#
-		lat <- paste(format(lat, scientific = TRUE), lat_p, sep="")#
-		lat2 <- paste(format(as.numeric(lat2), scientific = TRUE), lat2_p, sep="")#
-		name <- mods[i]#
-				load("default_options.rda")#
-				options(default_options)#
-		Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-		group <- as.matrix(c(lat, lat2, Adj_R_sqrd))#
-		latAbsBind <- cbind(latAbsBind, group)#
-	}#
-	latty <- rbind(latPresBind, latAbsBind); latty#
-		elPresBind <- c()#
-		elAbsBind <- c()#
-	# end with elevation #
-		for(i in 1:length(mods)){#
-			# presence records #
-			tempy <- get(paste(mods[i], ".ave.pres.mod.el", sep=""))#
-			el <- coef(tempy)[2] # elitude coef #
-			el2 <- coef(tempy)[3] # elitude^2 coef #
-			el_p <- anova(tempy)$"Pr(>F)"[2] # P-value elitude test the null hypothesis of zero slope with the ANOVA table#
-			el2_p <- anova(tempy)$"Pr(>F)"[3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-				# change p vals to little start codes#
-				ifelse(el_p < 0.001 & el_p > 0, el_p <- "***", el_p <- el_p) #
-				ifelse(el_p < 0.01 & el_p > 0.001, el_p <- "**", el_p <- el_p) #
-				ifelse(el_p < 0.05 & el_p > 0.01, el_p <- "*", el_p <- el_p) #
-				ifelse(el_p < 0.10 & el_p > 0.05, el_p <- ".", el_p <- el_p) #
-				ifelse(el_p < 1.00 & el_p > 0.10, el_p <- " ", el_p <- el_p) #
-				ifelse(el2_p < 0.001 & el2_p > 0, el2_p <- "***", el2_p <- el2_p) #
-				ifelse(el2_p < 0.01 & el2_p > 0.001, el2_p <- "**", el2_p <- el2_p) #
-				ifelse(el2_p < 0.05 & el2_p > 0.01, el2_p <- "*", el2_p <- el2_p) #
-				ifelse(el2_p < 0.10 & el2_p > 0.05, el2_p <- ".", el2_p <- el2_p) #
-				ifelse(el2_p < 1.00 & el2_p > 0.10, el2_p <- " ", el2_p <- el2_p) #
-					load("default_options.rda")#
-					options(default_options)#
-			Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-			options( scipen = 2 )#
-			options( digits = 2 )#
-			el <- paste(format(el, scientific = TRUE), el_p, sep="")#
-			el2 <- paste(format(as.numeric(el2), scientific = TRUE), el2_p, sep="")#
-			name <- mods[i]#
-			group <- as.matrix(c(el, el2, Adj_R_sqrd))#
-			elPresBind <- cbind(elPresBind, group)#
-		# now do absences #
-				tempy <- get(paste(mods[i], ".ave.abs.mod.el", sep=""))#
-			el <- coef(tempy)[2] # elitude coef #
-			el2 <- coef(tempy)[3] # elitude^2 coef #
-			el_p <- anova(tempy)$"Pr(>F)"[2] # P-value elitude test the null hypothesis of zero slope with the ANOVA table#
-			el2_p <- anova(tempy)$"Pr(>F)"[3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-				# change p vals to little start codes#
-				ifelse(el_p < 0.001 & el_p > 0, el_p <- "***", el_p <- el_p) #
-				ifelse(el_p < 0.01 & el_p > 0.001, el_p <- "**", el_p <- el_p) #
-				ifelse(el_p < 0.05 & el_p > 0.01, el_p <- "*", el_p <- el_p) #
-				ifelse(el_p < 0.10 & el_p > 0.05, el_p <- ".", el_p <- el_p) #
-				ifelse(el_p < 1.00 & el_p > 0.10, el_p <- " ", el_p <- el_p) #
-				ifelse(el2_p < 0.001 & el2_p > 0, el2_p <- "***", el2_p <- el2_p) #
-				ifelse(el2_p < 0.01 & el2_p > 0.001, el2_p <- "**", el2_p <- el2_p) #
-				ifelse(el2_p < 0.05 & el2_p > 0.01, el2_p <- "*", el2_p <- el2_p) #
-				ifelse(el2_p < 0.10 & el2_p > 0.05, el2_p <- ".", el2_p <- el2_p) #
-				ifelse(el2_p < 1.00 & el2_p > 0.10, el2_p <- " ", el2_p <- el2_p) #
-				options( scipen = 2 )#
-				options( digits = 2 )#
-			el <- paste(format(el, scientific = TRUE), el_p, sep="")#
-			el2 <- paste(format(as.numeric(el2), scientific = TRUE), el2_p, sep="")#
-			name <- mods[i]#
-					load("default_options.rda")#
-					options(default_options)#
-			Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-			group <- as.matrix(c(el, el2, Adj_R_sqrd))#
-			elAbsBind <- cbind(elAbsBind, group)#
-		}#
-		my_els <- rbind(elPresBind, elAbsBind); my_els#
-		both <- rbind(latty,my_els)#
-	second <- c("",	"Latitude", "Latitude2", "Adj. R2", "Latitude", "Latitude2", "Adj. R2", "Elevation", "Elevation2", "Adj. R2", "Elevation", "Elevation2", "Adj. R2")#
-	First <- c("", "Presence", "", "", "Absence", "", "", "Presence", "", "", "Absence", "", "") #
-	both <- cbind(second, both)#
-	both <- cbind(First, both)#
-	both <- data.frame(both)#
-	colnames(both) = ""#
-	tableE2 <- both
-tableE2
-i=1
-latPresBind <- c()#
-latAbsBind <- c()
-tempy <- get(paste(mods[i], ".ave.pres.mod", sep=""))
-tempy
-lat <- coef(tempy)[2] # Latitude coef
-lat
-lat2 <- coef(tempy)[3] # Latitude^2 coef
-lat2
-LR.ave.pres.mod
-anova(tempy)$"Pr(>F)"[2]
-summary(LR.ave.pres.mod)
-tempy$"Pr(>F)"
-tempy
-summary(tempy)
-tempy$"Pr(|t|)"
-tempy$Pr(|t|)
-tempy$coeff
-anova(tempy$coeff)
-anova(tempy$coeff)[3]
-tempy$coeff[3]
-tempy$coeff[3,3]
-tempy$coeff[[3,3]]
-summary(tempy$coeff[,4])
-summary(tempy)$coefficients[,4]
-summary(tempy)$coefficients[,4][2]
-options( scipen = 2 )#
-options( digits = 2 )#
-mods <- c("LR","GAM","RF","BRT","MAX")#
-latPresBind <- c()#
-latAbsBind <- c()#
-	# start with latitude#
-	for(i in 1:length(mods)){#
-		# presence records #
-		tempy <- get(paste(mods[i], ".ave.pres.mod", sep=""))#
-		lat <- coef(tempy)[2] # Latitude coef #
-		lat2 <- coef(tempy)[3] # Latitude^2 coef #
-		lat_p <- summary(tempy)$coefficients[,4][2] # P-value latitude test the null hypothesis of zero slope with the ANOVA table#
-		lat2_p <- summary(tempy)$coefficients[,4][3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-			# change p vals to little start codes#
-			ifelse(lat_p < 0.001 & lat_p > 0, lat_p <- "***", lat_p <- lat_p) #
-			ifelse(lat_p < 0.01 & lat_p > 0.001, lat_p <- "**", lat_p <- lat_p) #
-			ifelse(lat_p < 0.05 & lat_p > 0.01, lat_p <- "*", lat_p <- lat_p) #
-			ifelse(lat_p < 0.10 & lat_p > 0.05, lat_p <- ".", lat_p <- lat_p) #
-			ifelse(lat_p < 1.00 & lat_p > 0.10, lat_p <- " ", lat_p <- lat_p) #
-			ifelse(lat2_p < 0.001 & lat2_p > 0, lat2_p <- "***", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.01 & lat2_p > 0.001, lat2_p <- "**", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.05 & lat2_p > 0.01, lat2_p <- "*", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.10 & lat2_p > 0.05, lat2_p <- ".", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 1.00 & lat2_p > 0.10, lat2_p <- " ", lat2_p <- lat2_p) #
-				load("default_options.rda")#
-				options(default_options)#
-		Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-		options( scipen = 2 )#
-		options( digits = 2 )#
-		lat <- paste(format(lat, scientific = TRUE), lat_p, sep="")#
-		lat2 <- paste(format(as.numeric(lat2), scientific = TRUE), lat2_p, sep="")#
-		name <- mods[i]#
-		group <- as.matrix(c(name, lat, lat2, Adj_R_sqrd))#
-		latPresBind <- cbind(latPresBind, group)#
-	# now do absences #
-			tempy <- get(paste(mods[i], ".ave.abs.mod", sep=""))#
-		lat <- coef(tempy)[2] # Latitude coef #
-		lat2 <- coef(tempy)[3] # Latitude^2 coef #
-		lat_p <- summary(tempy)$coefficients[,4][2] # P-value latitude test the null hypothesis of zero slope with the ANOVA table#
-		lat2_p <- summary(tempy)$coefficients[,4][3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-			# change p vals to little start codes#
-			ifelse(lat_p < 0.001 & lat_p > 0, lat_p <- "***", lat_p <- lat_p) #
-			ifelse(lat_p < 0.01 & lat_p > 0.001, lat_p <- "**", lat_p <- lat_p) #
-			ifelse(lat_p < 0.05 & lat_p > 0.01, lat_p <- "*", lat_p <- lat_p) #
-			ifelse(lat_p < 0.10 & lat_p > 0.05, lat_p <- ".", lat_p <- lat_p) #
-			ifelse(lat_p < 1.00 & lat_p > 0.10, lat_p <- " ", lat_p <- lat_p) #
-			ifelse(lat2_p < 0.001 & lat2_p > 0, lat2_p <- "***", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.01 & lat2_p > 0.001, lat2_p <- "**", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.05 & lat2_p > 0.01, lat2_p <- "*", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 0.10 & lat2_p > 0.05, lat2_p <- ".", lat2_p <- lat2_p) #
-			ifelse(lat2_p < 1.00 & lat2_p > 0.10, lat2_p <- " ", lat2_p <- lat2_p) #
-			options( scipen = 2 )#
-			options( digits = 2 )#
-		lat <- paste(format(lat, scientific = TRUE), lat_p, sep="")#
-		lat2 <- paste(format(as.numeric(lat2), scientific = TRUE), lat2_p, sep="")#
-		name <- mods[i]#
-				load("default_options.rda")#
-				options(default_options)#
-		Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-		group <- as.matrix(c(lat, lat2, Adj_R_sqrd))#
-		latAbsBind <- cbind(latAbsBind, group)#
-	}#
-	latty <- rbind(latPresBind, latAbsBind); latty#
-		elPresBind <- c()#
-		elAbsBind <- c()#
-	# end with elevation #
-		for(i in 1:length(mods)){#
-			# presence records #
-			tempy <- get(paste(mods[i], ".ave.pres.mod.el", sep=""))#
-			el <- coef(tempy)[2] # elitude coef #
-			el2 <- coef(tempy)[3] # elitude^2 coef #
-			el_p <- summary(tempy)$coefficients[,4][2] # P-value elitude test the null hypothesis of zero slope with the ANOVA table#
-			el2_p <- summary(tempy)$coefficients[,4][3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-				# change p vals to little start codes#
-				ifelse(el_p < 0.001 & el_p > 0, el_p <- "***", el_p <- el_p) #
-				ifelse(el_p < 0.01 & el_p > 0.001, el_p <- "**", el_p <- el_p) #
-				ifelse(el_p < 0.05 & el_p > 0.01, el_p <- "*", el_p <- el_p) #
-				ifelse(el_p < 0.10 & el_p > 0.05, el_p <- ".", el_p <- el_p) #
-				ifelse(el_p < 1.00 & el_p > 0.10, el_p <- " ", el_p <- el_p) #
-				ifelse(el2_p < 0.001 & el2_p > 0, el2_p <- "***", el2_p <- el2_p) #
-				ifelse(el2_p < 0.01 & el2_p > 0.001, el2_p <- "**", el2_p <- el2_p) #
-				ifelse(el2_p < 0.05 & el2_p > 0.01, el2_p <- "*", el2_p <- el2_p) #
-				ifelse(el2_p < 0.10 & el2_p > 0.05, el2_p <- ".", el2_p <- el2_p) #
-				ifelse(el2_p < 1.00 & el2_p > 0.10, el2_p <- " ", el2_p <- el2_p) #
-					load("default_options.rda")#
-					options(default_options)#
-			Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-			options( scipen = 2 )#
-			options( digits = 2 )#
-			el <- paste(format(el, scientific = TRUE), el_p, sep="")#
-			el2 <- paste(format(as.numeric(el2), scientific = TRUE), el2_p, sep="")#
-			name <- mods[i]#
-			group <- as.matrix(c(el, el2, Adj_R_sqrd))#
-			elPresBind <- cbind(elPresBind, group)#
-		# now do absences #
-				tempy <- get(paste(mods[i], ".ave.abs.mod.el", sep=""))#
-			el <- coef(tempy)[2] # elitude coef #
-			el2 <- coef(tempy)[3] # elitude^2 coef #
-			el_p <- summary(tempy)$coefficients[,4][2] # P-value elitude test the null hypothesis of zero slope with the ANOVA table#
-			el2_p <- summary(tempy)$coefficients[,4][3] # P-value test the null hypothesis of zero slope with the ANOVA table#
-				# change p vals to little start codes#
-				ifelse(el_p < 0.001 & el_p > 0, el_p <- "***", el_p <- el_p) #
-				ifelse(el_p < 0.01 & el_p > 0.001, el_p <- "**", el_p <- el_p) #
-				ifelse(el_p < 0.05 & el_p > 0.01, el_p <- "*", el_p <- el_p) #
-				ifelse(el_p < 0.10 & el_p > 0.05, el_p <- ".", el_p <- el_p) #
-				ifelse(el_p < 1.00 & el_p > 0.10, el_p <- " ", el_p <- el_p) #
-				ifelse(el2_p < 0.001 & el2_p > 0, el2_p <- "***", el2_p <- el2_p) #
-				ifelse(el2_p < 0.01 & el2_p > 0.001, el2_p <- "**", el2_p <- el2_p) #
-				ifelse(el2_p < 0.05 & el2_p > 0.01, el2_p <- "*", el2_p <- el2_p) #
-				ifelse(el2_p < 0.10 & el2_p > 0.05, el2_p <- ".", el2_p <- el2_p) #
-				ifelse(el2_p < 1.00 & el2_p > 0.10, el2_p <- " ", el2_p <- el2_p) #
-				options( scipen = 2 )#
-				options( digits = 2 )#
-			el <- paste(format(el, scientific = TRUE), el_p, sep="")#
-			el2 <- paste(format(as.numeric(el2), scientific = TRUE), el2_p, sep="")#
-			name <- mods[i]#
-					load("default_options.rda")#
-					options(default_options)#
-			Adj_R_sqrd <- round(as.numeric(summary(tempy)$adj.r.squared), digits=2)#
-			group <- as.matrix(c(el, el2, Adj_R_sqrd))#
-			elAbsBind <- cbind(elAbsBind, group)#
-		}#
-		my_els <- rbind(elPresBind, elAbsBind); my_els#
-		both <- rbind(latty,my_els)#
-	second <- c("",	"Latitude", "Latitude2", "Adj. R2", "Latitude", "Latitude2", "Adj. R2", "Elevation", "Elevation2", "Adj. R2", "Elevation", "Elevation2", "Adj. R2")#
-	First <- c("", "Presence", "", "", "Absence", "", "", "Presence", "", "", "Absence", "", "") #
-	both <- cbind(second, both)#
-	both <- cbind(First, both)#
-	both <- data.frame(both)#
-	colnames(both) = ""#
-	tableE2 <- both
-tableE2
-tableE2
-summary(LR.ave.pres.mod)
-summary(LR.ave.abs.mod)
-summary(GAM.ave.pres.mod)
-summary(GAM.ave.abs.mod)
-summary(RF.ave.pres.mod)
-summary(RF.ave.abs.mod)
-summary(BRT.ave.pres.mod)
-summary(BRT.ave.abs.mod)
-summary(MAX.ave.pres.mod)
-summary(MAX.ave.abs.mod)
-summary(LR.ave.pres.mod.el)
-summary(LR.ave.abs.mod.el)
-summary(GAM.ave.pres.mod.el)
-summary(GAM.ave.abs.mod.el)
-summary(RF.ave.pres.mod.el)
-summary(RF.ave.abs.mod.el)
-summary(BRT.ave.pres.mod.el)
-summary(BRT.ave.abs.mod.el)
-summary(MAX.ave.pres.mod.el)
-summary(MAX.ave.abs.mod.el)
-par(mfrow=c(2,2), omi=c(0.8,0.8,0,0))#
-#
-# GAM lat#
-par(mai=c(0.1,0.2,0.3,0.2)) #bottom, left, top, right#
-plot(pres$GAMave ~ pres$Latitude, pch=16, ylim=c(0,1.15), xaxt='n', xlab="", ylab="")#
-axis(1, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.lat$Latitude, y=GAM.ave.pres.pred, type="l", lwd=3)#
-lines(x=pred.pres.lat$Latitude, y=GAM.1.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.2.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.3.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.4.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.5.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.6.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.7.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.8.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.9.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.10.pres.pred, type="l", lwd=1, col="grey")#
-points(abs$GAMave ~ abs$Latitude)#
-lines(x=pred.abs.lat$Latitude, y=GAM.ave.abs.pred, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.lat$Latitude, y=GAM.1.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.2.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.3.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.4.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.5.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.6.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.7.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.8.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.9.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.10.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Latitude)-min(abs$Latitude))/2 + min(abs$Latitude)), y=1.05, expression("A) GAM, Latitude"))#
-legend("topleft", legend="A", bty='n')#
-#
-# GAM elev#
-par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
-plot(pres$GAMave ~ pres$Elevation, pch=16, ylim=c(0,1.15), xaxt='n', yaxt='n', xlab="", ylab="")#
-axis(1, labels=FALSE, tick=TRUE)#
-axis(2, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.el$Elevation, y=GAM.ave.pres.pred.el, type="l", lwd=3)#
-lines(x=pred.pres.el$Elevation, y=GAM.1.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.2.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.3.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.4.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.5.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.6.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.7.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.8.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.9.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.10.pres.pred.el, type="l", lwd=1, col="grey")#
-points(abs$GAMave ~ abs$Elevation)#
-lines(x=pred.abs.el$Elevation, y=GAM.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.el$Elevation, y=GAM.1.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.2.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.3.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.4.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.5.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.6.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.7.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.8.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.9.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.10.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Elevation)-min(abs$Elevation))/2 + min(abs$Elevation)), y=1.05, expression("C) GAM, Elevation"))#
-legend("topleft", legend="B", bty='n')#
-#
-# RF lat#
-par(mai=c(0.3,0.2,0.1,0.2)) #bottom, left, top, right#
-plot(pres$RFave ~ pres$Latitude, pch=16, xlab="Latitude", ylab="", ylim=c(0,1.15))#
-lines(x=pred.pres.lat$Latitude, y=RF.ave.pres.pred, type="l", lwd=3)#
-lines(x=pred.pres.lat$Latitude, y=RF.1.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.2.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.3.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.4.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.5.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.6.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.7.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.8.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.9.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.10.pres.pred, type="l", lwd=1, col="grey")#
-points(abs$RFave ~ abs$Latitude)#
-lines(x=pred.abs.lat$Latitude, y=RF.ave.abs.pred, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.lat$Latitude, y=RF.1.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.2.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.3.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.4.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.5.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.6.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.7.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.8.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.9.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.10.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Latitude)-min(abs$Latitude))/2 + min(abs$Latitude)), y=1.05, expression("B) RF, Latitude"))#
-legend("topleft", legend="C", bty='n')#
-#
-# RF elev#
-par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
-plot(pres$RFave ~ pres$Elevation, pch=16, xlab="Elevation", ylab="", ylim=c(0,1.15), yaxt='n')#
-axis(2, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.el$Elevation, y=RF.ave.pres.pred.el, type="l", lwd=3)#
-lines(x=pred.pres.el$Elevation, y=RF.1.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.2.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.3.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.4.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.5.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.6.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.7.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.8.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.9.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.10.pres.pred.el, type="l", lwd=1, col="grey")#
-points(abs$RFave ~ abs$Elevation)#
-lines(x=pred.abs.el$Elevation, y=RF.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.el$Elevation, y=RF.1.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.2.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.3.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.4.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.5.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.6.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.7.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.8.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.9.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.10.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Elevation)-min(abs$Elevation))/2 + min(abs$Elevation)), y=1.05, expression("D) RF, Elevation"))#
-legend("topleft", legend="D", bty='n')#
-#
-mtext("Predicted suitability", side=2, outer=T, line=2, at=0.5)#
-mtext("Latitude", side=1, outer=T, line=1, at=0.25)#
-mtext("Elevation", side=1, outer=T, line=1, at=0.75)
-setwd(path.fig)#
-pdf(file="SuitvLat_Reg_Main_Fig4_CHECK.pdf", width=6, height=6)#
-par(mfrow=c(2,2), omi=c(0.8,0.8,0,0))#
-#
-# GAM lat#
-par(mai=c(0.1,0.2,0.3,0.2)) #bottom, left, top, right#
-plot(pres$GAMave ~ pres$Latitude, pch=16, ylim=c(0,1.15), xaxt='n', xlab="", ylab="")#
-axis(1, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.lat$Latitude, y=GAM.ave.pres.pred, type="l", lwd=3)#
-lines(x=pred.pres.lat$Latitude, y=GAM.1.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.2.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.3.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.4.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.5.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.6.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.7.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.8.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.9.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=GAM.10.pres.pred, type="l", lwd=1, col="grey")#
-points(abs$GAMave ~ abs$Latitude)#
-lines(x=pred.abs.lat$Latitude, y=GAM.ave.abs.pred, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.lat$Latitude, y=GAM.1.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.2.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.3.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.4.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.5.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.6.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.7.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.8.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.9.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=GAM.10.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Latitude)-min(abs$Latitude))/2 + min(abs$Latitude)), y=1.05, expression("A) GAM, Latitude"))#
-legend("topleft", legend="A", bty='n')#
-#
-# GAM elev#
-par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
-plot(pres$GAMave ~ pres$Elevation, pch=16, ylim=c(0,1.15), xaxt='n', yaxt='n', xlab="", ylab="")#
-axis(1, labels=FALSE, tick=TRUE)#
-axis(2, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.el$Elevation, y=GAM.ave.pres.pred.el, type="l", lwd=3)#
-lines(x=pred.pres.el$Elevation, y=GAM.1.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.2.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.3.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.4.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.5.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.6.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.7.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.8.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.9.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=GAM.10.pres.pred.el, type="l", lwd=1, col="grey")#
-points(abs$GAMave ~ abs$Elevation)#
-lines(x=pred.abs.el$Elevation, y=GAM.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.el$Elevation, y=GAM.1.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.2.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.3.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.4.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.5.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.6.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.7.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.8.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.9.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=GAM.10.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Elevation)-min(abs$Elevation))/2 + min(abs$Elevation)), y=1.05, expression("C) GAM, Elevation"))#
-legend("topleft", legend="B", bty='n')#
-#
-# RF lat#
-par(mai=c(0.3,0.2,0.1,0.2)) #bottom, left, top, right#
-plot(pres$RFave ~ pres$Latitude, pch=16, xlab="Latitude", ylab="", ylim=c(0,1.15))#
-lines(x=pred.pres.lat$Latitude, y=RF.ave.pres.pred, type="l", lwd=3)#
-lines(x=pred.pres.lat$Latitude, y=RF.1.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.2.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.3.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.4.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.5.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.6.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.7.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.8.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.9.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=RF.10.pres.pred, type="l", lwd=1, col="grey")#
-points(abs$RFave ~ abs$Latitude)#
-lines(x=pred.abs.lat$Latitude, y=RF.ave.abs.pred, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.lat$Latitude, y=RF.1.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.2.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.3.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.4.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.5.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.6.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.7.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.8.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.9.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=RF.10.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Latitude)-min(abs$Latitude))/2 + min(abs$Latitude)), y=1.05, expression("B) RF, Latitude"))#
-legend("topleft", legend="C", bty='n')#
-#
-# RF elev#
-par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
-plot(pres$RFave ~ pres$Elevation, pch=16, xlab="Elevation", ylab="", ylim=c(0,1.15), yaxt='n')#
-axis(2, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.el$Elevation, y=RF.ave.pres.pred.el, type="l", lwd=3)#
-lines(x=pred.pres.el$Elevation, y=RF.1.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.2.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.3.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.4.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.5.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.6.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.7.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.8.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.9.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=RF.10.pres.pred.el, type="l", lwd=1, col="grey")#
-points(abs$RFave ~ abs$Elevation)#
-lines(x=pred.abs.el$Elevation, y=RF.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.el$Elevation, y=RF.1.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.2.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.3.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.4.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.5.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.6.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.7.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.8.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.9.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=RF.10.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Elevation)-min(abs$Elevation))/2 + min(abs$Elevation)), y=1.05, expression("D) RF, Elevation"))#
-legend("topleft", legend="D", bty='n')#
-#
-mtext("Predicted suitability", side=2, outer=T, line=2, at=0.5)#
-mtext("Latitude", side=1, outer=T, line=1, at=0.25)#
-mtext("Elevation", side=1, outer=T, line=1, at=0.75)#
-#
-dev.off()
-setwd(path.fig)#
-pdf(file="SuitvLat_Reg_Suppl_FigS5.8.pdf", width=6, height=9)#
-par(mfrow=c(3,2), omi=c(0.8, 0.8, 0, 0))#
-#
-# LR lat#
-par(mai=c(0.1,0.2,0.3,0.2)) #bottom, left, top, right#
-plot(pres$LRave ~ pres$Latitude, pch=16, xlab="", ylab="", ylim=c(0,1.15), xaxt='n')#
-axis(1, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.lat$Latitude, y=LR.ave.pres.pred, type="l", lwd=3)#
-lines(x=pred.pres.lat$Latitude, y=LR.1.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.2.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.3.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.4.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.5.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.6.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.7.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.8.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.9.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=LR.10.pres.pred, type="l", lwd=1, col="grey")#
-points(abs$LRave ~ abs$Latitude)#
-lines(x=pred.abs.lat$Latitude, y=LR.ave.abs.pred, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.lat$Latitude, y=LR.1.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.2.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.3.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.4.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.5.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.6.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.7.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.8.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.9.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=LR.10.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Latitude)-min(abs$Latitude))/2 + min(abs$Latitude)), y=1.05, expression("A) GLM, Latitude"))#
-legend("topleft", legend="A", bty='n')#
-#
-# LR elev#
-par(mai=c(0.1,0.1,0.3,0.3)) #bottom, left, top, right#
-plot(pres$LRave ~ pres$Elevation, pch=16, xlab="", ylab="", ylim=c(0,1.15), xaxt='n', yaxt='n')#
-axis(1, labels=FALSE, tick=TRUE)#
-axis(2, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.el$Elevation, y=LR.ave.pres.pred.el, type="l", lwd=3)#
-lines(x=pred.pres.el$Elevation, y=LR.1.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.2.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.3.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.4.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.5.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.6.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.7.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.8.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.9.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=LR.10.pres.pred.el, type="l", lwd=1, col="grey")#
-points(abs$LRave ~ abs$Elevation)#
-lines(x=pred.abs.el$Elevation, y=LR.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.el$Elevation, y=LR.1.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.2.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.3.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.4.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.5.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.6.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.7.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.8.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.9.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=LR.10.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Elevation)-min(abs$Elevation))/2 + min(abs$Elevation)), y=1.05, expression("D) GLM, Elevation"))#
-legend("topleft", legend="B", bty='n')#
-#
-# BRT lat#
-par(mai=c(0.2,0.2,0.2,0.2)) #bottom, left, top, right#
-plot(pres$BRTave ~ pres$Latitude, pch=16, xlab="", ylab="", ylim=c(0,1.15), xaxt='n')#
-axis(1, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.lat$Latitude, y=BRT.ave.pres.pred, type="l", lwd=3)#
-lines(x=pred.pres.lat$Latitude, y=BRT.1.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.2.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.3.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.4.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.5.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.6.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.7.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.8.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.9.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=BRT.10.pres.pred, type="l", lwd=1, col="grey")#
-points(abs$BRTave ~ abs$Latitude)#
-lines(x=pred.abs.lat$Latitude, y=BRT.ave.abs.pred, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.lat$Latitude, y=BRT.1.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.2.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.3.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.4.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.5.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.6.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.7.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.8.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.9.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=BRT.10.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Latitude)-min(abs$Latitude))/2 + min(abs$Latitude)), y=1.05, expression("B) BRT, Latitude"))#
-legend("topleft", legend="C", bty='n')#
-#
-# BRT elev#
-par(mai=c(0.2,0.1,0.2,0.3)) #bottom, left, top, right#
-plot(pres$BRTave ~ pres$Elevation, pch=16, xlab="", ylab="", ylim=c(0,1.15), xaxt='n', yaxt='n')#
-axis(1, labels=FALSE, tick=TRUE)#
-axis(2, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.el$Elevation, y=BRT.ave.pres.pred.el, type="l", lwd=3)#
-lines(x=pred.pres.el$Elevation, y=BRT.1.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.2.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.3.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.4.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.5.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.6.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.7.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.8.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.9.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=BRT.10.pres.pred.el, type="l", lwd=1, col="grey")#
-points(abs$BRTave ~ abs$Elevation)#
-lines(x=pred.abs.el$Elevation, y=BRT.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.el$Elevation, y=BRT.1.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.2.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.3.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.4.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.5.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.6.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.7.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.8.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.9.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=BRT.10.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Elevation)-min(abs$Elevation))/2 + min(abs$Elevation)), y=1.05, expression("E) BRT, Elevation"))#
-legend("topleft", legend="D", bty='n')#
-#
-# MAX lat#
-par(mai=c(0.3,0.2,0.1,0.2)) #bottom, left, top, right#
-plot(pres$MAXave ~ pres$Latitude, pch=16, xlab="", ylab="", ylim=c(0,1.15))#
-lines(x=pred.pres.lat$Latitude, y=MAX.ave.pres.pred, type="l", lwd=3)#
-lines(x=pred.pres.lat$Latitude, y=MAX.1.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.2.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.3.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.4.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.5.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.6.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.7.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.8.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.9.pres.pred, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.lat$Latitude, y=MAX.10.pres.pred, type="l", lwd=1, col="grey")#
-points(abs$MAXave ~ abs$Latitude)#
-lines(x=pred.abs.lat$Latitude, y=MAX.ave.abs.pred, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.lat$Latitude, y=MAX.1.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.2.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.3.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.4.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.5.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.6.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.7.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.8.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.9.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.lat$Latitude, y=MAX.10.abs.pred, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Latitude)-min(abs$Latitude))/2 + min(abs$Latitude)), y=1.05, expression("C) MAX, Latitude"))#
-legend("topleft", legend="E", bty='n')#
-#
-# MAX elev#
-par(mai=c(0.3,0.1,0.1,0.3)) #bottom, left, top, right#
-plot(pres$MAXave ~ pres$Elevation, pch=16, xlab="", ylab="", ylim=c(0,1.15), yaxt='n')#
-axis(2, labels=FALSE, tick=TRUE)#
-lines(x=pred.pres.el$Elevation, y=MAX.ave.pres.pred.el, type="l", lwd=3)#
-lines(x=pred.pres.el$Elevation, y=MAX.1.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.2.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.3.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.4.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.5.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.6.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.7.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.8.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.9.pres.pred.el, type="l", lwd=1, col="grey")#
-lines(x=pred.pres.el$Elevation, y=MAX.10.pres.pred.el, type="l", lwd=1, col="grey")#
-points(abs$MAXave ~ abs$Elevation)#
-lines(x=pred.abs.el$Elevation, y=MAX.ave.abs.pred.el, type="l", lty="dashed", lwd=3)#
-lines(x=pred.abs.el$Elevation, y=MAX.1.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.2.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.3.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.4.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.5.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.6.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.7.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.8.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.9.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-lines(x=pred.abs.el$Elevation, y=MAX.10.abs.pred.el, type="l", lty="dashed", lwd=1, col="grey")#
-#text(x=((max(abs$Elevation)-min(abs$Elevation))/2 + min(abs$Elevation)), y=1.05, expression("F) MAX, Elevation"))#
-legend("topleft", legend="F", bty='n')#
-#
-mtext("Predicted suitability", side=2, outer=T, line=2, at=0.5)#
-mtext("Latitude", side=1, outer=T, line=1, at=0.25)#
-mtext("Elevation", side=1, outer=T, line=1, at=0.75)#
-#
-dev.off()
-south$Group = "south"#
-center$Group = "center"#
-north$Group = "north"#
-lat = rbind(south, center, north)#
-#
-library(car)
-suit.aov.lr = lm(LRave ~ Group, data=lat)#
-lr.t3 = Anova(suit.aov.lr, type=c("III"))#
-summary(suit.aov.lr); lr.t3
-lr.t3
-i=1
-tempy <- get(paste(mods[i], ".t3", sep=""))
-mods <- c("lr", "gam", "rf", "brt", "max")
-tempy <- get(paste(mods[i], ".t3", sep=""))
-my_p_val <- tempy$"Pr(>F)"[2]
-my_p_val
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_F_val
-TukeyHSD(aov(LRave ~ Group, data=lat))
-suit.aov.gam = lm(GAMave ~ Group, data=lat)#
-gam.t3 = Anova(suit.aov.gam, type=c("III"))#
-summary(suit.aov.gam); gam.t3#
-TukeyHSD(aov(GAMave ~ Group, data=lat))
-i=2
-tempy <- get(paste(mods[i], ".t3", sep=""))
-my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-suit.aov.rf = lm(RFave ~ Group, data=lat)#
-rf.t3 = Anova(suit.aov.rf, type=c("III"))#
-summary(suit.aov.rf); rf.t3
-i=3
-tempy <- get(paste(mods[i], ".t3", sep=""))
-my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-TukeyHSD(aov(RFave ~ Group, data=lat))
-suit.aov.brt = lm(BRTave ~ Group, data=lat)#
-brt.t3 = Anova(suit.aov.brt, type=c("III"))#
-summary(suit.aov.brt); brt.t3#
-TukeyHSD(aov(BRTave ~ Group, data=lat))
-i=4
-tempy <- get(paste(mods[i], ".t3", sep=""))#
-		my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-suit.aov.max = lm(MAXave ~ Group, data=lat)#
-max.t3 = Anova(suit.aov.max, type=c("III"))#
-summary(suit.aov.max); max.t3#
-TukeyHSD(aov(MAXave ~ Group, data=lat))
-i=5
-tempy <- get(paste(mods[i], ".t3", sep=""))#
-		my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-low$Group = "low"#
-mid$Group = "mid"#
-high$Group = "high"#
-elev = rbind(low, mid, high)
-suit.aov.lr.el = lm(LRave ~ Group, data=elev)#
-lr.t3.el = Anova(suit.aov.lr.el, type=c("III"))#
-summary(suit.aov.lr.el); lr.t3.el#
-TukeyHSD(aov(LRave ~ Group, data=elev))
-tempy <- get(paste(mods[i], ".t3.el", sep=""))#
-		my_p_val <- tempy$"Pr(>F)"[2]
-i=1
-tempy <- get(paste(mods[i], ".t3.el", sep=""))#
-		my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-suit.aov.gam.el = lm(GAMave ~ Group, data=elev)#
-gam.t3.el = Anova(suit.aov.gam.el, type=c("III"))#
-summary(suit.aov.gam.el); gam.t3.el#
-TukeyHSD(aov(GAMave ~ Group, data=elev))
-i=2
-tempy <- get(paste(mods[i], ".t3.el", sep=""))#
-		my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-suit.aov.rf.el = lm(RFave ~ Group, data=elev)#
-rf.t3.el = Anova(suit.aov.rf.el, type=c("III"))#
-summary(suit.aov.rf.el); rf.t3.el#
-TukeyHSD(aov(RFave ~ Group, data=elev))
-i=3
-tempy <- get(paste(mods[i], ".t3.el", sep=""))#
-		my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-suit.aov.brt.el = lm(BRTave ~ Group, data=elev)#
-brt.t3.el = Anova(suit.aov.brt.el, type=c("III"))#
-summary(suit.aov.brt.el); brt.t3.el#
-TukeyHSD(aov(BRTave ~ Group, data=elev))
-i=4
-tempy <- get(paste(mods[i], ".t3.el", sep=""))#
-		my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-suit.aov.max.el = lm(MAXave ~ Group, data=elev)#
-max.t3.el = Anova(suit.aov.max.el, type=c("III"))#
-summary(suit.aov.max.el); max.t3.el#
-TukeyHSD(aov(MAXave ~ Group, data=elev))
-i-5
-i=5
-tempy <- get(paste(mods[i], ".t3.el", sep=""))#
-		my_p_val <- tempy$"Pr(>F)"[2]
-my_F_val <- round(tempy$"F value"[2], digits=2)
-my_p_val
-my_F_val
-north.cal.gam = calib.mod(north$PRESABS, north$GAMave)#
-center.cal.gam = calib.mod(center$PRESABS, center$GAMave)#
-south.cal.gam = calib.mod(south$PRESABS, south$GAMave)
-setwd(path.cod)#
-source("calibration.R")
-north.cal.gam = calib.mod(north$PRESABS, north$GAMave)#
-center.cal.gam = calib.mod(center$PRESABS, center$GAMave)#
-south.cal.gam = calib.mod(south$PRESABS, south$GAMave)
-north.cal.gam
-mods <- c("lr","gam","rf","brt","max")#
-regions <- c("south", "center", "north")
-i=1
-j=1
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))
-high.cal.gam = calib.mod(high$PRESABS, high$GAMave)#
-mid.cal.gam = calib.mod(mid$PRESABS, mid$GAMave)#
-low.cal.gam = calib.mod(low$PRESABS, low$GAMave)
-north.cal.rf = calib.mod(north$PRESABS, north$RFave)#
-center.cal.rf = calib.mod(center$PRESABS, center$RFave)#
-south.cal.rf = calib.mod(south$PRESABS, south$RFave)
-high.cal.rf = calib.mod(high$PRESABS, high$RFave)#
-mid.cal.rf = calib.mod(mid$PRESABS, mid$RFave)#
-low.cal.rf = calib.mod(low$PRESABS, low$RFave)
-north.cal.lr = calib.mod(north$PRESABS, north$LRave)#
-center.cal.lr = calib.mod(center$PRESABS, center$LRave)#
-south.cal.lr = calib.mod(south$PRESABS, south$LRave)
-high.cal.lr = calib.mod(high$PRESABS, high$LRave)#
-mid.cal.lr = calib.mod(mid$PRESABS, mid$LRave)#
-low.cal.lr = calib.mod(low$PRESABS, low$LRave)
-north.cal.brt = calib.mod(north$PRESABS, north$BRTave)#
-center.cal.brt = calib.mod(center$PRESABS, center$BRTave)#
-south.cal.brt = calib.mod(south$PRESABS, south$BRTave)
-high.cal.brt = calib.mod(high$PRESABS, high$BRTave)#
-mid.cal.brt = calib.mod(mid$PRESABS, mid$BRTave)#
-low.cal.brt = calib.mod(low$PRESABS, low$BRTave)
-north.cal.max = calib.mod(north$PRESABS, north$MAXave)#
-center.cal.max = calib.mod(center$PRESABS, center$MAXave)#
-south.cal.max = calib.mod(south$PRESABS, south$MAXave)
-high.cal.max = calib.mod(high$PRESABS, high$MAXave)#
-mid.cal.max = calib.mod(mid$PRESABS, mid$MAXave)#
-low.cal.max = calib.mod(low$PRESABS, low$MAXave)
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))
-tempy
-p_int <- tempy$"testa0|b1"	# test of int diff
-p_slope <- tempy$"testb1|a"	# test of slope diff
-p_int
-p_slope
-tempy$calib.coeffs[1]
-tempy$calib.coeffs[2]
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))#
-				p_int <- tempy$"testa0|b1"	# test of int diff #
-				p_slope <- tempy$"testb1|a"	# test of slope diff #
-				# change p vals to little start codes#
-					ifelse(p_int < 0.001 & p_int > 0, p_int <- "***", p_int <- p_int) #
-					ifelse(p_int < 0.01 & p_int > 0.001, p_int <- "**", p_int <- p_int) #
-					ifelse(p_int < 0.05 & p_int > 0.01, p_int <- "*", p_int <- p_int) #
-					ifelse(p_int < 0.10 & p_int > 0.05, p_int <- ".", p_int <- p_int) #
-					ifelse(p_int < 1.00 & p_int > 0.10, p_int <- " ", p_int <- p_int) #
-				# change p vals to little start codes#
-					ifelse(p_slope < 0.001 & p_slope > 0, p_slope <- "***", p_slope <- p_slope) #
-					ifelse(p_slope < 0.01 & p_slope > 0.001, p_slope <- "**", p_slope <- p_slope) #
-					ifelse(p_slope < 0.05 & p_slope > 0.01, p_slope <- "*", p_slope <- p_slope) #
-					ifelse(p_slope < 0.10 & p_slope > 0.05, p_slope <- ".", p_slope <- p_slope) #
-					ifelse(p_slope < 1.00 & p_slope > 0.10, p_slope <- " ", p_slope <- p_slope) #
-				est_int <- round(tempy$calib.coeffs[1], digits=3) # intercept estimate#
-				est_slope <- round(tempy$calib.coeffs[2], digits=3) # slope estimate#
-				my_intercept <- paste(est_int, p_int, sep="")#
-				my_slope <- paste(est_slope, p_slope, sep="")#
-				this_col <- rbind(my_slope, my_intercept)#
-				frame_regs <- rbind(frame_regs, this_col) # end of regions
-my_intercept
-my_slope
-j=3
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))#
-				p_int <- tempy$"testa0|b1"	# test of int diff #
-				p_slope <- tempy$"testb1|a"	# test of slope diff #
-				# change p vals to little start codes#
-					ifelse(p_int < 0.001 & p_int > 0, p_int <- "***", p_int <- p_int) #
-					ifelse(p_int < 0.01 & p_int > 0.001, p_int <- "**", p_int <- p_int) #
-					ifelse(p_int < 0.05 & p_int > 0.01, p_int <- "*", p_int <- p_int) #
-					ifelse(p_int < 0.10 & p_int > 0.05, p_int <- ".", p_int <- p_int) #
-					ifelse(p_int < 1.00 & p_int > 0.10, p_int <- " ", p_int <- p_int) #
-				# change p vals to little start codes#
-					ifelse(p_slope < 0.001 & p_slope > 0, p_slope <- "***", p_slope <- p_slope) #
-					ifelse(p_slope < 0.01 & p_slope > 0.001, p_slope <- "**", p_slope <- p_slope) #
-					ifelse(p_slope < 0.05 & p_slope > 0.01, p_slope <- "*", p_slope <- p_slope) #
-					ifelse(p_slope < 0.10 & p_slope > 0.05, p_slope <- ".", p_slope <- p_slope) #
-					ifelse(p_slope < 1.00 & p_slope > 0.10, p_slope <- " ", p_slope <- p_slope) #
-				est_int <- round(tempy$calib.coeffs[1], digits=3) # intercept estimate#
-				est_slope <- round(tempy$calib.coeffs[2], digits=3) # slope estimate#
-				my_intercept <- paste(est_int, p_int, sep="")#
-				my_slope <- paste(est_slope, p_slope, sep="")
-my_intercept
-my_slope
-tempy
-i=3
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))#
-				p_int <- tempy$"testa0|b1"	# test of int diff #
-				p_slope <- tempy$"testb1|a"	# test of slope diff #
-				# change p vals to little start codes#
-					ifelse(p_int < 0.001 & p_int > 0, p_int <- "***", p_int <- p_int) #
-					ifelse(p_int < 0.01 & p_int > 0.001, p_int <- "**", p_int <- p_int) #
-					ifelse(p_int < 0.05 & p_int > 0.01, p_int <- "*", p_int <- p_int) #
-					ifelse(p_int < 0.10 & p_int > 0.05, p_int <- ".", p_int <- p_int) #
-					ifelse(p_int < 1.00 & p_int > 0.10, p_int <- " ", p_int <- p_int) #
-				# change p vals to little start codes#
-					ifelse(p_slope < 0.001 & p_slope > 0, p_slope <- "***", p_slope <- p_slope) #
-					ifelse(p_slope < 0.01 & p_slope > 0.001, p_slope <- "**", p_slope <- p_slope) #
-					ifelse(p_slope < 0.05 & p_slope > 0.01, p_slope <- "*", p_slope <- p_slope) #
-					ifelse(p_slope < 0.10 & p_slope > 0.05, p_slope <- ".", p_slope <- p_slope) #
-					ifelse(p_slope < 1.00 & p_slope > 0.10, p_slope <- " ", p_slope <- p_slope) #
-				est_int <- round(tempy$calib.coeffs[1], digits=3) # intercept estimate#
-				est_slope <- round(tempy$calib.coeffs[2], digits=3) # slope estimate#
-				my_intercept <- paste(est_int, p_int, sep="")#
-				my_slope <- paste(est_slope, p_slope, sep="")
-my_slope
-my_intercept
-j=2
-i=5
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))#
-				p_int <- tempy$"testa0|b1"	# test of int diff #
-				p_slope <- tempy$"testb1|a"	# test of slope diff #
-				# change p vals to little start codes#
-					ifelse(p_int < 0.001 & p_int > 0, p_int <- "***", p_int <- p_int) #
-					ifelse(p_int < 0.01 & p_int > 0.001, p_int <- "**", p_int <- p_int) #
-					ifelse(p_int < 0.05 & p_int > 0.01, p_int <- "*", p_int <- p_int) #
-					ifelse(p_int < 0.10 & p_int > 0.05, p_int <- ".", p_int <- p_int) #
-					ifelse(p_int < 1.00 & p_int > 0.10, p_int <- " ", p_int <- p_int) #
-				# change p vals to little start codes#
-					ifelse(p_slope < 0.001 & p_slope > 0, p_slope <- "***", p_slope <- p_slope) #
-					ifelse(p_slope < 0.01 & p_slope > 0.001, p_slope <- "**", p_slope <- p_slope) #
-					ifelse(p_slope < 0.05 & p_slope > 0.01, p_slope <- "*", p_slope <- p_slope) #
-					ifelse(p_slope < 0.10 & p_slope > 0.05, p_slope <- ".", p_slope <- p_slope) #
-					ifelse(p_slope < 1.00 & p_slope > 0.10, p_slope <- " ", p_slope <- p_slope) #
-				est_int <- round(tempy$calib.coeffs[1], digits=3) # intercept estimate#
-				est_slope <- round(tempy$calib.coeffs[2], digits=3) # slope estimate#
-				my_intercept <- paste(est_int, p_int, sep="")#
-				my_slope <- paste(est_slope, p_slope, sep="")
-my_slope
-my_intercept
-mods <- c("lr","gam","rf","brt","max")#
-regions <- c("low", "mid", "high")
-i=1
-j=1
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))#
-				p_int <- tempy$"testa0|b1"	# test of int diff #
-				p_slope <- tempy$"testb1|a"	# test of slope diff #
-				# change p vals to little start codes#
-					ifelse(p_int < 0.001 & p_int > 0, p_int <- "***", p_int <- p_int) #
-					ifelse(p_int < 0.01 & p_int > 0.001, p_int <- "**", p_int <- p_int) #
-					ifelse(p_int < 0.05 & p_int > 0.01, p_int <- "*", p_int <- p_int) #
-					ifelse(p_int < 0.10 & p_int > 0.05, p_int <- ".", p_int <- p_int) #
-					ifelse(p_int < 1.00 & p_int > 0.10, p_int <- " ", p_int <- p_int) #
-				# change p vals to little start codes#
-					ifelse(p_slope < 0.001 & p_slope > 0, p_slope <- "***", p_slope <- p_slope) #
-					ifelse(p_slope < 0.01 & p_slope > 0.001, p_slope <- "**", p_slope <- p_slope) #
-					ifelse(p_slope < 0.05 & p_slope > 0.01, p_slope <- "*", p_slope <- p_slope) #
-					ifelse(p_slope < 0.10 & p_slope > 0.05, p_slope <- ".", p_slope <- p_slope) #
-					ifelse(p_slope < 1.00 & p_slope > 0.10, p_slope <- " ", p_slope <- p_slope) #
-				est_int <- round(tempy$calib.coeffs[1], digits=3) # intercept estimate#
-				est_slope <- round(tempy$calib.coeffs[2], digits=3) # slope estimate#
-				my_intercept <- paste(est_int, p_int, sep="")#
-				my_slope <- paste(est_slope, p_slope, sep="")
-my_slope
-my_intercept
-i=2
-j=2
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))#
-				p_int <- tempy$"testa0|b1"	# test of int diff #
-				p_slope <- tempy$"testb1|a"	# test of slope diff #
-				# change p vals to little start codes#
-					ifelse(p_int < 0.001 & p_int > 0, p_int <- "***", p_int <- p_int) #
-					ifelse(p_int < 0.01 & p_int > 0.001, p_int <- "**", p_int <- p_int) #
-					ifelse(p_int < 0.05 & p_int > 0.01, p_int <- "*", p_int <- p_int) #
-					ifelse(p_int < 0.10 & p_int > 0.05, p_int <- ".", p_int <- p_int) #
-					ifelse(p_int < 1.00 & p_int > 0.10, p_int <- " ", p_int <- p_int) #
-				# change p vals to little start codes#
-					ifelse(p_slope < 0.001 & p_slope > 0, p_slope <- "***", p_slope <- p_slope) #
-					ifelse(p_slope < 0.01 & p_slope > 0.001, p_slope <- "**", p_slope <- p_slope) #
-					ifelse(p_slope < 0.05 & p_slope > 0.01, p_slope <- "*", p_slope <- p_slope) #
-					ifelse(p_slope < 0.10 & p_slope > 0.05, p_slope <- ".", p_slope <- p_slope) #
-					ifelse(p_slope < 1.00 & p_slope > 0.10, p_slope <- " ", p_slope <- p_slope) #
-				est_int <- round(tempy$calib.coeffs[1], digits=3) # intercept estimate#
-				est_slope <- round(tempy$calib.coeffs[2], digits=3) # slope estimate#
-				my_intercept <- paste(est_int, p_int, sep="")#
-				my_slope <- paste(est_slope, p_slope, sep="")
-my_slope
-my_intercept
-i=5
-j=3
-tempy <- get(paste(regions[j], ".cal.", mods[i], sep=""))#
-				p_int <- tempy$"testa0|b1"	# test of int diff #
-				p_slope <- tempy$"testb1|a"	# test of slope diff #
-				# change p vals to little start codes#
-					ifelse(p_int < 0.001 & p_int > 0, p_int <- "***", p_int <- p_int) #
-					ifelse(p_int < 0.01 & p_int > 0.001, p_int <- "**", p_int <- p_int) #
-					ifelse(p_int < 0.05 & p_int > 0.01, p_int <- "*", p_int <- p_int) #
-					ifelse(p_int < 0.10 & p_int > 0.05, p_int <- ".", p_int <- p_int) #
-					ifelse(p_int < 1.00 & p_int > 0.10, p_int <- " ", p_int <- p_int) #
-				# change p vals to little start codes#
-					ifelse(p_slope < 0.001 & p_slope > 0, p_slope <- "***", p_slope <- p_slope) #
-					ifelse(p_slope < 0.01 & p_slope > 0.001, p_slope <- "**", p_slope <- p_slope) #
-					ifelse(p_slope < 0.05 & p_slope > 0.01, p_slope <- "*", p_slope <- p_slope) #
-					ifelse(p_slope < 0.10 & p_slope > 0.05, p_slope <- ".", p_slope <- p_slope) #
-					ifelse(p_slope < 1.00 & p_slope > 0.10, p_slope <- " ", p_slope <- p_slope) #
-				est_int <- round(tempy$calib.coeffs[1], digits=3) # intercept estimate#
-				est_slope <- round(tempy$calib.coeffs[2], digits=3) # slope estimate#
-				my_intercept <- paste(est_int, p_int, sep="")#
-				my_slope <- paste(est_slope, p_slope, sep="")
-my_slope
-my_intercept
-tempy
-setwd(path.cod)#
-source("gtest.R")#
-namesvec = c("Sobs","Cobs","Nobs","Sexp","Cexp","Nexp")
-lr.lat.g = as.data.frame(matrix(NA,10,2))
-lr.lat.g
-names(lr.lat.g) = c("test.stat", "p.value")#
-lr.lat.tab = as.data.frame(matrix(NA,1,6))
-lr.lat.tab
-names(lr.lat.tab) = namesvec
-for (i in 1:10) {#
-	suitvec = lat[,paste("LRprob",i,sep="")]#
-	thresh = cuts[[i,1]]#
-	suityn = suitvec>=thresh#
-	dat = lat[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("south","center","north")]#
-	mod = g.test(dat.tab)#
-	lr.lat.g$p.value[i] = mod$p.value#
-	lr.lat.g$test.stat[i] = mod$test.stat#
-	lr.lat.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(lr.lat.tab.temp) = namesvec#
-	lr.lat.tab = rbind(lr.lat.tab, lr.lat.tab.temp)#
-	}#
-lr.lat.tab = lr.lat.tab[2:21,]
-lr.lat.tab
-lr.lat.g
-gam.lat.g = as.data.frame(matrix(NA,10,2))#
-names(gam.lat.g) = c("test.stat", "p.value")#
-gam.lat.tab = as.data.frame(matrix(NA,1,6))#
-names(gam.lat.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = lat[,paste("GAMprob",i,sep="")]#
-	thresh = cuts[[i,2]]#
-	suityn = suitvec>=thresh#
-	dat = lat[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("south","center","north")]#
-	mod = g.test(dat.tab)#
-	gam.lat.g$p.value[i] = mod$p.value#
-	gam.lat.g$test.stat[i] = mod$test.stat#
-	gam.lat.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(gam.lat.tab.temp) = namesvec#
-	gam.lat.tab = rbind(gam.lat.tab, gam.lat.tab.temp)#
-	}#
-gam.lat.tab = gam.lat.tab[2:21,]
-gam.lat.tab
-gam.lat.g
-rf.lat.g = as.data.frame(matrix(NA,10,2))#
-names(rf.lat.g) = c("test.stat", "p.value")#
-rf.lat.tab = as.data.frame(matrix(NA,1,6))#
-names(rf.lat.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = lat[,paste("RFprob",i,sep="")]#
-	thresh = cuts[[i,3]]#
-	suityn = suitvec>=thresh#
-	dat = lat[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("south","center","north")]#
-	mod = g.test(dat.tab)#
-	rf.lat.g$p.value[i] = mod$p.value#
-	rf.lat.g$test.stat[i] = mod$test.stat#
-	rf.lat.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(rf.lat.tab.temp) = namesvec#
-	rf.lat.tab = rbind(rf.lat.tab, rf.lat.tab.temp)#
-	}#
-rf.lat.tab = rf.lat.tab[2:21,]
-rf.lat.tab
-rf.lat.g
-brt.lat.g = as.data.frame(matrix(NA,10,2))#
-names(brt.lat.g) = c("test.stat", "p.value")#
-brt.lat.tab = as.data.frame(matrix(NA,1,6))#
-names(brt.lat.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = lat[,paste("BRTprob",i,sep="")]#
-	thresh = cuts[[i,4]]#
-	suityn = suitvec>=thresh#
-	dat = lat[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("south","center","north")]#
-	mod = g.test(dat.tab)#
-	brt.lat.g$p.value[i] = mod$p.value#
-	brt.lat.g$test.stat[i] = mod$test.stat#
-	brt.lat.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(brt.lat.tab.temp) = namesvec#
-	brt.lat.tab = rbind(brt.lat.tab, brt.lat.tab.temp)#
-	}#
-brt.lat.tab = brt.lat.tab[2:21,]
-brt.lat.tab
-brt.lat.g
-max.lat.g = as.data.frame(matrix(NA,10,2))#
-names(max.lat.g) = c("test.stat", "p.value")#
-max.lat.tab = as.data.frame(matrix(NA,1,6))#
-names(max.lat.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = lat[,paste("MAXprob",i,sep="")]#
-	thresh = cuts[[i,5]]#
-	suityn = suitvec>=thresh#
-	dat = lat[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("south","center","north")]#
-	mod = g.test(dat.tab)#
-	max.lat.g$p.value[i] = mod$p.value#
-	max.lat.g$test.stat[i] = mod$test.stat#
-	max.lat.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(max.lat.tab.temp) = namesvec#
-	max.lat.tab = rbind(max.lat.tab, max.lat.tab.temp)#
-	}#
-max.lat.tab = max.lat.tab[2:21,]
-max.lat.tab
-max.lat.g
-one <- rbind(lr.lat.tab, gam.lat.tab, rf.lat.tab, brt.lat.tab, max.lat.tab)#
-		two <- rbind(as.matrix(lr.lat.g), as.matrix(gam.lat.g), as.matrix(rf.lat.g), as.matrix(brt.lat.g), as.matrix(max.lat.g))#
-		# round extra decimals out#
-		two[,1] <- round(two[,1],2)#
-		two[,2] <- round(two[,2],4)#
-		# make every other row blank #
-		twoB <- two[rep(1:nrow(two),1,each=2),]#
-		twoB[c(seq(2, dim(twoB)[1], by=2)), ] <- ""#
-		tableF1 <- cbind(one, twoB)#
-		tableF1 <- as.matrix(tableF1)#
-		press <- c(rep(c(0, 1, 0, 1, 0, 1, 0, 1, 0, 1), times=10))#
-		SDMsey <- c("GLM", rep("", times=19), "GAM", rep("", times=19),"RF", rep("", times=19), "BRT", rep("", times=19),"MAX", rep("", times=19))#
-		tableF1 <- cbind(press, tableF1); tableF1 <- cbind(SDMsey, tableF1)#
-		top <- c("SDM", "Pres", "South", "Center", "North", "South", "Center", "North", "X2", "P")#
-		tableF1 <- rbind(top, tableF1)#
-		tableF1 <- data.frame(tableF1, row.names=NULL)#
-		colnames(tableF1) <- c(" ", " ", "Obs", "Obs", "Obs", "Exp", "Exp", "Exp", " ", " ")#
-		tableF1
-lr.el.g = as.data.frame(matrix(NA,10,2))#
-names(lr.el.g) = c("test.stat", "p.value")#
-lr.el.tab = as.data.frame(matrix(NA,1,6))#
-names(lr.el.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = elev[,paste("LRprob",i,sep="")]#
-	thresh = cuts[[i,1]]#
-	suityn = suitvec>=thresh#
-	dat = elev[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("low","mid","high")]#
-	mod = g.test(dat.tab)#
-	lr.el.g$p.value[i] = mod$p.value#
-	lr.el.g$test.stat[i] = mod$test.stat#
-	lr.el.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(lr.el.tab.temp) = namesvec#
-	lr.el.tab = rbind(lr.el.tab, lr.el.tab.temp)#
-	}#
-lr.el.tab = lr.el.tab[2:21,]
-lr.el.tab
-lr.el.g
-gam.el.g = as.data.frame(matrix(NA,10,2))#
-names(gam.el.g) = c("test.stat", "p.value")#
-gam.el.tab = as.data.frame(matrix(NA,1,6))#
-names(gam.el.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = elev[,paste("GAMprob",i,sep="")]#
-	thresh = cuts[[i,2]]#
-	suityn = suitvec>=thresh#
-	dat = elev[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = dat.tab[,c("low","mid","high")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	mod = g.test(dat.tab)#
-	gam.el.g$p.value[i] = mod$p.value#
-	gam.el.g$test.stat[i] = mod$test.stat#
-	gam.el.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(gam.el.tab.temp) = namesvec#
-	gam.el.tab = rbind(gam.el.tab, gam.el.tab.temp)#
-	}#
-gam.el.tab = gam.el.tab[2:21,]
-gam.el.tab
-gam.el.g
-rf.el.g = as.data.frame(matrix(NA,10,2))#
-names(rf.el.g) = c("test.stat", "p.value")#
-rf.el.tab = as.data.frame(matrix(NA,1,6))#
-names(rf.el.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = elev[,paste("RFprob",i,sep="")]#
-	thresh = cuts[[i,3]]#
-	suityn = suitvec>=thresh#
-	dat = elev[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("low","mid","high")]#
-	mod = g.test(dat.tab)#
-	rf.el.g$p.value[i] = mod$p.value#
-	rf.el.g$test.stat[i] = mod$test.stat#
-	rf.el.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(rf.el.tab.temp) = namesvec#
-	rf.el.tab = rbind(rf.el.tab, rf.el.tab.temp)#
-	}#
-rf.el.tab = rf.el.tab[2:21,]
-rf.el.tab
-rf.el.g
-brt.el.g = as.data.frame(matrix(NA,10,2))#
-names(brt.el.g) = c("test.stat", "p.value")#
-brt.el.tab = as.data.frame(matrix(NA,1,6))#
-names(brt.el.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = elev[,paste("BRTprob",i,sep="")]#
-	thresh = cuts[[i,4]]#
-	suityn = suitvec>=thresh#
-	dat = elev[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("low","mid","high")]#
-	mod = g.test(dat.tab)#
-	brt.el.g$p.value[i] = mod$p.value#
-	brt.el.g$test.stat[i] = mod$test.stat#
-	brt.el.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(brt.el.tab.temp) = namesvec#
-	brt.el.tab = rbind(brt.el.tab, brt.el.tab.temp)#
-	}#
-brt.el.tab = brt.el.tab[2:21,]
-brt.el.tab
-brt.el.g
-max.el.g = as.data.frame(matrix(NA,10,2))#
-names(max.el.g) = c("test.stat", "p.value")#
-max.el.tab = as.data.frame(matrix(NA,1,6))#
-names(max.el.tab) = namesvec#
-for (i in 1:10) {#
-	suitvec = elev[,paste("MAXprob",i,sep="")]#
-	thresh = cuts[[i,5]]#
-	suityn = suitvec>=thresh#
-	dat = elev[suityn=="TRUE", c("PRESABS","Group")]#
-	dat.tab = table(dat$PRESABS, dat$Group)#
-	dat.tab = dat.tab[,c("low","mid","high")]#
-	mod = g.test(dat.tab)#
-	max.el.g$p.value[i] = mod$p.value#
-	max.el.g$test.stat[i] = mod$test.stat#
-	max.el.tab.temp = as.data.frame(cbind(dat.tab,round(mod$expected,0)))#
-	names(max.el.tab.temp) = namesvec#
-	max.el.tab = rbind(max.el.tab, max.el.tab.temp)#
-	}#
-max.el.tab = max.el.tab[2:21,]
-max.el.tab
-max.el.g
-one <- rbind(lr.el.tab, gam.el.tab, rf.el.tab, brt.el.tab, max.el.tab)#
-		two <- rbind(as.matrix(lr.el.g), as.matrix(gam.el.g), as.matrix(rf.el.g), as.matrix(brt.el.g), as.matrix(max.el.g))#
-		# round extra decimals out#
-		two[,1] <- round(two[,1],2)#
-		two[,2] <- round(two[,2],4)#
-		# make every other row blank #
-		twoB <- two[rep(1:nrow(two),1,each=2),]#
-		twoB[c(seq(2, dim(twoB)[1], by=2)), ] <- ""#
-		tableF3 <- cbind(one, twoB)#
-		tableF3 <- as.matrix(tableF3)#
-		press <- c(rep(c(0, 1, 0, 1, 0, 1, 0, 1, 0, 1), times=10))#
-		SDMsey <- c("GLM", rep("", times=19), "GAM", rep("", times=19),"RF", rep("", times=19), "BRT", rep("", times=19),"MAX", rep("", times=19))#
-		tableF3 <- cbind(press, tableF3); tableF3 <- cbind(SDMsey, tableF3)#
-		top <- c("SDM", "Pres", "South", "Center", "North", "South", "Center", "North", "X2", "P")#
-		tableF3 <- rbind(top, tableF3)#
-		tableF3 <- data.frame(tableF3, row.names=NULL)#
-		colnames(tableF3) <- c(" ", " ", "Obs", "Obs", "Obs", "Exp", "Exp", "Exp", " ", " ")#
-		tableF3
