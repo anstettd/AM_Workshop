@@ -39,25 +39,6 @@ cv.accuracy = function(mod, dat, modl) {
 	cv.acc=cbind(cv.acc[1:7],cv.tss) # bind all metrics
 }
 
-ext.accuracy = function(mod, ext, modl) {	
-	## predict to new data
-	mod.epred=predict(mod, newdata=ext, type="response")
-	
-	## build testing dataframes using model predictions
-	datx=cbind(modl, ext[3], mod.epred) # build dataframe w/mod predictions
-
-	## determine best threshold
-	mod.ecut=optimal.thresholds(datx,opt.methods=c("MaxSens+Spec","MaxKappa")) 
-
-	## generate confusion matrices
-	ext.cfmat.sensspec=table(datx[[2]],factor(as.numeric(datx$mod.epred>=mod.ecut$mod.epred[1])))
-	ext.cfmat.kappa=table(datx[[2]],factor(as.numeric(datx$mod.epred>=mod.ecut$mod.epred[2])))
-		
-	## calculate model accuracies with standard deviation=F
-	ext.acc=presence.absence.accuracy(datx,threshold=mod.ecut$mod.epred,st.dev=F)
-	tss=ext.acc$sensitivity+ext.acc$specificity-1 # code TSS metric
-	ext.acc=cbind(ext.acc[1:7],tss) # bind all metrics
-}
 
 accuracy.brt = function(dat, pred, modl) {
 	## make dataframe with 
@@ -81,45 +62,6 @@ accuracy.brt = function(dat, pred, modl) {
 	mod.acc=cbind(mod.acc[1:7],tss) # bind all metrics
 }
 
-ext.accuracy.rf = function(mod, ext, modl) {	
-	## predict to new data
-	mod.epred=predict(mod, newdata=ext, type="prob")[,2]
-	
-	## build testing dataframes using model predictions
-	datx=cbind(modl, ext[3], mod.epred) # build dataframe w/mod predictions
-
-	## determine best threshold
-	mod.ecut=optimal.thresholds(datx,opt.methods=c("MaxSens+Spec","MaxKappa")) 
-
-	## generate confusion matrices
-	ext.cfmat.sensspec=table(datx[[2]],factor(as.numeric(datx$mod.epred>=mod.ecut$mod.epred[1])))
-	ext.cfmat.kappa=table(datx[[2]],factor(as.numeric(datx$mod.epred>=mod.ecut$mod.epred[2])))
-		
-	## calculate model accuracies with standard deviation=F
-	ext.acc=presence.absence.accuracy(datx,threshold=mod.ecut$mod.epred,st.dev=F)
-	tss=ext.acc$sensitivity+ext.acc$specificity-1 # code TSS metric
-	ext.acc=cbind(ext.acc[1:7],tss) # bind all metrics
-}
-
-ext.accuracy.brt = function(mod, ext, modl) {	
-	## predict to new data
-	mod.epred=predict(mod, newdata=ext, type="response", n.trees=50)
-	
-	## build testing dataframes using model predictions
-	datx=cbind(modl, ext[3], mod.epred) # build dataframe w/mod predictions
-
-	## determine best threshold
-	mod.ecut=optimal.thresholds(datx,opt.methods=c("MaxSens+Spec","MaxKappa")) 
-
-	## generate confusion matrices
-	ext.cfmat.sensspec=table(datx[[2]],factor(as.numeric(datx$mod.epred>=mod.ecut$mod.epred[1])))
-	ext.cfmat.kappa=table(datx[[2]],factor(as.numeric(datx$mod.epred>=mod.ecut$mod.epred[2])))
-		
-	## calculate model accuracies with standard deviation=F
-	ext.acc=presence.absence.accuracy(datx,threshold=mod.ecut$mod.epred,st.dev=F)
-	tss=ext.acc$sensitivity+ext.acc$specificity-1 # code TSS metric
-	ext.acc=cbind(ext.acc[1:7],tss) # bind all metrics
-}
 
 accuracy.max = function(dat, mod, modl) {
 	## get model predictions
@@ -178,26 +120,3 @@ cv.accuracy.max = function(dat, mod, modl, x.fold, n.col) {
 	mod.accXF = cbind(mod.accXF[1:7], tss) # bind all metrics
 }
 
-ext.accuracy.max = function(mod, ext, modl) {
-	## predict to new data
-	mod.epred = predict(mod, ext) 
-
-	## build testing dataframes using model predictions
-	datx = cbind(modl, ext[3], mod.epred) # bind obs and predictions
-
-	## evaluate model and find thresholds
-	mod.eval = evaluate(p=ext[ext$PRESABS==1,c(58:60,66:68,70:71)], a=ext[ext$PRESABS==0,c(58:60,66:68, 70:71)], mod) 
-	mod.ecut = threshold(mod.eval)
-	mod.ecut = as.data.frame(c(mod.ecut$spec_sens, mod.ecut$kappa))
-	mod.ecut$method = c("sensspec", "kappa")
-	names(mod.ecut)[1] = "epred"
-
-	## generate confusion matrix
-	mod.ecfmat.sensspec = table(datx[[2]], factor(as.numeric(datx$mod.epred >= mod.ecut$epred[1])))
-	mod.ecfmat.kappa = table(datx[[2]], factor(as.numeric(datx$mod.epred >= mod.ecut$epred[2])))
-
-	## calculate model accuracies with standard deviation=F
-	mod.eacc = presence.absence.accuracy(datx, threshold=mod.ecut$epred, st.dev=F) 
-	tss = mod.eacc$sensitivity + mod.eacc$specificity - 1 # code TSS metric
-	mod.eacc=cbind(mod.eacc[1:7], tss) # bind all metrics	
-}
