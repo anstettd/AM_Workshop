@@ -28,7 +28,7 @@ dat <- read_csv('SDM/data_files/sdm_input.csv')
 # slim dataframe to conform to structure required by mod.form function
 # (see script modforms.R)
 dat.input <- dat %>% 
-  select(presabs, bio10, bio14, bio15, bio12, bio6, bio3, bio2)
+  dplyr::select(presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2)
 
 ################################################################################
 ### BUILD FULL AND REDUCED GLM MODELS 
