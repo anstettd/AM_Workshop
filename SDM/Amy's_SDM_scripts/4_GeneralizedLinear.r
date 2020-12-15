@@ -41,7 +41,7 @@ mod1.GLM <- glm(mod.form.quad(dat.input, 1, 2), family=binomial, data=dat.input)
 #mod1.fit=100*(1-mod1.GLM$deviance/mod1.GLM$null.deviance)
 mod1.pred <- predict(mod1.GLM, type="response") # model prediction
 #summary(mod1.GLM) # full model summary stats
-save(mod1.GLM, file="SDM/Output/GLM.mod1.Rda") # save model object
+#save(mod1.GLM, file="SDM/Output/GLM.mod1.Rda") # save model object
 
 ## Build most parsimonious model using backwards variable reduction: mod2.LR
 mod2.GLM <- step(mod1.GLM, trace=F) # backwards stepwise variable reduction
