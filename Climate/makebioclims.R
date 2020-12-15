@@ -9,21 +9,22 @@
 library(dismo)
 library(raster)
 
-
+#####
 # PART 1: LOAD CLIMATE RASTERS, PROJECT, CHECK (QA/QC) & TRIM. 
-# Will load all files based on directory pattern. 
-setwd()
+# Will load all files based on directory pattern.
+# download 36 monthly clim and place into "WNA_36" directory in github.
+#https://sites.ualberta.ca/~ahamann/data/climatewna.html
+#####
 
-
-allfiles = list.files(); allfiles # will just take the '.asc' files
+setwd("WNA_36") #set working dir within github folder
+allfiles <- list.files(); allfiles # brings in all '.asc' files
 file <- list.files(pattern = '.asc'); file; length(file) # should be 36.
-allfiles = stack(file) # Importing raster, wait ~ 2 - 4 mins.
+allfiles <- stack(file) # Importing raster
 allfiles; projection(allfiles); dim(allfiles)
 #plot(allfiles[[2]]) #OPTIONAL ~ visual check, plotting "PPT02"
 
 # Import layer used to crop/trim rasters (reduce file size). 
-# Cropping layer will be 90m DEM cut
-# Stored on dropbox > pseudoabsence methods > megadem.cut.tif
+# Cropping layer will be M. cardinalis SDM
 dem <- raster('C:/Users/DW/Desktop/bioclim 30s/hydrosheds/megadem.full.tif')
 
 projection(dem); #plot(dem); extent(dem)
