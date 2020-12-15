@@ -5,7 +5,7 @@
 # last update:  14 Dec 2020
 
 ## OVERALL WORKFLOW:
-#	Build RF model
+#	Build Random Forests model of presence/absence ~ bioclimatic predictor variables
 #	Perform resubstitution and cross-validation to assess accuracy
 
 ###################################################################################
@@ -17,7 +17,6 @@ rm(list = ls(all.names = TRUE))
 ## LIBRARIES
 library(randomForest) # for RF models
 library(PresenceAbsence) # for accuracy stats
-library(DAAG) # for cross-validation sampling
 
 ## INPUTS
 # read in file
@@ -26,7 +25,7 @@ dat <- read_csv('SDM/data_files/sdm_input.csv')
 # slim dataframe to conform to structure required by mod.form function
 # (see script modforms.R)
 dat.input <- dat %>% 
-  select(presabs, bio10, bio14, bio15, bio12, bio6, bio3, bio2)
+  dplyr::select(presabs, bio10, bio14, bio15, bio12, bio6, bio3, bio2)
 
 ################################################################################
 

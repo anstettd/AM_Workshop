@@ -74,7 +74,7 @@ accuracy.max = function(dat, mod, modl) {
 	datx=cbind(modl,dat[1],mod.pred) # build dataframe w/model predictions
 
 	## evaluate model
-	mod.val=evaluate(p=dat[dat$PRESABS==1,2:9], a=dat[dat$PRESABS==0,2:9], mod.MAX) 
+	mod.val=evaluate(p=dat[dat$presabs==1,2:ncol(dat)], a=dat[dat$presabs==0,2:ncol(dat)], mod) 
 
 	## determine thresholds
 	mod.cut=threshold(mod.val) # view maxent thresholds
@@ -105,7 +105,7 @@ cv.accuracy.max = function(dat, mod, modl, x.fold, n.col) {
 	dat <- cbind(dat, mod.predXF)
 
 	## evaluate model, determine optimal threshold
-	mod.val=evaluate(p=dat[dat$PRESABS==1,2:9], a=dat[dat$PRESABS==0,2:9], mod) 
+	mod.val=evaluate(p=dat[dat$presabs==1,2:ncol(dat)], a=dat[dat$presabs==0,2:ncol(dat)], mod) 
 	mod.cutXF = threshold(mod.val)
 	mod.cutXF = as.data.frame(c(mod.cutXF$spec_sens, mod.cutXF$kappa))
 	mod.cutXF$method = c("sensspec", "kappa")
