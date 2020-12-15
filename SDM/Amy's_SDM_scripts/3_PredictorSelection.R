@@ -24,17 +24,6 @@ library(GGally) # for visualizing correlation matrix
 ## INPUTS
 dat <- read_csv("SDM/data_files/biovars.csv")
 
-# Precipitation variables (bio12-bio19) should be log-transformed
-dat <- dat %>% 
-  mutate(bio12=log(bio12+0.5),
-            bio13=log(bio13+0.5),
-            bio14=log(bio14+0.5),
-            bio15=log(bio15+0.5),
-            bio16=log(bio16+0.5),
-            bio17=log(bio17+0.5),
-            bio18=log(bio18+0.5),
-            bio19=log(bio19+0.5))
-
 ################################################################################
 
 
