@@ -100,36 +100,37 @@ dev.fit
 ## (NOTE: variable selection is altered from Angert et al. 2018, due to addition of occupancy dataset to training input &/or use of 1961-1990 normals)
 
 # Single best variable = bio10. INCLUDE
-# bio10 has |r|>0.7 with bio1, bio5, bio8, bio9, bio11
-# If bio10 is included, then bio1, bio5, bio8, bio9, and bio11 should be excluded (|r|>0.7)
+# bio10 is too collinear with bio1, bio5, and bio9 (|r|>0.7).
+# If bio10 is included, then bio1, bio5, and bio9 should be excluded.
 
-# 2nd best variable = bio1, but that is collinear with bio10. EXCLUDE
+# 2nd best variable = bio1, but that is too collinear with bio10. EXCLUDE
 
-# 3rd best variable = bio5, but that is collinear with bio10. EXCLUDE
+# 3rd best variable = bio5, but that is too collinear with bio10. EXCLUDE
 
-# 4th best variable = bio14. INCLUDE
-# bio14 has |r|>0.7 with bio1, bio17, bio18
-# If bio14 is included, then bio1, bio17 and bio18 should be excluded (|r|>0.7)
-
-# 5th best variable = bio11, but that is collinear with bio10. EXCLUDE
-
-# 6th best variable = bio15. INCLUDE
+# 4th best variable = bio15. INCLUDE
 # bio15 is not too collinear with any other variable.
 
-# 7th best variable = bio9, but that is collinear with bio10. EXCLUDE
+# 5th best variable = bio11. INCLUDE
+# bio11 is too collinear with bio1, bio6, bio8, and bio14 (|r|>0.7)
+# If bio11 is included, then bio 1, bio6, bio8, and bio14 should be excluded.
 
-# 8th best variable = bio8, but that is collinear with bio10. EXCLUDE
+# 6th best variable = bio14, but that is too collinear with bio11. EXCLUDE
 
-# 9th best variable = bio17, but that is collinear with bio14. EXCLUDE
+# 7th best variable = bio8, but that is too collinear with bio11. EXCLUDE
 
-# 10th best variable = bio18, but that is collinear with bio14. EXCLUDE.
+# 8th best variable = bio17. INCLUDE
+# bio17 is too collinear with bio1, bio14, and bio18 (|r|>0.7).
+# If bio17 is included, then bio1, bio14, and bio18 should be excluded.
+
+# 9th best variable = bio18, but that is too collinear with bio17. EXCLUDE
+
+# 10th best variable = bio9, but that is collinear with bio10. EXCLUDE
 
 # 11th best variable = bio12. INCLUDE
-# bio12 has |r|>0.7 with bio13, bio16, bio19
-# If bio12 is included, then bio13, bio16 and bio19 should be excluded (|r|>0.7)
+# bio12 is too collinear with bio13, bio16, bio19 (|r|>0.7).
+# If bio12 is included, then bio13, bio16 and bio19 should be excluded.
 
-# 12th best variable = bio6. INCLUDE
-# bio6 has |r|>0.7 with bio1, bio8, bio11 but these have already been excluded
+# 12th best variable = bio6, but that is too collinear with bio11. EXCLUDE
 
 # 13th best variable = bio16, but this is collinear with bio12. EXCLUDE
 
@@ -138,24 +139,24 @@ dev.fit
 # 15th best variable = bio19, but this is collinear with bio12. EXCLUDE
 
 # 16th best variable = bio3. INCLUDE
-# bio3 has |r|>0.7 with bio4
-# If bio3 is included, then bio4 should be excluded (|r|>0.7)
+# bio3 has is too collinear with bio4 (|r|>0.7).
+# If bio3 is included, then bio4 should be excluded.
 
-# 17th best variable = bio2
-# bio2 has |r|>0.7 with bio7
-# If bio2 is included, then bio7 should be excluded (|r|>0.7)
+# 17th best variable = bio2. INCLUDE
+# bio2 has is too collinear with bio7 (|r|>0.7).
+# If bio2 is included, then bio7 should be excluded.
 
 # 18th best variable = bio4, but this is collinear with bio3. EXCLUDE
 
-# last variable = bio7, but this is collinear with bio2
+# last variable = bio7, but this is collinear with bio2. EXCLUDE
 
-## Final list of variables to INCLUDE: bio10, bio14, bio15, bio12, bio6, bio3 bio2
+## Final list of variables to INCLUDE: bio10, bio15, bio11, bio17, bio12, bio3, bio2
 
-## Final list of variables to EXCLUDE: bio1, bio5, bio8, bio9, bio11, bio17, bio18, bio13, bio16, bio19, bio4, bio7
+## Final list of variables to EXCLUDE: bio1, bio5, bio9, bio14, bio8, bio18, bio13, bio16, bio19, bio6, bio4, bio7
 
 ## Save file with selected predictors
 dat.input <- dat %>% 
-  dplyr::select(Master.ID, Latitude, Longitude, Elevation, presabs, bio10, bio14, bio15, bio12, bio6, bio3, bio2)
+  dplyr::select(Master.ID, Latitude, Longitude, Elevation, presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2)
 write_csv(dat.input, "SDM/data_files/sdm_input.csv")
 
 ################################################################################
