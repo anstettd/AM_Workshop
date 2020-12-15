@@ -18,7 +18,6 @@ rm(list = ls(all.names = TRUE))
 library(gbm) # for BRT models
 library(dismo) # for gbm.step function (per Elith et al. 2008, J Animal Ecol 77:802-813)
 library(PresenceAbsence) # for accuracy stats
-#library(DAAG) # for cross-validation sampling
 
 ## INPUTS
 # read in file
@@ -27,7 +26,7 @@ dat <- read_csv('SDM/data_files/sdm_input.csv')
 # slim dataframe to conform to structure required by mod.form function
 # (see script modforms.R)
 dat.input <- dat %>% 
-  dplyr::select(presabs, bio10, bio14, bio15, bio12, bio6, bio3, bio2)
+  dplyr::select(presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2)
 dat.input <- as.data.frame(dat.input)
 
 ################################################################################
@@ -53,11 +52,11 @@ mod1.BRT <- gbm.step(data=dat.input, gbm.x=preds, gbm.y=1, family="bernoulli", t
  		
 # Learning rate adjusted up 
 mod2.BRT <- gbm.step(data=dat.input, gbm.x=2:8, gbm.y=1, family="bernoulli", tree.complexity=2, learning.rate=0.001, bag.fraction=0.75, n.folds=5, plot.main=TRUE, keep.fold.fit=TRUE, step.size=15)
-save(mod2.BRT, file="SDM/Output/BRT.mod2.Rda")
+#save(mod2.BRT, file="SDM/Output/BRT.mod2.Rda")
 
 ## Learning rate adjusted down
 mod3.BRT <- gbm.step(data=dat.input, gbm.x=preds, gbm.y=1, family="bernoulli", tree.complexity=2, learning.rate=0.1, bag.fraction=0.75, n.folds=5, plot.main=TRUE, keep.fold.fit=TRUE, step.size=15)
-#save(mod3.BRT, file="SDM/Output/BRT.mod3.Rda")
+save(mod3.BRT, file="SDM/Output/BRT.mod3.Rda")
 
 ## Tree complexity adjusted up (this model fails)
 mod4.BRT <- gbm.step(data=dat.input, gbm.x=preds, gbm.y=1, family="bernoulli", tree.complexity=3, learning.rate=0.1, bag.fraction=0.75, n.folds=5, plot.main=TRUE, keep.fold.fit=TRUE)#, step.size=5) 
@@ -86,9 +85,10 @@ for (j in 1:6) {
 perf <- as.data.frame(perf)
 row.names(perf) <- c("mod1", "mod2","mod3", "mod4", "mod5", "mod6")
 colnames(perf) <- c("dev", "ntrees")
+perf
 
 ggplot(perf, aes(x=ntrees, y=dev)) + geom_point()
-# Model 2 is the winner - it has the lowest deviance and the fewest trees
+# Model 3 is the winner - it has the lowest deviance and the second fewest trees
 
 ################################################################################
 
@@ -96,7 +96,7 @@ ggplot(perf, aes(x=ntrees, y=dev)) + geom_point()
 ################################################################################
 ### LOAD FINAL MODEL AND PREDICTIONS 
 
-mod = get(load(paste("SDM/Output/BRT.mod2.Rda", sep="")))
+mod = get(load(paste("SDM/Output/BRT.mod3.Rda", sep="")))
 pred = mod$fitted
 
 ################################################################################
@@ -104,12 +104,12 @@ pred = mod$fitted
 
 source("SDM/Amy's_SDM_scripts/accuracy.R")
 
-modl="BRT.mod2" # required label for accuracy function              
+modl="BRT.mod3" # required label for accuracy function              
 
 ## be sure to adjust model #
 acc <- accuracy.brt(dat.input, pred, modl)
 acc$thresh = c("SensSpec", "Kappa")
-acc$model = "BRT.mod2"
-save(acc, file="SDM/Output/BRT.mod2.accs.Rda")
+acc$model = "BRT.mod3"
+save(acc, file="SDM/Output/BRT.mod3.accs.Rda")
 
 ################################################################################
