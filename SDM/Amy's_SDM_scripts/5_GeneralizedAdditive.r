@@ -26,7 +26,7 @@ dat <- read_csv('SDM/data_files/sdm_input.csv')
 # slim dataframe to conform to structure required by mod.form function
 # (see script modforms.R)
 dat.input <- dat %>% 
-  select(presabs, bio10, bio14, bio15, bio12, bio6, bio3, bio2)
+  dplyr::select(presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2)
 
 ################################################################################
 
@@ -47,13 +47,13 @@ mod1.GAM <- gam(mod.form.4(dat.input, 1, 2), family=binomial, data=dat.input) #e
 # Daniel: Changed "step.gam" to "step.Gam" but Amy changed back
 # Amy changing to mod1 as basis and deleting old basis mod2 (smoothers=3)
 mod2.GAM <- step.Gam(mod1.GAM, scope=list( 
-		"bio2"	=~1+ bio2	+s(bio2,2) +s(bio2,3)	+s(bio2,4),
-		"bio3"	=~1+ bio3 	+s(bio3,2) 	+s(bio3,3) 	+s(bio3,4),
-		"bio6"	=~1+ bio6 	+s(bio6,2) 	+s(bio6,3) 	+s(bio6,4),
-		"bio10"	=~1+ bio10 	+s(bio10,2) +s(bio10,3) +s(bio10,4),
-		"bio12"	=~1+ bio12 	+s(bio12,2) +s(bio12,3)	+s(bio12,4),
-		"bio14"	=~1+ bio14 	+s(bio14,2) +s(bio14,3)	+s(bio14,4),
-		"bio15"	=~1+ bio15 	+s(bio15,2) +s(bio15,3)	+s(bio15,4)),
+		"bio2"	=~1+ bio2	+s(bio2,2) +s(bio2,3) +s(bio2,4),
+		"bio3"	=~1+ bio3 +s(bio3,2) +s(bio3,3) +s(bio3,4),
+		"bio10"	=~1+ bio10 +s(bio10,2) +s(bio10,3) +s(bio10,4),
+		"bio11"	=~1+ bio11 +s(bio11,2) +s(bio11,3) +s(bio11,4),
+		"bio12"	=~1+ bio12 +s(bio12,2) +s(bio12,3) +s(bio12,4),
+		"bio17"	=~1+ bio17 +s(bio17,2) +s(bio17,3) +s(bio17,4),
+		"bio15"	=~1+ bio15 +s(bio15,2) +s(bio15,3) +s(bio15,4)),
 		trace=F)
 #mod4.fit <- 100*(1-mod2.GAM$deviance/mod2.GAM$null.deviance)  
 #summary(mod2.GAM)
