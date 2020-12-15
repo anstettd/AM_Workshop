@@ -24,7 +24,8 @@ allfiles; projection(allfiles); dim(allfiles)
 #plot(allfiles[[2]]) #OPTIONAL ~ visual check, plotting "PPT02"
 
 # Import layer used to crop/trim rasters (reduce file size). 
-# Cropping layer will be M. cardinalis SDM
+# Cropping layer will be 90m DEM cut
+# Stored on dropbox > pseudoabsence methods > megadem.cut.tif
 dem <- raster('C:/Users/DW/Desktop/bioclim 30s/hydrosheds/megadem.full.tif')
 
 projection(dem); #plot(dem); extent(dem)
