@@ -36,10 +36,51 @@ dat <- read_csv('SDM/data_files/sdm_input.csv')
 # slim dataframe to conform to structure required by mod.form function
 # (see script modforms.R)
 dat.input <- dat %>% 
-  dplyr::select(presabs, bio10, bio14, bio15, bio12, bio6, bio3, bio2)
+  dplyr::select(presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2)
+
+#################################################################################
+### MAKE RASTERS of point-associated bioclim for use in ENMeval
+
+# Order the dataframe so when it is rasterized presence records have their original values
+dat <- dat[order(rev(dat$presabs),decreasing=TRUE), ]
+
+# Convert to spatial points
+coordinates(dat) = ~Longitude + Latitude 
+prj.wgs = "+proj=longlat +ellps=WGS84"
+proj4string(dat) = CRS(prj.wgs)
+
+# Load existing raster (90m DEM from hydrosheds) 
+dem <- raster(file.choose()) # click on to .bil file within na_dem_30s_bil folder
+
+# rasterize thinned pseudo-absence records for Maxent Background
+vars <- c("bio2", "bio3", "bio10", "bio11", "bio12", "bio15", "bio17")
+
+for(i in 1:length(vars)){
+  dat_rast <- rasterize(dat, dem, field=vars[i], fun='first', na.rm=TRUE, background=NA) # consider changing function to mean
+  assign(vars[i], dat_rast)
+}
+
+# stack rasters
+preds <- stack(bio2, bio3, bio10, bio11, bio12, bio15, bio17)
+names(preds) <- vars
+
+#################################################################################
+### RUN ENMeval to optimize parameter settings
+
+dat <- as.data.frame(dat)
+dat.pres <- dat %>% filter(presabs==1) %>% dplyr::select(Longitude, Latitude) 
+dat.abs <- dat %>% filter(presabs==0) %>% dplyr::select(Longitude, Latitude) 
+
+tuna = ENMevaluate(dat.pres, preds, bg.coords=dat.abs, method="randomkfold", kfold=5, algorithm='maxent.jar')
+
+# see table of evaluation metrics
+tuna@results
+
+# find model with lowest AICc
+which(tuna@results$delta.AICc == 0)
 
 #############################################################
-### MAXENT MODEL
+### RUN MAXENT MODEL
 
 # Temporarily give MaxEnt more memory, if needed
 #options(java.parameters = "-Xmx1g" )
@@ -47,17 +88,12 @@ dat.input <- dat %>%
 # model with default parameter settings
 mod1.MAX <- maxent(dat.input[,c(2:8)], dat.input$presabs)
 
-# run ENMeval to optimize parameter settings
-
-
 # model with parameters adjusted based on ENMeval
 mod2.MAX <- maxent(dat.input[,c(2:8)], dat.input$presabs, args=c("betamultiplier=2.5", "threshold=FALSE")) 
 	
 save(mod2.MAX, file="SDM/Output/MAX.mod2.Rda")
 
 ##################################################################
-
-
 
 
 ##################################################################
@@ -88,33 +124,4 @@ cv.acc$thresh = c("SensSpec", "Kappa")
 cv.acc$model = "MAX.mod1"
 save(cv.acc, file="SDM/Output/MAX.mod2.cvaccs.Rda")
 
-################################################################################
-
-
-
-
-################################################################################
-######## START SOME EXTRA STUFF
-
-## compare model variable importance
-#setwd(path.obj)
-library(dismo)
-par(ask=T)
-par(mfrow=c(1,1))
-for (i in 1:10) {
-	mod = get(load(paste("MAX.mod1.",i,".Rda", sep="")))   
-	plot(mod) 
-	}
-
-## compare variable responses
-#setwd(path.obj)
-library(dismo)
-par(ask=T)
-par(mfrow=c(2,4))
-for (i in 1:10) {
-	mod = get(load(paste("MAX.mod1.",i,".Rda", sep="")))   
-	response(mod)
-	}
-	
-######## END SOME EXTRA STUFF
 ################################################################################
