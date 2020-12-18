@@ -1,18 +1,19 @@
-################################################################################# 
+##############################################################################
 ### SCRIPT PURPOSE: Prepare climatic predictor variables associated with each presence and pseudoabsence point coordinate
 # Modified from Angert et al. 2018, American Naturalist
 # Author: Amy Angert
 # last update:  13 Dec 2020
 
 ## OVERALL WORKFLOW:
-# !!! This assumes you have run climateNA external to this script and have its output.
-# Read in climateNA output file with monthly temperature and precipitation records for 1961-1990
+# !!! For presence/absence data, this assumes you have run climateNA (http://climatena.ca/) external to this script and have its output.
+# !!! For raster data, this assumes you have downloaded ascii rasters for 48 monthly variables from climateNA (https://adaptwest.databasin.org/pages/adaptwest-climatena)
+# Then, read in climateNA output file or rasters with monthly temperature and precipitation records for 1961-1990
 # Calculate bioclimatic variables from monthly temperature and precipitation
 
-################################################################################# 
+##############################################################################
 
 
-################################################################################# 
+############################################################################## 
 ### LOAD LIBRARIES AND PREPARE INPUTS
 
 ## CLEAR WORKSPACE
@@ -21,17 +22,20 @@ rm(list = ls(all.names = TRUE))
 ## LIBRARIES
 library(tidyverse) # for data manipulation
 library(dismo) # for biovars function
+library(SDMtools) # for read ascii function
+library(raster) # for raster grids
 
 ## INPUTS
+## (just points files for now; rasters loaded below)
 clim <- read_csv("SDM/data_files/points_Normal_1961_1990MSY.csv")
 
 # Ensure no missing values
 complete <- clim[complete.cases(clim), ] # should be same dim as clim if there are no missing values
 
-################################################################################# 
+##############################################################################
 
 
-################################################################################# 
+##############################################################################
 ### CALCULATE DERIVED BIOCLIMATIC VARIABLES
 ## 19 bioclimatic variables from Worldclim (https://www.worldclim.org/data/bioclim.html)
 
@@ -67,4 +71,14 @@ bioclim <- cbind(clim, bio) %>%
                 bio19=log(bio19+0.5))
 write_csv(bioclim, "SDM/data_files/biovars.csv")
 
-#################################################################################
+##############################################################################
+
+
+##############################################################################
+### MAKE GRIDS FOR MAPPING BIOCLIM VARIABLES AND MODEL PROJECTIONS
+
+## Read in raw ASCII files for monthly variables
+# These are for all of North America and too large for storage in this repo
+# First trim them to study area and save only trimmed files
+
+PPT01 <- read.asc(file.choose()) # click on to file within na_dem_30s_bil folder
