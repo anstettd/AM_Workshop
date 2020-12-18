@@ -22,8 +22,8 @@ rm(list = ls(all.names = TRUE))
 ## LIBRARIES
 library(tidyverse) # for data manipulation
 library(dismo) # for biovars function
-library(SDMtools) # for read ascii function
 library(raster) # for raster grids
+library(rgdal) # for transforming projections
 
 ## INPUTS
 ## (just points files for now; rasters loaded below)
@@ -78,7 +78,22 @@ write_csv(bioclim, "SDM/data_files/biovars.csv")
 ### MAKE GRIDS FOR MAPPING BIOCLIM VARIABLES AND MODEL PROJECTIONS
 
 ## Read in raw ASCII files for monthly variables
-# These are for all of North America and too large for storage in this repo
-# First trim them to study area and save only trimmed files
+# !!! Use drop-down menu to set working directory to folder with downloaded ASCII files
+allfiles <- list.files(pattern = '.asc') # list of '.asc' files
+allfiles <- stack(allfiles) # import set of rasters
+#plot(allfiles[[2]]) # optional visual check, plotting "PPT02"
 
-PPT01 <- read.asc(file.choose()) # click on to file within na_dem_30s_bil folder
+# These are in Lambert Conformal Conic projection
+prj.lcc <- "+proj=lcc +lat_1=49 +lat_2=77 +lat_0=0 +lon_0=-95 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+proj4string(allfiles) <- CRS(prj.lcc)
+#projection(allfiles) #optional check correct projection applied
+
+# These are for all of North America and too large for storage in this repo
+# Trim them to study area and save only trimmed files in the repo
+
+# Define extent as 1 degree beyond lat-long extent of points
+ext <- extent(min(clim$Longitude)-1, max(clim$Longitude)+1, min(clim$Latitude)-1, max(clim$Latitude)+1)
+prj.wgs = "+proj=longlat +ellps=WGS84"
+proj4string(ext) = CRS(prj.wgs)
+bbox = as(ext, "SpatialPolygons")
+bbox.lcc = spTransform(bbox, CRS=CRS(prj.lcc))
