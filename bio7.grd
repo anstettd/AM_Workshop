@@ -1,0 +1,26 @@
+[general]
+creator=R package 'raster'
+created=2020-12-22 09:30:45
+[georeference]
+nrows=1903
+ncols=1552
+xmin=-3077000
+ymin=4878000
+xmax=-1525000
+ymax=6781000
+projection=+proj=lcc +lat_0=0 +lon_0=-95 +lat_1=49 +lat_2=77 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs
+[data]
+datatype=INT4S
+byteorder=little
+nbands=1
+bandorder=BIL
+categorical=FALSE
+minvalue=13
+maxvalue=45
+nodatavalue=-2147483647
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=bio7
