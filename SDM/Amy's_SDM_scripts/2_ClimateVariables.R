@@ -140,7 +140,7 @@ bio19 <- log((b[["bio19"]])+0.5)
 # !!! Be sure working directory is set back to project folder
 for (i in 1:19) {
   bio = get(paste("bio",i, sep=""))
-  writeRaster(bio, file=paste("bio", i, ".grd",sep=""), 
+  writeRaster(bio, file=paste("data_files/bio", i, ".grd",sep=""), 
               bylayer = TRUE, datatype = 'INT4S', bandorder = 'grd', 
               overwrite = TRUE)
   }
