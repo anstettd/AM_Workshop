@@ -30,42 +30,37 @@ library(raster) # for making/reading bioclim rasters for ENMeval
 library(PresenceAbsence) # for accuracy stats
 
 ## INPUTS
-# read in file
+# read in file of presences and pseudoabsences and their associated bioclim values
 dat <- read_csv('SDM/data_files/sdm_input.csv')
 
 # slim dataframe to conform to structure required by mod.form function
 # (see script modforms.R)
+# this is unprojected
 dat.input <- dat %>% 
   dplyr::select(presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2)
 
+# read in rasters of bioclim variables for us in ENMeval
+# these are in LCC projection
+preds.lcc <- stack("SDM/data_files/bio2.grd", 
+               "SDM/data_files/bio3.grd", 
+               "SDM/data_files/bio10.grd", 
+               "SDM/data_files/bio11.grd", 
+               "SDM/data_files/bio12.grd", 
+               "SDM/data_files/bio15.grd", 
+               "SDM/data_files/bio17.grd")
+
+# unproject rasters to match pres/abs
+prj.lcc <- "+proj=lcc +lon_0=-95 +lat_1=49 +lat_2=77 +type=crs"  #specify current projection 
+proj4string(preds.lcc) <- CRS(prj.lcc) #define current projection of rasters
+prj.wgs = "+proj=longlat + type=crs" #specify unprojected coordinate system
+preds = projectRaster(preds.lcc, crs=CRS(prj.wgs)) #transform raster projection
+
 #################################################################################
-### MAKE RASTERS of point-associated bioclim for use in ENMeval
 
-# Order the dataframe so when it is rasterized presence records have their original values
-dat <- dat[order(rev(dat$presabs),decreasing=TRUE), ]
-
-# Convert to spatial points
-coordinates(dat) = ~Longitude + Latitude 
-prj.wgs = "+proj=longlat +ellps=WGS84"
-proj4string(dat) = CRS(prj.wgs)
-
-# Load existing raster (90m DEM from hydrosheds) 
-dem <- raster(file.choose()) # click on to .bil file within na_dem_30s_bil folder
-
-# rasterize thinned pseudo-absence records for Maxent Background
-vars <- c("bio2", "bio3", "bio10", "bio11", "bio12", "bio15", "bio17")
-
-for(i in 1:length(vars)){
-  dat_rast <- rasterize(dat, dem, field=vars[i], fun='first', na.rm=TRUE, background=NA) # consider changing function to mean
-  assign(vars[i], dat_rast)
-}
-
-# stack rasters
-preds <- stack(bio2, bio3, bio10, bio11, bio12, bio15, bio17)
-names(preds) <- vars
 
 #################################################################################
 ### RUN ENMeval to optimize parameter settings
+## see here for user guide: https://cran.r-project.org/web/packages/ENMeval/vignettes/ENMeval-vignette.html#eval
 
 dat <- as.data.frame(dat)
 dat.pres <- dat %>% filter(presabs==1) %>% dplyr::select(Longitude, Latitude) 
@@ -77,7 +72,9 @@ tuna = ENMevaluate(dat.pres, preds, bg.coords=dat.abs, method="randomkfold", kfo
 tuna@results
 
 # find model with lowest AICc
-which(tuna@results$delta.AICc == 0)
+bestmod <- which(tuna@results$delta.AICc == 0) 
+tuna@results[bestmod,]
+# this identifies the model with linear and quadratic features (fc="LQ") and a low regularization multiplier (rm=0.5) settings
 
 #############################################################
 ### RUN MAXENT MODEL
@@ -88,8 +85,8 @@ which(tuna@results$delta.AICc == 0)
 # model with default parameter settings
 mod1.MAX <- maxent(dat.input[,c(2:8)], dat.input$presabs)
 
-# model with parameters adjusted based on ENMeval
-mod2.MAX <- maxent(dat.input[,c(2:8)], dat.input$presabs, args=c("betamultiplier=2.5", "threshold=FALSE")) 
+# model with parameters adjusted based on ENMeval (LQ_0.5)
+mod2.MAX <- maxent(dat.input[,c(2:8)], dat.input$presabs, args=c(RMvalues=c(0.5), fc=c("LQ")))
 	
 save(mod2.MAX, file="SDM/Output/MAX.mod2.Rda")
 
