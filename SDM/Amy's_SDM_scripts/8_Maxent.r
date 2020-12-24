@@ -28,19 +28,21 @@ library(rJava) # for maxent program
 library(ENMeval) # for optimizing model parameters
 library(raster) # for making/reading bioclim rasters for ENMeval
 library(PresenceAbsence) # for accuracy stats
+library(maxnet)
 
 ## INPUTS
-# read in file of presences and pseudoabsences and their associated bioclim values
+# Read in file of presences and pseudoabsences and their associated bioclim values
 dat <- read_csv('SDM/data_files/sdm_input.csv')
 
-# slim dataframe to conform to structure required by mod.form function
+# Slim dataframe to conform to structure required by mod.form function
 # (see script modforms.R)
-# this is unprojected
+# This is unprojected
 dat.input <- dat %>% 
-  dplyr::select(presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2)
+  dplyr::select(presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2) %>% 
+  as.data.frame()
 
-# read in rasters of bioclim variables for us in ENMeval
-# these are in LCC projection
+# Read in rasters of bioclim variables for us in ENMeval
+# These are in LCC projection
 preds.lcc <- stack("SDM/data_files/bio2.grd", 
                "SDM/data_files/bio3.grd", 
                "SDM/data_files/bio10.grd", 
@@ -49,7 +51,7 @@ preds.lcc <- stack("SDM/data_files/bio2.grd",
                "SDM/data_files/bio15.grd", 
                "SDM/data_files/bio17.grd")
 
-# unproject rasters to match pres/abs
+# Unproject rasters to match pres/abs
 prj.lcc <- "+proj=lcc +lon_0=-95 +lat_1=49 +lat_2=77 +type=crs"  #specify current projection 
 proj4string(preds.lcc) <- CRS(prj.lcc) #define current projection of rasters
 prj.wgs = "+proj=longlat + type=crs" #specify unprojected coordinate system
@@ -60,43 +62,33 @@ preds = projectRaster(preds.lcc, crs=CRS(prj.wgs)) #transform raster projection
 
 #################################################################################
 ### RUN ENMeval to optimize parameter settings
-## see here for user guide: https://cran.r-project.org/web/packages/ENMeval/vignettes/ENMeval-vignette.html#eval
+## See here for user guide: https://cran.r-project.org/web/packages/ENMeval/vignettes/ENMeval-vignette.html#eval
 
-dat <- as.data.frame(dat)
 dat.pres <- dat %>% filter(presabs==1) %>% dplyr::select(Longitude, Latitude) 
 dat.abs <- dat %>% filter(presabs==0) %>% dplyr::select(Longitude, Latitude) 
 
 tuna = ENMevaluate(dat.pres, preds, bg.coords=dat.abs, method="randomkfold", kfold=5, algorithm='maxent.jar')
 
-# see table of evaluation metrics
+# See table of evaluation metrics
 tuna@results
 
-# find model with lowest AICc
+# Find model with lowest AICc
 bestmod <- which(tuna@results$delta.AICc == 0) 
 tuna@results[bestmod,]
-# this identifies the model with linear and quadratic features (fc="LQ") and a low regularization multiplier (rm=0.5) settings
+# This identifies the model with linear and quadratic features (fc="LQ") and a low regularization multiplier (rm=0.5) settings
 
-#############################################################
-### RUN MAXENT MODEL
+# Best model (but this is using raster grids across the entire study area)
+# mod.MAX <- tuna@models[[bestmod]]
 
-# Temporarily give MaxEnt more memory, if needed
-#options(java.parameters = "-Xmx1g" )
-
-# model with default parameter settings
-mod1.MAX <- maxent(dat.input[,c(2:8)], dat.input$presabs)
-
-# model with parameters adjusted based on ENMeval (LQ_0.5)
-mod2.MAX <- maxent(dat.input[,c(2:8)], dat.input$presabs, args=c(RMvalues=c(0.5), fc=c("LQ")))
-	
-save(mod2.MAX, file="SDM/Output/MAX.mod2.Rda")
-
-##################################################################
-
+# Run best model settings manually across pres/abs points only
+mod.MAX <- maxent(dat.input[,2:8], dat.input$presabs, args=c('hinge=false', 'threshold=false', 'product=false', 'betamultiplier=0.5'))
+save(mod.MAX, file="SDM/Output/MAX.mod.Rda")
 
 ##################################################################
 ### LOAD FINAL MODEL AND ITS PREDICTIONS 
 
-mod <- get(load("SDM/Output/MAX.mod2.Rda"))
+mod <- get(load("SDM/Output/MAX.mod.Rda"))
+pred <- project(mod, dat)
 
 ##################################################################
 
@@ -108,7 +100,7 @@ source("SDM/Amy's_SDM_scripts/accuracy.R")
 modl = "mod2.MAX" # add var to keep track of model
 
 # Resubstitution
-acc <- accuracy.max(dat.input, mod, modl)
+acc <- accuracy.max(dat, mod, modl)
 acc$thresh = c("SensSpec", "Kappa")
 acc$model = "MAX.mod2"
 save(acc, file="SDM/Output/MAX.mod2.accs.Rda")
