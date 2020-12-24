@@ -88,7 +88,7 @@ save(mod.MAX, file="SDM/Output/MAX.mod.Rda")
 ### LOAD FINAL MODEL AND ITS PREDICTIONS 
 
 mod <- get(load("SDM/Output/MAX.mod.Rda"))
-pred <- project(mod, dat)
+pred <- predict(dat.input[,2:8], mod)
 
 ##################################################################
 
