@@ -28,7 +28,7 @@ library(rJava) # for maxent program
 library(ENMeval) # for optimizing model parameters
 library(raster) # for making/reading bioclim rasters for ENMeval
 library(PresenceAbsence) # for accuracy stats
-library(maxnet)
+
 
 ## INPUTS
 # Read in file of presences and pseudoabsences and their associated bioclim values
@@ -64,8 +64,8 @@ preds = projectRaster(preds.lcc, crs=CRS(prj.wgs)) #transform raster projection
 ### RUN ENMeval to optimize parameter settings
 ## See here for user guide: https://cran.r-project.org/web/packages/ENMeval/vignettes/ENMeval-vignette.html#eval
 
-dat.pres <- dat %>% filter(presabs==1) %>% dplyr::select(Longitude, Latitude) 
-dat.abs <- dat %>% filter(presabs==0) %>% dplyr::select(Longitude, Latitude) 
+dat.pres <- dat %>% filter(presabs==1) %>% dplyr::select(Longitude, Latitude) %>% as.data.frame()
+dat.abs <- dat %>% filter(presabs==0) %>% dplyr::select(Longitude, Latitude) %>% as.data.frame()
 
 tuna = ENMevaluate(dat.pres, preds, bg.coords=dat.abs, method="randomkfold", kfold=5, algorithm='maxent.jar')
 
@@ -75,14 +75,15 @@ tuna@results
 # Find model with lowest AICc
 bestmod <- which(tuna@results$delta.AICc == 0) 
 tuna@results[bestmod,]
-# This identifies the model with linear and quadratic features (fc="LQ") and a low regularization multiplier (rm=0.5) settings
+# This identifies the model with linear and quadratic features only (no hinge, threshold, or product features) and a low regularization multiplier of 0.5
 
-# Best model (but this is using raster grids across the entire study area)
-# mod.MAX <- tuna@models[[bestmod]]
-
-# Run best model settings manually across pres/abs points only
-mod.MAX <- maxent(dat.input[,2:8], dat.input$presabs, args=c('hinge=false', 'threshold=false', 'product=false', 'betamultiplier=0.5'))
+# Save the best model 
+mod.MAX <- tuna@models[[bestmod]]
 save(mod.MAX, file="SDM/Output/MAX.mod.Rda")
+
+# Run best model settings manually across pres/abs dataframe (but this is holding testing data differently than the above)
+#mod.MAX <- maxent(dat.input[,2:8], dat.input$presabs, args=c('hinge=false', 'threshold=false', 'product=false', 'betamultiplier=0.5'))
+
 
 ##################################################################
 ### LOAD FINAL MODEL AND ITS PREDICTIONS 
