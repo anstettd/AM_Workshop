@@ -53,7 +53,7 @@ preds = projectRaster(preds.lcc, crs=CRS(prj.wgs)) #transform raster projection
 
 
 #################################################################################
-### RUN ENMeval to optimize parameter settings
+### RUN ENMeval to optimize parameter settings and select the best model
 ## See here for user guide: https://cran.r-project.org/web/packages/ENMeval/vignettes/ENMeval-vignette.html#eval
 
 dat.pres <- dat %>% filter(presabs==1) %>% dplyr::select(Longitude, Latitude) %>% as.data.frame()
@@ -73,4 +73,13 @@ tuna@results[bestmod,]
 mod.MAX <- tuna@models[[bestmod]]
 save(mod.MAX, file="SDM/Output/MAX.mod.Rda")
 
+# Save the evaluation scores of the best model
+aic.opt <- tuna@models[[bestmod]]
+accs <- as.data.frame(aic.opt@results)
+save(accs, file="SDM/Output/MAX.mod.accs.Rda")
 
+# Save the raster of predictions from the best model
+pred.rast.MAX <- tuna@predictions[[bestmod]]
+save(pred.rast.MAX, file="SDM/Output/MAX.pred.rast.Rda")
+
+#################################################################################
