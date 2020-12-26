@@ -27,19 +27,12 @@ library(dismo) # for maxent model syntax
 library(rJava) # for maxent program
 library(ENMeval) # for optimizing model parameters
 library(raster) # for making/reading bioclim rasters for ENMeval
-library(PresenceAbsence) # for accuracy stats
+#library(PresenceAbsence) # for accuracy stats
 
 
 ## INPUTS
 # Read in file of presences and pseudoabsences and their associated bioclim values
 dat <- read_csv('SDM/data_files/sdm_input.csv')
-
-# Slim dataframe to conform to structure required by mod.form function
-# (see script modforms.R)
-# This is unprojected
-dat.input <- dat %>% 
-  dplyr::select(presabs, bio10, bio15, bio11, bio17, bio12, bio3, bio2) %>% 
-  as.data.frame()
 
 # Read in rasters of bioclim variables for us in ENMeval
 # These are in LCC projection
