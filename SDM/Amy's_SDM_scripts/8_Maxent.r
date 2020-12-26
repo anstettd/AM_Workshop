@@ -81,37 +81,4 @@ tuna@results[bestmod,]
 mod.MAX <- tuna@models[[bestmod]]
 save(mod.MAX, file="SDM/Output/MAX.mod.Rda")
 
-# Run best model settings manually across pres/abs dataframe (but this is holding testing data differently than the above)
-#mod.MAX <- maxent(dat.input[,2:8], dat.input$presabs, args=c('hinge=false', 'threshold=false', 'product=false', 'betamultiplier=0.5'))
 
-
-##################################################################
-### LOAD FINAL MODEL AND ITS PREDICTIONS 
-
-mod <- get(load("SDM/Output/MAX.mod.Rda"))
-pred <- predict(dat.input[,2:8], mod)
-
-##################################################################
-
-
-##################################################################
-### CALCULATE ACCURACY, MODEL = MAXENT
-
-source("SDM/Amy's_SDM_scripts/accuracy.R")
-modl = "mod2.MAX" # add var to keep track of model
-
-# Resubstitution
-acc <- accuracy.max(dat, mod, modl)
-acc$thresh = c("SensSpec", "Kappa")
-acc$model = "MAX.mod2"
-save(acc, file="SDM/Output/MAX.mod2.accs.Rda")
-	
-# Cross-validation
-x.fold=5
-n.col=8
-cv.acc <- cv.accuracy.max(dat.input, mod, modl, x.fold, n.col)
-cv.acc$thresh = c("SensSpec", "Kappa")
-cv.acc$model = "MAX.mod1"
-save(cv.acc, file="SDM/Output/MAX.mod2.cvaccs.Rda")
-
-################################################################################
