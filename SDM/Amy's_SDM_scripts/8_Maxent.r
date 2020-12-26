@@ -5,9 +5,8 @@
 # last update:  15 Dec 2020
 
 ## OVERALL WORKFLOW:
-#	Build Maxent model of presence/(pseudo)absence ~ bioclimatic predictor variables
-# Optimize Maxent parameter settings
-#	Perform resubstitution and cross-validation to assess accuracy
+#	Build Maxent models across a range of parameter settings
+# Identify and save best model and its evaluation metrics
 
 ## IMPORTANT NOTES ABOUT RUNNING MAXENT
 # Maxent is an open-source java program that should be downloaded here:
