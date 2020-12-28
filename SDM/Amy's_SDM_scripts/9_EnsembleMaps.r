@@ -104,7 +104,7 @@ pred.all <- stack(pred.glm, pred.gam, pred.rf, pred.brt, pred.max)
 sim.ensem <- mean(pred.all) #unprojected
 plot(sim.ensem)
 writeRaster(sim.ensem, file="SDM/Output/UnweightedEnsemble_Unprojected.grd", overwrite=TRUE)
-sim.ensem.lcc <- projectRaster(sim.ensem, crs=CRS(prj.lcc)) #Lambers conic projection
+sim.ensem.lcc <- projectRaster(sim.ensem, crs=CRS(prj.lcc)) #convert to Lambers conic projection
 plot(sim.ensem.lcc)
 writeRaster(sim.ensem.lcc, file="SDM/Output/UnweightedEnsemble_LCCProjection.grd", overwrite=TRUE)
 
@@ -134,7 +134,7 @@ weights <- c(glm.auc, gam.auc, rf.auc, brt.auc, max.auc)
 wtd.ensem <- weighted.mean(pred.all, weights)
 plot(wtd.ensem) #unprojected
 writeRaster(wtd.ensem, file="SDM/Output/WeightedEnsemble_Unprojected.grd", overwrite=TRUE)
-wtd.ensem.lcc <- projectRaster(wtd.ensem, crs=CRS(prj.lcc)) #Lambers conic projection
+wtd.ensem.lcc <- projectRaster(wtd.ensem, crs=CRS(prj.lcc)) #convert to Lambers conic projection
 plot(wtd.ensem.lcc)
 writeRaster(wtd.ensem.lcc, file="SDM/Output/WeightedEnsemble_LCCProjection.grd", overwrite=TRUE)
 
@@ -166,7 +166,4 @@ legend("bottomleft", legend="Weighted Ensemble", bty="n", cex=1.5) #add title
 plot(wtd.ensem.lcc, legend.only=TRUE, legend.width=1, legend.shrink=0.75, col=rbPal, axis.args=list(at=seq(0, 1, by=0.1), labels=seq(0, 1, by=0.1), cex.axis=0.8)) #add legend for color ramp
 dev.off()
 
-
-	
-
-
+################################################################################
