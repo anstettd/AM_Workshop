@@ -22,12 +22,11 @@
 rm(list = ls(all.names = TRUE))
 
 ## LIBRARIES
+library(tidyverse)
 library(dismo) # for maxent model syntax
 library(rJava) # for maxent program
 library(ENMeval) # for optimizing model parameters
 library(raster) # for making/reading bioclim rasters for ENMeval
-#library(PresenceAbsence) # for accuracy stats
-
 
 ## INPUTS
 # Read in file of presences and pseudoabsences and their associated bioclim values
@@ -35,17 +34,19 @@ dat <- read_csv('SDM/data_files/sdm_input.csv')
 
 # Read in rasters of bioclim variables for us in ENMeval
 # These are in LCC projection
-preds.lcc <- stack("SDM/data_files/bio2.grd", 
-               "SDM/data_files/bio3.grd", 
-               "SDM/data_files/bio10.grd", 
-               "SDM/data_files/bio11.grd", 
-               "SDM/data_files/bio12.grd", 
-               "SDM/data_files/bio15.grd", 
-               "SDM/data_files/bio17.grd")
+preds.lcc <- stack("SDM/data_files/bio2.grd", # These are in LCC projection
+                   "SDM/data_files/bio3.grd", 
+                   "SDM/data_files/bio10.grd", 
+                   "SDM/data_files/bio11.grd", 
+                   "SDM/data_files/bio12.grd", #for some reason these last 3 
+                   "SDM/data_files/bio15.grd", #layers lose their names
+                   "SDM/data_files/bio17.grd") #upon import
+#so rename here; variable names must match models
+names(preds.lcc) <- c("bio2", "bio3", "bio10", "bio11", "bio12", "bio15", "bio17")
+prj.lcc <- "+proj=lcc +lon_0=-95 +lat_1=49 +lat_2=77 +type=crs"  #specify current projection 
+proj4string(preds.lcc) <- CRS(prj.lcc) #define current lcc projection of rasters
 
 # Unproject rasters to match pres/abs
-prj.lcc <- "+proj=lcc +lon_0=-95 +lat_1=49 +lat_2=77 +type=crs"  #specify current projection 
-proj4string(preds.lcc) <- CRS(prj.lcc) #define current projection of rasters
 prj.wgs = "+proj=longlat + type=crs" #specify unprojected coordinate system
 preds = projectRaster(preds.lcc, crs=CRS(prj.wgs)) #transform raster projection
 
