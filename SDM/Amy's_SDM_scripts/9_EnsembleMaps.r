@@ -10,6 +10,7 @@
 rm(list = ls(all.names = TRUE))
 
 ## Libraries needed for spatial stuff (others for predict functions called as needed below)
+library(tidyverse)
 library(raster)
 library(maptools)
 library(rgdal)
@@ -142,7 +143,54 @@ writeRaster(wtd.ensem.lcc, file="SDM/Output/WeightedEnsemble_LCCProjection.grd",
 
 
 ################################################################################
-### Pretty map
+### Calculate binary maps based on sensitivity-specificity thresholds
+## (uses accs files and prediction rasters loaded in prior sections)
+
+# Get thresholds from accuracy files
+glm.cut <- glm.accs[glm.accs$thresh=="SensSpec", "threshold"]
+gam.cut <- gam.accs[gam.accs$thresh=="SensSpec", "threshold"]
+rf.cut <- rf.accs[rf.accs$thresh=="SensSpec", "threshold"]
+brt.cut <- brt.accs[brt.accs$thresh=="SensSpec", "threshold"]
+max.cut <- max.accs$V1[44]
+
+# Reclassify rasters
+bin.glm <- reclassify(pred.glm,(c(0,glm.cut,0, glm.cut,1,1)),overwrite=T)
+plot(bin.glm)
+
+bin.gam <- reclassify(pred.gam,(c(0,gam.cut,0, gam.cut,1,1)),overwrite=T)
+plot(bin.gam)
+
+bin.rf <- reclassify(pred.rf,(c(0,rf.cut,0, rf.cut,1,1)),overwrite=T)
+plot(bin.rf)
+
+bin.brt <- reclassify(pred.brt,(c(0,brt.cut,0, brt.cut,1,1)),overwrite=T)
+plot(bin.brt)
+
+bin.max <- reclassify(pred.max,(c(0,max.cut,0, max.cut,1,1)),overwrite=T)
+plot(bin.max)
+
+## Stack thresholded projects
+bin.all <- stack(bin.glm, bin.gam, bin.rf, bin.brt, bin.max)
+bin.sum <- sum(bin.all) # sum of models by cell
+plot(bin.sum)
+bin.sum1 <- bin.sum>0 # predicted by at least 1 thresholded model 
+plot(bin.sum1) #too permissive
+bin.sum2 <- bin.sum>1 # predicted by at least 2 thresholded models
+plot(bin.sum2) #too permissive
+bin.sum3 <- bin.sum>2 # predicted by at least 3 thresholded models
+plot(bin.sum3) #**use this one**
+bin.sum4 <- bin.sum>3 # predicted by at least 4 thresholded models
+plot(bin.sum4) #too restrictive
+bin.sum5 <- bin.sum>4 # predicted by all 5 thresholded models 
+plot(bin.sum5) #too restrictive
+
+writeRaster(bin.sum3, file="SDM/Output/ThresholdedEnsemble_Unprojected.grd", overwrite=TRUE)
+bin.ensem.lcc <- projectRaster(bin.sum3, crs=CRS(prj.lcc)) #convert to Lambers conic projection
+plot(bin.ensem.lcc)
+writeRaster(bin.ensem.lcc, file="SDM/Output/ThresholdedEnsemble_LCCProjection.grd", overwrite=TRUE)
+
+################################################################################
+### Pretty map of quantitative ensemble
 
 ## Set up gridlines & lat/lon labels	
 frame.grd = gridlines(sta.crop)
