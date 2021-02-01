@@ -1,0 +1,43 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated Jan 14 2021
+#################################################################
+
+
+#################################################################
+#Filter Illumina adapters & Trim Low Quality
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=10:00:00,select=1:ncpus=32:mem=16gb
+#PBS -N trimtest
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o trim.output.txt
+#PBS -e trim.error.txt
+ 
+################################################################################
+
+module load miniconda3
+
+cd $PBS_O_WORKDIR
+
+source activate trim
+
+trim_path=“/project/st-angert-1/sra_gut”
+out_path=“/scratch/st-angert-1/output”
+
+java -jar trimmomatic-0.30.jar PE $trim_path/SRR486613_1.fastq  $trim_path/SRR486613_2.fastq -threads 4\
+$out_path/SRR486613_R1.paired.fastq \
+$out_path/SRR486613_R1.unpaired.fastq \ 
+$out_path/SRR486613_R2.paired.fastq \
+$out_path/SRR486613_R2.unpaired.fastq \
+ILLUMINACLIP:$trim_path/adapters/TruSeq2+3-PE.fa:2:30:10:8:T SLIDINGWINDOW:4:15 MINLEN:36
+
+conda deactivate
+
