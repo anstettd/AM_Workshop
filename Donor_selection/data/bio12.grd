@@ -1,0 +1,26 @@
+[general]
+creator=R package 'raster'
+created=2021-01-05 12:49:11
+[georeference]
+nrows=1903
+ncols=1552
+xmin=-3077000
+ymin=4878000
+xmax=-1525000
+ymax=6781000
+projection=+proj=lcc +lon_0=-95 +lat_1=49 +lat_2=77 +ellps=WGS84
+[data]
+datatype=INT4S
+byteorder=little
+nbands=1
+bandorder=BIL
+categorical=FALSE
+minvalue=4
+maxvalue=8
+nodatavalue=-2147483647
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=layer
