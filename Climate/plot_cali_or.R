@@ -1,4 +1,3 @@
-# GIS with R Webinar
 library(sf)
 library(tmap)
 library(tidyverse)
