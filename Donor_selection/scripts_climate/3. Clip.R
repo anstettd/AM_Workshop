@@ -10,14 +10,23 @@
 # Produces new rater that is contrained by range extent shape file
 ##############################################################################
 
+#Import libraries
 library(sf)
-library(tmap)
+library(raster)
 library(tidyverse)
-library(rnaturalearth)
-library(rnaturalearthdata)
+library(tmap)
+
 
 #bring in raster
-bio10<-raster()
+nlayers(stack("Donor_selection/data/bio10.grd")) #has just one layer
+bio10<-raster("Donor_selection/data/bio10.grd") #bring in 1961 to 1990 bio10 raster
+st_crs(bio10) #in WGS1984
+states<-ne_states(country=c("canada","united states of america"), #bring in NA Map
+  returnclass= "sf")
+
+tm_shape(states)+
+  tm_raster(bio10)
+
 
 #bring in range map
 
@@ -31,11 +40,3 @@ bio10<-raster()
 
 
 
-calo <- states %>%
-  filter(name_en=="Oregon" |
-           name_en=="California")
-
-
-#plot selected states, by wes bbox
-tm_shape(calo) +
-  tm_borders()
