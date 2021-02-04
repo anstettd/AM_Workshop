@@ -21,7 +21,7 @@ library(rnaturalearth)
 
 #Transform M. cardinalis distribution raster into a shape file
 #sdm <- raster("SDM/Output/ThresholdedEnsemble_Unprojected.grd") #bring in ensemble SDM raster
-#card <- rasterToPolygons(sdm)
+#card <- rasterToPolygons(sdm, dissolve=TRUE)
 #raster::shapefile(card,"SDM/Output/c_range.shp")
 
 # Import M.cardinalis ensamble range extent as sf polygon
