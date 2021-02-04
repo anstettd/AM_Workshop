@@ -11,31 +11,44 @@
 ##############################################################################
 
 #Import libraries
-library(sf)
+
 library(raster)
-library(tidyverse)
+library(rgdal)
+library(sf)
 library(tmap)
+library(tidyverse)
+library(rnaturalearth)
 
+#Transform M. cardinalis distribution raster into a shape file
+#sdm <- raster("SDM/Output/ThresholdedEnsemble_Unprojected.grd") #bring in ensemble SDM raster
+#card <- rasterToPolygons(sdm)
+#raster::shapefile(card,"SDM/Output/c_range.shp")
 
-#bring in raster
-nlayers(stack("Donor_selection/data/bio10.grd")) #has just one layer
-bio10<-raster("Donor_selection/data/bio10.grd") #bring in 1961 to 1990 bio10 raster
-st_crs(bio10) #in WGS1984
-states<-ne_states(country=c("canada","united states of america"), #bring in NA Map
-  returnclass= "sf")
+# Import M.cardinalis ensamble range extent as sf polygon
+c_range <- st_read("SDM/Output/c_range.shp")
 
-tm_shape(states)+
-  tm_raster(bio10)
+##visualize not working
+#Setup legal boundries
+states<-ne_states(country=c("united states of america"), returnclass= "sf")
+west <- states %>% filter(name_en=="Oregon" | name_en=="California" | name_en=="Nevada")
+#plot using tmap
+tm_shape(west)+
+tm_borders()+
+tm_shape(c_range)+
+  tm_polygons()
+  
+#Import climate variable
+lcc10<-raster("Donor_selection/data/bio10.grd") #bring in 1961 to 1990 bio10 raster
+#re-project bio10 raster into WGS 1984 (EPSG 4326)
+EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
+bio10 <- projectRaster(lcc10, crs=EPSG4326)
 
+#CRS match
+crs(c_range) 
+crs(bio10)
 
-#bring in range map
-
-
-#confirm projection
-
-
-
-
+#Clip
+bio10.clip <- raster::crop(bio10, c_range)
 
 
 
