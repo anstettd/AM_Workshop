@@ -41,14 +41,16 @@ tm_shape(c_range)+
 lcc10<-raster("Donor_selection/data/bio10.grd") #bring in 1961 to 1990 bio10 raster
 #re-project bio10 raster into WGS 1984 (EPSG 4326)
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
-bio10 <- projectRaster(lcc10, crs=EPSG4326)
+bio10 <- projectRaster(lcc10, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+sdm1 <- projectRaster(sdm, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
 
 #CRS match
 crs(c_range) 
 crs(bio10)
 
 #Clip
-bio10.clip <- raster::crop(bio10, c_range)
+bio10.clip <- raster::crop(bio10, sdm1)
 
 
 
