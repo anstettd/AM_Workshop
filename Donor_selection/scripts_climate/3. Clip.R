@@ -3,7 +3,7 @@
 
 # Modified from Angert et al. 2018, American Naturalist
 # Author: Daniel Anstett
-# last update:  3 Feb 2021
+# last update:  9 Feb 2021
 
 ## OVERALL WORKFLOW:
 # Assumes you have bioclim raster and shape file for range extent
