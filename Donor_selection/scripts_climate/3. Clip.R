@@ -11,18 +11,17 @@
 ##############################################################################
 
 #Import libraries
-
-library(raster)
 library(rgdal)
 library(sf)
 library(tmap)
 library(tidyverse)
 library(rnaturalearth)
+library(raster)
 
 #Transform M. cardinalis distribution raster into a shape file
-sdm <- raster("SDM/Output/ThresholdedEnsemble_Unprojected.grd") #bring in ensemble SDM raster
-card <- rasterToPolygons(sdm, dissolve=TRUE)
-raster::shapefile(card,"SDM/Output/c_range.shp")
+#sdm <- raster("SDM/Output/ThresholdedEnsemble_Unprojected.grd") #bring in ensemble SDM raster
+#card <- rasterToPolygons(sdm, dissolve=TRUE)
+#raster::shapefile(card,"SDM/Output/c_range.shp")
 
 # Import M.cardinalis ensamble range extent as sf polygon
 c_range <- st_read("SDM/Output/c_range.shp")
