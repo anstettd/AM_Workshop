@@ -1,0 +1,35 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated Feb 17 2021
+#################################################################
+
+
+#################################################################
+#Filter Illumina adapters & Trim Low Quality
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=00:10:00,select=1:ncpus=4:mem=16gb
+#PBS -N trimtest
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o trim.output.txt
+#PBS -e trim.error.txt
+ 
+################################################################################
+
+source ~/.bashrc
+conda activate trim
+
+cd $PBS_O_WORKDIR
+
+
+/usr/bin/time --verbose trimmomatic-0.30.jar PE $/project/st-angert-1/12_test/NS.1480.001.IDT_i7_109---IDT_i5_109.58_R1.fastq.gz $/project/st-angert-1/12_test/NS.1480.001.IDT_i7_109---IDT_i5_109.58_R2.fastq.gz -threads 4\ $/scratch/st-angert-1/output/mim_109_58_R1_paired.fastq $/scratch/st-angert-1/output/mim_109_58_R1_unpaired.fastq $/scratch/st-angert-1/output/mim_109_58_R2_paired.fastq	$/scratch/st-angert-1/output/mim_109_58_R2_unpaired.fastq ILLUMINACLIP:$project/st-angert-1/12_test/adaptors_illumina.fasta:2:30:10:8:T SLIDINGWINDOW:4:15 MINLEN:36
+
+conda deactivate
+
