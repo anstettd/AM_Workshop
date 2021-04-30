@@ -47,6 +47,6 @@ colnames(site_year) <- vic_year
 ###################################################################################
 #Export
 
-write.csv(site_year, "Genomics_scripts/Data/Mimulus_genomics_site_year.csv")
+#write.csv(site_year, "Genomics_scripts/Data/Mimulus_genomics_site_year.csv")
 
 
