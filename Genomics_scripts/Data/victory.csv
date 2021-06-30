@@ -1,0 +1,666 @@
+"","Name","Site","Population","Year"
+"1",1,"Sweetwater","S02",2010
+"2",2,"Sweetwater","S02",2010
+"3",3,"Sweetwater","S02",2010
+"4",5,"Sweetwater","S02",2010
+"5",6,"Sweetwater","S02",2010
+"6",7,"Sweetwater","S02",2010
+"7",8,"Sweetwater","S02",2010
+"8",9,"Sweetwater","S02",2011
+"9",10,"Sweetwater","S02",2011
+"10",11,"Sweetwater","S02",2011
+"11",12,"Sweetwater","S02",2011
+"12",13,"Sweetwater","S02",2011
+"13",14,"Sweetwater","S02",2011
+"14",15,"Sweetwater","S02",2011
+"15",16,"Sweetwater","S02",2012
+"16",17,"Sweetwater","S02",2012
+"17",18,"Sweetwater","S02",2012
+"18",19,"Sweetwater","S02",2012
+"19",20,"Sweetwater","S02",2012
+"20",21,"Sweetwater","S02",2012
+"21",22,"Sweetwater","S02",2013
+"22",23,"Sweetwater","S02",2013
+"23",24,"Sweetwater","S02",2013
+"24",25,"Sweetwater","S02",2013
+"25",26,"Sweetwater","S02",2013
+"26",27,"Sweetwater","S02",2013
+"27",28,"Sweetwater","S02",2014
+"28",29,"Sweetwater","S02",2014
+"29",30,"Sweetwater","S02",2014
+"30",31,"Sweetwater","S02",2014
+"31",32,"Sweetwater","S02",2014
+"32",33,"Sweetwater","S02",2014
+"33",34,"Sweetwater","S02",2014
+"34",35,"Sweetwater","S02",2014
+"35",36,"Sweetwater","S02",2014
+"36",37,"Sweetwater","S02",2014
+"37",38,"WF Mojave","S07",2010
+"38",39,"WF Mojave","S07",2010
+"39",40,"WF Mojave","S07",2010
+"40",41,"WF Mojave","S07",2010
+"41",42,"WF Mojave","S07",2011
+"42",43,"WF Mojave","S07",2011
+"43",44,"WF Mojave","S07",2011
+"44",45,"WF Mojave","S07",2011
+"45",46,"WF Mojave","S07",2011
+"46",47,"WF Mojave","S07",2011
+"47",48,"WF Mojave","S07",2014
+"48",49,"WF Mojave","S07",2014
+"49",50,"WF Mojave","S07",2014
+"50",51,"WF Mojave","S07",2014
+"51",52,"WF Mojave","S07",2014
+"52",53,"WF Mojave","S07",2014
+"53",54,"WF Mojave","S07",2014
+"54",55,"WF Mojave","S07",2014
+"55",57,"WF Mojave","S07",2014
+"56",58,"WF Mojave","S07",2015
+"57",59,"WF Mojave","S07",2015
+"58",60,"WF Mojave","S07",2015
+"59",61,"WF Mojave","S07",2015
+"60",62,"WF Mojave","S07",2015
+"61",63,"WF Mojave","S07",2015
+"62",64,"WF Mojave","S07",2015
+"63",65,"WF Mojave","S07",2016
+"64",66,"WF Mojave","S07",2016
+"65",67,"WF Mojave","S07",2016
+"66",68,"Redwoods","S08",2011
+"67",69,"Redwoods","S08",2011
+"68",70,"Redwoods","S08",2012
+"69",71,"Redwoods","S08",2012
+"70",72,"Redwoods","S08",2012
+"71",73,"Redwoods","S08",2012
+"72",74,"Redwoods","S08",2012
+"73",75,"Redwoods","S08",2012
+"74",76,"Redwoods","S08",2012
+"75",77,"Redwoods","S08",2012
+"76",78,"Redwoods","S08",2012
+"77",80,"Redwoods","S08",2013
+"78",82,"Redwoods","S08",2013
+"79",83,"Redwoods","S08",2013
+"80",84,"Redwoods","S08",2013
+"81",85,"Redwoods","S08",2014
+"82",86,"NFMF Tule","S10",2010
+"83",87,"NFMF Tule","S10",2010
+"84",88,"NFMF Tule","S10",2011
+"85",89,"NFMF Tule","S10",2011
+"86",90,"NFMF Tule","S10",2012
+"87",91,"NFMF Tule","S10",2012
+"88",92,"NFMF Tule","S10",2012
+"89",93,"NFMF Tule","S10",2013
+"90",94,"NFMF Tule","S10",2013
+"91",95,"NFMF Tule","S10",2013
+"92",96,"NFMF Tule","S10",2013
+"93",97,"NFMF Tule","S10",2013
+"94",98,"NFMF Tule","S10",2014
+"95",99,"NFMF Tule","S10",2014
+"96",100,"NFMF Tule","S10",2014
+"97",101,"NFMF Tule","S10",2014
+"98",102,"NFMF Tule","S10",2014
+"99",103,"NFMF Tule","S10",2014
+"100",104,"NFMF Tule","S10",2014
+"101",105,"NFMF Tule","S10",2014
+"102",106,"NFMF Tule","S10",2015
+"103",107,"NFMF Tule","S10",2015
+"104",108,"NFMF Tule","S10",2015
+"105",109,"NFMF Tule","S10",2015
+"106",110,"NFMF Tule","S10",2015
+"107",111,"NFMF Tule","S10",2015
+"108",112,"NFMF Tule","S10",2015
+"109",113,"NFMF Tule","S10",2015
+"110",113,"NFMF Tule","S10",2015
+"111",114,"NFMF Tule","S10",2015
+"112",115,"NFMF Tule","S10",2016
+"113",116,"NFMF Tule","S10",2016
+"114",117,"NFMF Tule","S10",2016
+"115",118,"NFMF Tule","S10",2016
+"116",119,"Mill Creek","S11",2010
+"117",120,"Mill Creek","S11",2010
+"118",121,"Mill Creek","S11",2010
+"119",122,"Mill Creek","S11",2010
+"120",123,"Mill Creek","S11",2010
+"121",124,"Mill Creek","S11",2010
+"122",125,"Mill Creek","S11",2010
+"123",126,"Mill Creek","S11",2011
+"124",127,"Mill Creek","S11",2011
+"125",128,"Mill Creek","S11",2011
+"126",129,"Mill Creek","S11",2011
+"127",130,"Mill Creek","S11",2011
+"128",131,"Mill Creek","S11",2011
+"129",132,"Mill Creek","S11",2011
+"130",133,"Mill Creek","S11",2013
+"131",134,"Mill Creek","S11",2013
+"132",135,"Mill Creek","S11",2013
+"133",136,"Mill Creek","S11",2013
+"134",137,"Mill Creek","S11",2013
+"135",138,"Mill Creek","S11",2013
+"136",139,"Mill Creek","S11",2015
+"137",140,"Mill Creek","S11",2015
+"138",141,"Mill Creek","S11",2015
+"139",142,"Mill Creek","S11",2015
+"140",143,"Mill Creek","S11",2015
+"141",144,"Mill Creek","S11",2016
+"142",145,"Mill Creek","S11",2016
+"143",146,"Mill Creek","S11",2016
+"144",147,"Mill Creek","S11",2016
+"145",148,"Rock Creek","S15",2010
+"146",149,"Rock Creek","S15",2010
+"147",150,"Rock Creek","S15",2010
+"148",151,"Rock Creek","S15",2010
+"149",152,"Rock Creek","S15",2010
+"150",153,"Rock Creek","S15",2010
+"151",154,"Rock Creek","S15",2010
+"152",155,"Rock Creek","S15",2010
+"153",156,"Rock Creek","S15",2010
+"154",157,"Rock Creek","S15",2012
+"155",158,"Rock Creek","S15",2012
+"156",159,"Rock Creek","S15",2014
+"157",160,"Rock Creek","S15",2014
+"158",161,"Rock Creek","S15",2014
+"159",162,"Rock Creek","S15",2014
+"160",163,"Rock Creek","S15",2014
+"161",164,"Rock Creek","S15",2015
+"162",165,"Rock Creek","S15",2015
+"163",166,"Rock Creek","S15",2015
+"164",167,"Rock Creek","S15",2015
+"165",168,"Rock Creek","S15",2015
+"166",169,"Rock Creek","S15",2015
+"167",170,"Rock Creek","S15",2015
+"168",171,"Rock Creek","S15",2015
+"169",172,"Rock Creek","S15",2015
+"170",173,"Rock Creek","S15",2015
+"171",174,"Rock Creek","S15",2016
+"172",175,"Rock Creek","S15",2016
+"173",176,"Rock Creek","S15",2016
+"174",177,"Rock Creek","S15",2016
+"175",178,"Rock Creek","S15",2016
+"176",179,"Rock Creek","S15",2016
+"177",180,"Rock Creek","S15",2016
+"178",181,"Rock Creek","S15",2016
+"179",182,"Rock Creek","S15",2016
+"180",183,"Rock Creek","S15",2016
+"181",184,"O'Neil Creek","S16",2010
+"182",185,"O'Neil Creek","S16",2010
+"183",186,"O'Neil Creek","S16",2010
+"184",187,"O'Neil Creek","S16",2010
+"185",188,"O'Neil Creek","S16",2010
+"186",189,"O'Neil Creek","S16",2010
+"187",190,"O'Neil Creek","S16",2010
+"188",191,"O'Neil Creek","S16",2010
+"189",192,"O'Neil Creek","S16",2012
+"190",193,"O'Neil Creek","S16",2012
+"191",194,"O'Neil Creek","S16",2012
+"192",195,"O'Neil Creek","S16",2012
+"193",196,"O'Neil Creek","S16",2013
+"194",197,"O'Neil Creek","S16",2013
+"195",198,"O'Neil Creek","S16",2013
+"196",199,"O'Neil Creek","S16",2014
+"197",200,"O'Neil Creek","S16",2014
+"198",201,"O'Neil Creek","S16",2014
+"199",202,"O'Neil Creek","S16",2014
+"200",203,"O'Neil Creek","S16",2014
+"201",204,"O'Neil Creek","S16",2015
+"202",205,"O'Neil Creek","S16",2015
+"203",206,"O'Neil Creek","S16",2015
+"204",207,"O'Neil Creek","S16",2015
+"205",208,"O'Neil Creek","S16",2015
+"206",209,"O'Neil Creek","S16",2015
+"207",210,"O'Neil Creek","S16",2015
+"208",211,"O'Neil Creek","S16",2016
+"209",212,"O'Neil Creek","S16",2016
+"210",213,"O'Neil Creek","S16",2016
+"211",214,"O'Neil Creek","S16",2016
+"212",215,"O'Neil Creek","S16",2016
+"213",216,"O'Neil Creek","S16",2016
+"214",217,"O'Neil Creek","S16",2016
+"215",218,"O'Neil Creek","S16",2016
+"216",219,"O'Neil Creek","S16",2016
+"217",220,"O'Neil Creek","S16",2016
+"218",221,"Deep Creek","S17",2011
+"219",222,"Deep Creek","S17",2011
+"220",223,"Deep Creek","S17",2011
+"221",224,"Deep Creek","S17",2011
+"222",225,"Deep Creek","S17",2014
+"223",226,"Deep Creek","S17",2015
+"224",227,"Deep Creek","S17",2015
+"225",228,"Deep Creek","S17",2015
+"226",229,"Deep Creek","S17",2015
+"227",230,"Deep Creek","S17",2015
+"228",231,"Deep Creek","S17",2016
+"229",232,"Deep Creek","S17",2016
+"230",233,"Deep Creek","S17",2016
+"231",234,"Deep Creek","S17",2016
+"232",235,"Deep Creek","S17",2016
+"233",236,"Deep Creek","S17",2016
+"234",237,"Deep Creek","S17",2016
+"235",238,"Deep Creek","S17",2016
+"236",239,"Deep Creek","S17",2016
+"237",240,"Little Jameson","S18",2010
+"238",241,"Little Jameson","S18",2010
+"239",242,"Little Jameson","S18",2010
+"240",243,"Little Jameson","S18",2010
+"241",244,"Little Jameson","S18",2010
+"242",245,"Little Jameson","S18",2010
+"243",246,"Little Jameson","S18",2010
+"244",247,"Little Jameson","S18",2010
+"245",248,"Little Jameson","S18",2012
+"246",249,"Little Jameson","S18",2012
+"247",250,"Little Jameson","S18",2012
+"248",251,"Little Jameson","S18",2012
+"249",252,"Little Jameson","S18",2012
+"250",253,"Little Jameson","S18",2012
+"251",254,"Little Jameson","S18",2012
+"252",255,"Little Jameson","S18",2012
+"253",256,"Little Jameson","S18",2013
+"254",257,"Little Jameson","S18",2013
+"255",258,"Little Jameson","S18",2013
+"256",259,"Little Jameson","S18",2013
+"257",260,"Little Jameson","S18",2013
+"258",261,"Little Jameson","S18",2013
+"259",262,"Little Jameson","S18",2013
+"260",263,"Little Jameson","S18",2013
+"261",264,"Little Jameson","S18",2013
+"262",265,"Little Jameson","S18",2013
+"263",266,"Little Jameson","S18",2014
+"264",267,"Little Jameson","S18",2014
+"265",268,"Little Jameson","S18",2014
+"266",269,"Little Jameson","S18",2014
+"267",270,"Little Jameson","S18",2014
+"268",271,"Little Jameson","S18",2014
+"269",272,"Little Jameson","S18",2014
+"270",273,"Little Jameson","S18",2014
+"271",274,"Little Jameson","S18",2016
+"272",275,"Little Jameson","S18",2016
+"273",276,"Little Jameson","S18",2016
+"274",277,"Little Jameson","S18",2016
+"275",278,"Little Jameson","S18",2016
+"276",279,"Little Jameson","S18",2016
+"277",280,"Little Jameson","S18",2016
+"278",281,"Little Jameson","S18",2016
+"279",282,"Little Jameson","S18",2016
+"280",283,"Oregon Creek","S29",2010
+"281",284,"Oregon Creek","S29",2010
+"282",285,"Oregon Creek","S29",2010
+"283",286,"Oregon Creek","S29",2010
+"284",287,"Oregon Creek","S29",2010
+"285",288,"Oregon Creek","S29",2010
+"286",289,"Oregon Creek","S29",2010
+"287",290,"Oregon Creek","S29",2010
+"288",291,"Oregon Creek","S29",2013
+"289",292,"Oregon Creek","S29",2013
+"290",293,"Oregon Creek","S29",2014
+"291",294,"Oregon Creek","S29",2014
+"292",295,"Oregon Creek","S29",2014
+"293",296,"Oregon Creek","S29",2014
+"294",297,"Oregon Creek","S29",2014
+"295",298,"Oregon Creek","S29",2014
+"296",299,"Oregon Creek","S29",2014
+"297",300,"Oregon Creek","S29",2014
+"298",302,"Oregon Creek","S29",2015
+"299",303,"Oregon Creek","S29",2015
+"300",304,"Oregon Creek","S29",2016
+"301",305,"Wawona","S32",2010
+"302",306,"Wawona","S32",2010
+"303",307,"Wawona","S32",2010
+"304",308,"Wawona","S32",2010
+"305",309,"Wawona","S32",2010
+"306",310,"Wawona","S32",2010
+"307",311,"Wawona","S32",2010
+"308",312,"Wawona","S32",2012
+"309",313,"Wawona","S32",2012
+"310",314,"Wawona","S32",2012
+"311",315,"Wawona","S32",2012
+"312",316,"Wawona","S32",2012
+"313",317,"Wawona","S32",2012
+"314",318,"Wawona","S32",2012
+"315",319,"Wawona","S32",2012
+"316",320,"Wawona","S32",2012
+"317",321,"Wawona","S32",2012
+"318",322,"Wawona","S32",2014
+"319",323,"Wawona","S32",2014
+"320",324,"Wawona","S32",2014
+"321",325,"Wawona","S32",2014
+"322",326,"Wawona","S32",2014
+"323",327,"Wawona","S32",2014
+"324",328,"Wawona","S32",2015
+"325",329,"Wawona","S32",2015
+"326",330,"Wawona","S32",2015
+"327",331,"Wawona","S32",2015
+"328",332,"Wawona","S32",2015
+"329",333,"Wawona","S32",2015
+"330",334,"Wawona","S32",2016
+"331",335,"Wawona","S32",2016
+"332",336,"Wawona","S32",2016
+"333",337,"Wawona","S32",2016
+"334",338,"Wawona","S32",2016
+"335",339,"Wawona","S32",2016
+"336",340,"Deer Creek","S36",2011
+"337",341,"Deer Creek","S36",2011
+"338",342,"Deer Creek","S36",2011
+"339",343,"Deer Creek","S36",2011
+"340",344,"Deer Creek","S36",2011
+"341",345,"Deer Creek","S36",2011
+"342",346,"Deer Creek","S36",2011
+"343",347,"Deer Creek","S36",2011
+"344",348,"Deer Creek","S36",2011
+"345",349,"Deer Creek","S36",2011
+"346",350,"Deer Creek","S36",2012
+"347",351,"Deer Creek","S36",2012
+"348",352,"Deer Creek","S36",2012
+"349",353,"Deer Creek","S36",2012
+"350",354,"Deer Creek","S36",2012
+"351",355,"Deer Creek","S36",2012
+"352",356,"Deer Creek","S36",2012
+"353",357,"Deer Creek","S36",2012
+"354",358,"Deer Creek","S36",2012
+"355",359,"Deer Creek","S36",2012
+"356",360,"Deer Creek","S36",2014
+"357",361,"Deer Creek","S36",2014
+"358",362,"Deer Creek","S36",2014
+"359",363,"Deer Creek","S36",2014
+"360",364,"Deer Creek","S36",2014
+"361",365,"Deer Creek","S36",2014
+"362",366,"Deer Creek","S36",2014
+"363",367,"Deer Creek","S36",2014
+"364",368,"Deer Creek","S36",2015
+"365",369,"Deer Creek","S36",2015
+"366",370,"Deer Creek","S36",2015
+"367",371,"Deer Creek","S36",2015
+"368",372,"Deer Creek","S36",2015
+"369",373,"Deer Creek","S36",2015
+"370",374,"Deer Creek","S36",2015
+"371",375,"Deer Creek","S36",2015
+"372",376,"Deer Creek","S36",2015
+"373",377,"Deer Creek","S36",2016
+"374",378,"Deer Creek","S36",2016
+"375",379,"Deer Creek","S36",2016
+"376",380,"Deer Creek","S36",2016
+"377",381,"Deer Creek","S36",2016
+"378",382,"Deer Creek","S36",2016
+"379",383,"Deer Creek","S36",2016
+"380",384,"Deer Creek","S36",2016
+"381",385,"Deer Creek","S36",2016
+"382",386,"Little Jameson","S18",2014
+"383",387,"Arroyo Sequit","",2010
+"384",388,"Arroyo Sequit","",2010
+"385",389,"Arroyo Sequit","",2010
+"386",390,"Arroyo Sequit","",2010
+"387",391,"Arroyo Sequit","",2010
+"388",392,"Baker Creek","",2010
+"389",393,"Baker Creek","",2010
+"390",394,"Baker Creek","",2010
+"391",395,"Baker Creek","",2010
+"392",396,"Baker Creek","",2010
+"393",397,"Baker Creek","",2010
+"394",398,"Bear Creek ","",2009
+"395",399,"Bear Creek ","",2009
+"396",400,"Bear Creek ","",2009
+"397",401,"Bear Creek ","",2009
+"398",402,"Bear Creek ","",2009
+"399",403,"Buck Meadows","",2010
+"400",404,"Buck Meadows","",2010
+"401",405,"Camp Creek 2","",2009
+"402",406,"Camp Creek 2","",2009
+"403",407,"Camp Creek 2","",2009
+"404",408,"Camp Creek 2","",2009
+"405",409,"Camp Creek 2","",2009
+"406",410,"Camp Creek 2","",2009
+"407",411,"Camp Creek 2","",2009
+"408",413,"Camp Creek 2","",2009
+"409",414,"Camp Creek 2","",2009
+"410",415,"Camp Creek 2","",2009
+"411",417,"Carberry Creek","",2009
+"412",418,"Carberry Creek","",2009
+"413",419,"Carberry Creek","",2009
+"414",420,"Carberry Creek","",2009
+"415",421,"Carberry Creek","",2009
+"416",422,"Carberry Creek","",2009
+"417",423,"Carberry Creek","",2009
+"418",426,"Carlon","",2010
+"419",428,"Chariot Canyon","",2010
+"420",429,"Chariot Canyon","",2010
+"421",430,"Chariot Canyon","",2010
+"422",431,"Chariot Canyon","",2010
+"423",432,"Chariot Canyon","",2010
+"424",433,"Chariot Canyon","",2010
+"425",434,"Chariot Canyon","",2010
+"426",436,"Cherokee Creek","",2010
+"427",438,"Cherokee Creek","",2010
+"428",439,"Cherokee Creek","",2010
+"429",440,"Cherokee Creek","",2010
+"430",441,"Cherokee Creek","",2010
+"431",444,"Cherokee Creek","",2010
+"432",446,"Cherokee Creek","",2010
+"433",451,"Cherokee Creek","",2010
+"434",453,"Cherokee Creek","",2010
+"435",454,"Cherokee Creek","",2010
+"436",459,"Coast Fork Willamette","",2009
+"437",460,"Coast Fork Willamette","",2009
+"438",461,"Coast Fork Willamette","",2009
+"439",462,"Coast Fork Willamette","",2009
+"440",463,"Coast Fork Willamette","",2009
+"441",464,"Coast Fork Willamette","",2009
+"442",466,"Coast Fork Willamette","",2009
+"443",467,"Coast Fork Willamette","",2009
+"444",468,"Coast Fork Willamette","",2009
+"445",469,"Coast Fork Willamette","",2009
+"446",478,"Cottonwood Creek","",2010
+"447",479,"Cow Creek - Oregon","",2008
+"448",480,"Creek to Rubicon","",2009
+"449",481,"Creek to Rubicon","",2009
+"450",482,"Creek to Rubicon","",2009
+"451",483,"Creek to Rubicon","",2009
+"452",484,"Creek to Rubicon","",2009
+"453",485,"Creek to Rubicon","",2009
+"454",486,"Creek to Rubicon","",2009
+"455",487,"Creek to Rubicon","",2009
+"456",489,"Creek to Rubicon","",2009
+"457",498,"Deer Flat Creek","",2010
+"458",500,"Deer Flat Creek","",2010
+"459",501,"Duncan Creek","",2009
+"460",502,"Duncan Creek","",2009
+"461",503,"Duncan Creek","",2009
+"462",504,"Duncan Creek","",2009
+"463",505,"Duncan Creek","",2009
+"464",506,"Duncan Creek","",2009
+"465",507,"Duncan Creek","",2009
+"466",508,"Duncan Creek","",2009
+"467",509,"Duncan Creek","",2009
+"468",510,"Duncan Creek","",2009
+"469",516,"Fiddle Creek","",2010
+"470",517,"Fiddle Creek","",2010
+"471",519,"Fivemile Creek","",2010
+"472",520,"Hauser Creek","",2010
+"473",521,"Hauser Creek","",2010
+"474",522,"Hauser Creek","",2010
+"475",523,"Hauser Creek","",2010
+"476",524,"Hauser Creek","",2010
+"477",525,"Hauser Creek","",2010
+"478",527,"Hauser Creek","",2010
+"479",528,"Hauser Creek","",2010
+"480",529,"Hauser Creek","",2010
+"481",530,"Hauser Creek","",2010
+"482",542,"Honey Creek","",2007
+"483",543,"Honey Creek","",2007
+"484",544,"Kitchen Creek","",2010
+"485",545,"Kitchen Creek","",2010
+"486",546,"Kitchen Creek","",2010
+"487",547,"Kitchen Creek","",2010
+"488",548,"Kitchen Creek","",2010
+"489",549,"Kitchen Creek","",2010
+"490",550,"Kitchen Creek","",2010
+"491",551,"Kitchen Creek","",2010
+"492",552,"Kitchen Creek","",2010
+"493",553,"Kitchen Creek","",2010
+"494",575,"Little North Fork Middle Fork Feather","",2010
+"495",576,"Little North Fork Middle Fork Feather","",2010
+"496",577,"Little North Fork Middle Fork Feather","",2010
+"497",579,"Little North Fork Middle Fork Feather","",2010
+"498",581,"Little North Fork Middle Fork Feather","",2010
+"499",582,"Manzana Creek","",2010
+"500",583,"Manzana Creek","",2010
+"501",614,"Mill Creek","",2010
+"502",615,"Mill Creek","",2010
+"503",616,"Mill Creek","",2010
+"504",617,"Narrows Co. Park, North Fork Umpqua","",2007
+"505",618,"Narrows Co. Park, North Fork Umpqua","",2007
+"506",619,"Narrows Co. Park, North Fork Umpqua","",2007
+"507",621,"NF Stanislaus","",2010
+"508",622,"NF Stanislaus","",2010
+"509",623,"NF Stanislaus","",2010
+"510",624,"NF Stanislaus","",2010
+"511",626,"NF Stanislaus","",2010
+"512",627,"NF Stanislaus","",2010
+"513",628,"NF Stanislaus","",2010
+"514",629,"NF Stanislaus","",2010
+"515",630,"NF Stanislaus","",2010
+"516",631,"NF Stanislaus","",2010
+"517",636,"Nicasio Creek","",2009
+"518",637,"Nicasio Creek","",2009
+"519",638,"Nicasio Creek","",2009
+"520",639,"Nicasio Creek","",2009
+"521",640,"Nicasio Creek","",2009
+"522",641,"Nicasio Creek","",2009
+"523",642,"Nicasio Creek","",2009
+"524",643,"North Feather (Chip's Creek)","",2009
+"525",644,"North Feather (Chip's Creek)","",2009
+"526",645,"North Feather (Chip's Creek)","",2009
+"527",646,"North Feather (Chip's Creek)","",2009
+"528",647,"North Feather (Chip's Creek)","",2009
+"529",648,"North Feather (Chip's Creek)","",2009
+"530",649,"North Feather (Chip's Creek)","",2009
+"531",650,"North Feather (Chip's Creek)","",2009
+"532",651,"North Feather (Chip's Creek)","",2009
+"533",653,"North Feather (Chip's Creek)","",2009
+"534",656,"North Fork (seep)","",2008
+"535",657,"North Fork (seep)","",2008
+"536",658,"North Fork (seep)","",2008
+"537",659,"North Fork (seep)","",2008
+"538",662,"North Fork Middle Fork Tule","",2010
+"539",664,"North Fork Middle Fork Tule","",2010
+"540",665,"North Fork Middle Fork Tule","",2010
+"541",666,"North Fork Middle Fork Tule","",2010
+"542",667,"North Fork Middle Fork Tule","",2010
+"543",672,"O'Neil Creek","",2010
+"544",693,"Oregon Creek","",2010
+"545",700,"Oregon Creek","",2010
+"546",720,"Paradise Creek","",2010
+"547",721,"Paradise Creek","",2010
+"548",722,"Paradise Creek","",2010
+"549",723,"Paradise Creek","",2010
+"550",724,"Paradise Creek","",2010
+"551",725,"Rainbow Pool","",2009
+"552",726,"Rainbow Pool","",2009
+"553",727,"Rainbow Pool","",2009
+"554",729,"Rainbow Pool","",2009
+"555",733,"Redwood Creek","",2010
+"556",737,"Redwood Creek","",2010
+"557",741,"Redwood Creek","",2010
+"558",742,"Redwood Creek","",2010
+"559",743,"Redwood Creek","",2010
+"560",754,"Rock Creek","",2010
+"561",769,"Salmon River 2 (Nordheimer Creek)","",2009
+"562",770,"Salmon River 2 (Nordheimer Creek)","",2009
+"563",771,"Salmon River 2 (Nordheimer Creek)","",2009
+"564",772,"Salmon River 2 (Nordheimer Creek)","",2009
+"565",773,"Salmon River 2 (Nordheimer Creek)","",2009
+"566",774,"Salmon River 2 (Nordheimer Creek)","",2009
+"567",775,"Salmon River 2 (Nordheimer Creek)","",2009
+"568",776,"Salmon River 2 (Nordheimer Creek)","",2009
+"569",777,"Shasta Costa Creek","",2008
+"570",778,"Shasta Costa Creek","",2008
+"571",779,"Shasta Costa Creek","",2008
+"572",780,"Slate Creek","",2008
+"573",781,"Slate Creek","",2008
+"574",782,"Slate Creek","",2008
+"575",783,"Slate Creek","",2008
+"576",784,"Smith River","",2009
+"577",785,"Smith River","",2009
+"578",786,"Smith River","",2009
+"579",787,"Smith River","",2009
+"580",788,"Smith River","",2009
+"581",789,"South Fork","",2009
+"582",790,"South Fork","",2009
+"583",791,"South Fork","",2009
+"584",793,"South Fork","",2009
+"585",794,"Susan Creek","",2010
+"586",799,"Sweetwater River","",2010
+"587",800,"Sweetwater River","",2010
+"588",812,"Tenaya Creek - Yosemite","",2008
+"589",813,"Tenaya Creek - Yosemite","",2008
+"590",814,"Tenaya Creek - Yosemite","",2008
+"591",815,"Tenaya Creek - Yosemite","",2008
+"592",817,"Trib to W Fork Mojave River","",2010
+"593",818,"Trib to W Fork Mojave River","",2010
+"594",819,"Trib to W Fork Mojave River","",2010
+"595",821,"Trib to W Fork Mojave River","",2010
+"596",822,"Trinity","",2008
+"597",823,"Trinity","",2008
+"598",824,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"599",825,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"600",826,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"601",827,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"602",828,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"603",829,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"604",830,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"605",831,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"606",832,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"607",833,"Unknown Creek (seep feeding Chiquito Creek)","",2009
+"608",835,"West Fork Mojave River","",2010
+"609",844,"Whitewater Canyon","",2010
+"610",849,"Whitewater Canyon","",2010
+"611",850,"Whitewater Canyon","",2010
+"612",851,"Whitewater Canyon","",2010
+"613",852,"Whitewater Canyon","",2010
+"614",853,"Whitewater Canyon","",2010
+"615",854,"Whitewater Canyon","",2010
+"616",871,"Whitewater Canyon","",2010
+"617",872,"Whitewater Canyon","",2010
+"618",873,"Wrights Road","",2009
+"619",874,"Wrights Road","",2009
+"620",875,"Wrights Road","",2009
+"621",876,"Wrights Road","",2009
+"622",877,"Wrights Road","",2009
+"623",878,"Wrights Road","",2009
+"624",879,"Wrights Road","",2009
+"625",880,"Wrights Road","",2009
+"626",881,"Yakima, WA","",2006
+"627",882,"Yakima, WA","",2006
+"628",883,"Yakima, WA","",2006
+"629",884,"Yakima, WA","",2006
+"630",885,"Yakima, WA","",2006
+"631",886,"Yakima, WA","",2006
+"632",887,"Yakima, WA","",2006
+"633",888,"Yakima, WA","",2006
+"634",889,"Yakima, WA","",2006
+"635",890,"Yakima, WA","",2006
+"636",893,"North Fork Silver Creek","",2010
+"637",894,"North Fork Silver Creek","",2010
+"638",895,"North Fork Silver Creek","",2010
+"639",896,"North Fork Silver Creek","",2010
+"640",897,"North Fork Silver Creek","",2010
+"641",898,"North Fork Silver Creek","",2010
+"642",899,"North Fork Silver Creek","",2010
+"643",900,"North Fork Silver Creek","",2010
+"644",901,"North Fork Silver Creek","",2010
+"645",902,"North Fork Silver Creek","",2010
+"646",913,"Crane Creek","",2010
+"647",914,"Crane Creek","",2010
+"648",916,"Crane Creek","",2010
+"649",917,"Crane Creek","",2010
+"650",918,"Crane Creek","",2010
+"651",919,"Crane Creek","",2010
+"652",920,"Crane Creek","",2010
+"653",921,"Crane Creek","",2010
+"654",931,"Crane Creek","",2010
+"655",932,"Crane Creek","",2010
+"656",933,"Cottonwood Creek","",2010
+"657",934,"Cottonwood Creek","",2010
+"658",936,"Cottonwood Creek","",2010
+"659",937,"Cottonwood Creek","",2010
+"660",939,"Cottonwood Creek","",2010
+"661",940,"Cottonwood Creek","",2010
+"662",941,"Cottonwood Creek","",2010
+"663",942,"Cottonwood Creek","",2010
+"664",943,"Cottonwood Creek","",2010
+"665",944,"Cottonwood Creek","",2010
