@@ -176,16 +176,16 @@ plot(bin.sum)
 bin.sum1 <- bin.sum>0 # predicted by at least 1 thresholded model 
 plot(bin.sum1) #too permissive
 bin.sum2 <- bin.sum>1 # predicted by at least 2 thresholded models
-plot(bin.sum2) #too permissive
+plot(bin.sum2) #** use this one**
 bin.sum3 <- bin.sum>2 # predicted by at least 3 thresholded models
-plot(bin.sum3) #**use this one**
+plot(bin.sum3) #too restrictive
 bin.sum4 <- bin.sum>3 # predicted by at least 4 thresholded models
 plot(bin.sum4) #too restrictive
 bin.sum5 <- bin.sum>4 # predicted by all 5 thresholded models 
 plot(bin.sum5) #too restrictive
 
-writeRaster(bin.sum3, file="SDM/Output/ThresholdedEnsemble_Unprojected.grd", overwrite=TRUE)
-bin.ensem.lcc <- projectRaster(bin.sum3, crs=CRS(prj.lcc)) #convert to Lambers conic projection
+writeRaster(bin.sum2, file="SDM/Output/ThresholdedEnsemble_Unprojected.grd", overwrite=TRUE)
+bin.ensem.lcc <- projectRaster(bin.sum2, crs=CRS(prj.lcc)) #convert to Lambers conic projection
 plot(bin.ensem.lcc)
 writeRaster(bin.ensem.lcc, file="SDM/Output/ThresholdedEnsemble_LCCProjection.grd", overwrite=TRUE)
 
