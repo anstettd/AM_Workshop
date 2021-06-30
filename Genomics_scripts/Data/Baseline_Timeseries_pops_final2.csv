@@ -1,0 +1,57 @@
+Site_Name,Lat,Long,Paper_ID,Baseline/Timesieries
+Sweetwater,32.89928,-116.5849,1,Timeseries
+Mill Creek,34.07808,-116.87558,12,Timeseries
+West Fork Mojave River,34.28425,-117.37539,2,Timeseries
+NFMF Tule,36.20081,-118.65092,3,Timeseries
+Redwoods,36.69096,-118.90961,4,Timeseries
+Wawona,37.539,-119.654,5,Timeseries
+Oregon Creek,39.39442,-121.08302,6,Timeseries
+Little Jameson Creek,39.74298,-120.70401,7,Timeseries
+Deep Creek,41.66546,-123.11341,8,Timeseries
+O'Neil Creek,41.80979,-123.11887,9,Timeseries
+Deer Creek,42.27411,-123.63617,10,Timeseries
+Rock Creek,43.37876,-122.95207,11,Timeseries
+Cottonwood Creek,32.60831,-116.70098,13,Baseline
+Hauser Creek,32.65822,-116.53235,14,Baseline
+Kitchen Creek,32.75206,-116.45221,15,Baseline
+Chariot Canyon,33.03596,-116.53623,16,Baseline
+Whitewater Canyon,33.99329,-116.66267,17,Baseline
+Arroyo Sequit,34.06511,-118.93279,18,Baseline
+Trib to W Fork Mojave River,34.28497,-117.37862,19,Baseline
+Manzana Creek,34.77171,-119.94363,20,Baseline
+Paradise Creek,36.51776,-118.75877,21,Baseline
+North Fork Seep,36.52105,-118.89359,22,Baseline
+Baker Creek,37.15761,-118.3334,23,Baseline
+Unknown Creek ,37.3592,-119.34498,24,Baseline
+Crane Creek,37.70377,-119.75363,25,Baseline
+Tenaya Creek - Yosemite,37.743,-119.562,26,Baseline
+Buck Meadows,37.7769,-120.063,27,Baseline
+Carlon,37.81006667,-119.8568,28,Baseline
+Rainbow Pool,37.8188,-120.0074333,29,Baseline
+Deer Flat Creek,37.89761,-121.94553,30,Baseline
+Fivemile Creek ,38.06638,-120.35368,31,Baseline
+Nicasio Creek,38.0695,-122.76317,32,Baseline
+NF Stanislaus,38.3872,-120.21049,33,Baseline
+Camp Creek 2,38.67988,-120.41679,34,Baseline
+Wrights Road,38.7854,-120.21366,35,Baseline
+Creek to Rubicon,38.92881,-120.49947,36,Baseline
+Duncan Creek,39.12205,-120.49242,37,Baseline
+Fiddle Creek,39.5204,-120.99815,38,Baseline
+Cherokee Creek,39.55384,-120.98785,39,Baseline
+Little North Fork Middle Fork Feather,39.71209,-121.27485,40,Baseline
+South Fork,39.74001,-123.63228,41,Baseline
+North Feather (Chip's Creek),39.99982,-121.26988,42,Baseline
+Bear Creek,40.43141,-123.98378,43,Baseline
+Trinity,40.65827,-122.91334,44,Baseline
+Slate Creek,41.25024,-123.64343,45,Baseline
+Salmon River 2 ,41.2969,-123.36034,46,Baseline
+Smith River,41.87876,-123.82774,47,Baseline
+Carberry Creek,42.05383333,-123.1629,48,Baseline
+North Fork Silver Creek,42.53529,-123.73016,49,Baseline
+Shasta Costa Creek,42.57281,-124.04742,50,Baseline
+Cow Creek,42.92653,-123.48479,51,Baseline
+Honey Creek,43.30581667,-122.95505,52,Baseline
+North Fork Umpqua,43.3282,-123.0154,53,Baseline
+Susan Creek,43.4137,-122.78043,54,Baseline
+Coast Fork Willamette,43.66,-123.0799667,55,Baseline
+"Yakima, WA",46.72734,-120.82678,56,Baseline
