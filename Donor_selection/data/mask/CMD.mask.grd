@@ -1,0 +1,26 @@
+[general]
+creator=R package 'raster'
+created=2021-06-29 16:07:09
+[georeference]
+nrows=1641
+ncols=890
+xmin=-124.570915722628
+ymin=31.6080541319543
+xmax=-114.602915722628
+ymax=45.8683441319543
+projection=+proj=longlat +datum=WGS84 +no_defs
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=1
+bandorder=BIL
+categorical=FALSE
+minvalue=21.3505521996347
+maxvalue=1779.31795874554
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=Normal_1981_2010_CMD
