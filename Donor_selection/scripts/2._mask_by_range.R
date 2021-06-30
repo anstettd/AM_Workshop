@@ -90,7 +90,7 @@ Tave_wt.mask <- mask(Tave_wt.clip, c_range)
 plot(CMD.mask,main="CMD: Climatic moisture deficit (mm)")
 plot(MAP.mask,main="MAP: Precipitation as snow (mm)")
 plot(MAT.mask,main="MAT: Mean annual precipitation (mm)")
-plot(PAS.mask,main="PAS: recipitation as snow (mm)")
+plot(PAS.mask,main="PAS: Precipitation as snow (mm)")
 plot(EXT.mask,main="EXT: Extreme temperature over 30 years(°C)")
 
 plot(PPT_sm.mask,main="Tave_wt: Winter mean temperature (°C)")
