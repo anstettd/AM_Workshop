@@ -5,7 +5,7 @@
 # last update:  June 23 2021
 
 ## OVERALL WORKFLOW:
-# !!! For raster data, this assumes you have downloaded tiff rasters for 36 annul variables 
+# !!! For raster data, this assumes you have downloaded tiff rasters for 36 annual variables 
 #from climateNA (https://adaptwest.databasin.org/pages/adaptwest-climatena)
 ##############################################################################
 
@@ -30,9 +30,9 @@ clim <- read_csv("SDM/data_files/points_Normal_1961_1990MSY.csv")
 complete <- clim[complete.cases(clim), ] # should be same dim as clim if there are no missing values
 
 ##############################################################################
-#Functons
+#Functions
 
-# Crop climate rasters by bounding box
+# A function to crop climate rasters by a bounding box
 clip <- function(raster, shape) { 
   a1_crop <- crop(raster, shape)
   step1 <- rasterize(shape, a1_crop)

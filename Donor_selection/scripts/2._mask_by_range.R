@@ -7,7 +7,7 @@
 
 ## OVERALL WORKFLOW:
 # Assumes you have bioclim raster and shape file for range extent
-# Produces new rater that is contrained by range extent shape file
+# Produces new raster that is constrained by range extent shape file
 ##############################################################################
 
 ## CLEAR WORKSPACE
