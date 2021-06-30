@@ -75,7 +75,7 @@ Tave_sm.clip <- raster::crop(wgs_Tave_sm, extent(c_range))
 Tave_wt.clip <- raster::crop(wgs_Tave_wt, extent(c_range))
 
 # Mask climate variable by exact range extent
-CMD.mask <- mask(CMD.clip, c_range)
+CMD.mask <- mask(CMD.clip, c_range, maskvalue=0)
 MAP.mask <- mask(MAP.clip, c_range)
 MAT.mask <- mask(MAT.clip, c_range)
 PAS.mask <- mask(PAS.clip, c_range)
