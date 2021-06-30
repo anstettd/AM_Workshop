@@ -27,7 +27,7 @@ raster::shapefile(card,"SDM/Output/c_range.shp")
 c_range <- st_read("SDM/Output/c_range.shp")
 
 #Import climate variable
-lcc10<-raster("Donor_selection/data/bio10.grd") #bring in 1961 to 1990 bio10 raster
+lcc10<-raster("Donor_selection/data/bio_clim/bio10.grd") #bring in 1961 to 1990 bio10 raster
 #re-project bio10 raster into WGS 1984 (EPSG 4326)
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
 bio10 <- projectRaster(lcc10, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
@@ -42,7 +42,7 @@ crs(bio10)
 bio10.clip <- raster::crop(bio10, extent(c_range))
 bio10.mask<- mask(bio10.clip,c_range)
 
-writeRaster(bio10.mask, file="Donor_selection/data/bio10.clip.grd")
+#writeRaster(bio10.mask, file="Donor_selection/data/bio10.clip.grd")
 
 
   

@@ -30,7 +30,7 @@ gcc.clim <- gcc.clim %>% dplyr::select(GCM, ID1, ID2, Latitude, Longitude, Eleva
 gcc.clim.S15<-gcc.clim %>% filter(ID1=="S15")
 
 #Climate Raster
-bio10<-raster("Donor_selection/data/bio10.clip.grd") #bring in 1961 to 1990 bio10 raster
+bio10<-raster("Donor_selection/data/bio_clim/bio10.clip.grd") #bring in 1961 to 1990 bio10 raster
 plot(bio10, main="Bio 10 Across Range")
 
 bio10.S15.rcp45.2055 <- bio10
