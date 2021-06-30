@@ -1,0 +1,26 @@
+[general]
+creator=R package 'raster'
+created=2021-06-29 16:07:10
+[georeference]
+nrows=1641
+ncols=890
+xmin=-124.570915722628
+ymin=31.6080541319543
+xmax=-114.602915722628
+ymax=45.8683441319543
+projection=+proj=longlat +datum=WGS84 +no_defs
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=1
+bandorder=BIL
+categorical=FALSE
+minvalue=12.7346454194689
+maxvalue=2023.1139801887
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=Normal_1981_2010_PPT_wt
