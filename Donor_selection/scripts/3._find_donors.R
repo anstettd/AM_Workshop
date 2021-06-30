@@ -94,6 +94,23 @@ tm_shape(CMD.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
 
 #use to swtich between interactive mode ("view") and stationary mode ("plot")
 tmap_mode("view")
+
+tm_shape(CMD.mask, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(known_sf)+
+  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+tm_shape(CMD.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(known_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
 tmap_mode("plot")
 
 

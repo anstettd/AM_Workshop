@@ -25,11 +25,14 @@ library(rgeos)
 
 #Transform M. cardinalis distribution raster into a shape file
 #sdm <- raster("SDM/Output/ThresholdedEnsemble_Unprojected.grd") #bring in ensemble SDM raster
+#sdm[sdm==0] <-NA
 #card <- rasterToPolygons(sdm, dissolve=TRUE)
 #raster::shapefile(card,"SDM/Output/c_range_2.shp",overwrite=TRUE)
 
 # Import M.cardinalis ensamble range extent as sf polygon
 c_range <- st_read("SDM/Output/c_range_2.shp")
+
+
 
 #Import climate variable, 1981 to 2010 rasters
 laea_CMD<-raster("Donor_selection/data/1981_2010/CMD.grd")
@@ -75,7 +78,7 @@ Tave_sm.clip <- raster::crop(wgs_Tave_sm, extent(c_range))
 Tave_wt.clip <- raster::crop(wgs_Tave_wt, extent(c_range))
 
 # Mask climate variable by exact range extent
-CMD.mask <- mask(CMD.clip, c_range, maskvalue=0)
+CMD.mask <- mask(CMD.clip, c_range)
 MAP.mask <- mask(MAP.clip, c_range)
 MAT.mask <- mask(MAT.clip, c_range)
 PAS.mask <- mask(PAS.clip, c_range)
