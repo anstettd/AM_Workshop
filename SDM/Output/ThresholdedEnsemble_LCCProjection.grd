@@ -1,6 +1,6 @@
 [general]
 creator=R package 'raster'
-created=2021-02-05 17:19:48
+created=2021-06-29 14:20:15
 [georeference]
 nrows=3594
 ncols=3508
@@ -8,14 +8,14 @@ xmin=-4025745.61428015
 ymin=4356582.88303194
 xmax=-1089549.61428015
 ymax=7371948.88303194
-projection=+proj=lcc +lon_0=-95 +lat_1=49 +lat_2=77 +ellps=WGS84
+projection=+proj=lcc +lat_0=0 +lon_0=-95 +lat_1=49 +lat_2=77 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs
 [data]
 datatype=FLT4S
 byteorder=little
 nbands=1
 bandorder=BIL
 categorical=FALSE
-minvalue=1
+minvalue=0
 maxvalue=1
 nodatavalue=-3.4e+38
 [legend]
