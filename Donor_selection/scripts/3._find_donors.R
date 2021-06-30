@@ -94,6 +94,7 @@ tm_shape(CMD.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
 
 #use to swtich between interactive mode ("view") and stationary mode ("plot")
 tmap_mode("view")
+tmap_mode("plot")
 
 
 
