@@ -91,12 +91,17 @@ climate <- climate_90 %>% select(Site_Name,Paper_ID,Latitude,Longitude,Elevation
 #remove Yakima
 climate <- climate %>% filter(Site_Name!="Yakima, WA")
 # order by Paper_ID
-climate <- climate[order(climate$Paper_ID),] 
+climate <- climate[order(climate$Paper_ID),]
+
+#make site lat file
+site_lat <- climate %>% select(Site_Name:Longitude)
+#write_csv(site_lat, "Donor_selection/Data/site_lat.csv",col_names=TRUE)
 
 # Format data for BayPass
 #Baseline
 no_t_env_baypass <- climate %>% select(MAT,MAP,PAS,EXT,CMD,Tave_wt,Tave_sm,PPT_wt,PPT_sm)
-env_baypass <- transpose(no_t_env_baypass)
+no_t_env_baypass.s <- as.data.frame(scale(no_t_env_baypass))
+env_baypass <- transpose(no_t_env_baypass.s)
 #write_csv(env_baypass, "Genomics_scripts/Data/env_baseline.csv",col_names=FALSE)
 
 ###################################################################################
@@ -109,11 +114,22 @@ vic_base_ID <- vic_base_ID[order(vic_base_ID$Paper_ID),] # order by Paper_ID
 #Timeseries
 vic_time_ID <- vic_time %>% select(Read.Set.Id,Paper_ID)
 vic_time_ID <- vic_time_ID[order(vic_time_ID$Paper_ID),] # order by Paper_ID
-write_csv(vic_time_ID, "Genomics_scripts/Data/time_pop_id.csv",col_names=FALSE)
+#write_csv(vic_time_ID, "Genomics_scripts/Data/time_pop_id.csv",col_names=FALSE)
 
 #Yakima
 vic_yakima_ID <- vic_yakima %>% select(Read.Set.Id,Paper_ID)
-write_csv(vic_yakima_ID, "Genomics_scripts/Data/yakima_pop_id.csv",col_names=FALSE)
+#write_csv(vic_yakima_ID, "Genomics_scripts/Data/yakima_pop_id.csv",col_names=FALSE)
+
+#Timeseries pop_ID
+time_pop <- vic_time %>% select(Read.Set.Id,Paper_ID,Year)
+time_pop <- time_pop[order(time_pop$Paper_ID),] # order by Paper_ID
+time_pop_f <- time_pop %>% unite(Paper_ID,Year,sep="_")  ##### This is wrong
+
+#Timeseries Geo_Region ID
+time_Geo_Region <- vic_time %>% select(Read.Set.Id,Geo_Region,Year)
+time_Geo_Region <- time_Geo_Region[order(time_Geo_Region$Geo_Region),] # order by Region
+time_region_f <- time_Geo_Region %>% unite(Geo_Region,Year,sep="_")  ##### This is wrong
+
 
 ###################################################################################
 #Make Site Year Combination Table
