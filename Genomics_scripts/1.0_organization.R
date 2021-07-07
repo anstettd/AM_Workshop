@@ -123,15 +123,15 @@ vic_yakima_ID <- vic_yakima %>% select(Read.Set.Id,Paper_ID)
 #Timeseries pop_ID
 time_pop <- vic_time %>% select(Read.Set.Id,Paper_ID,Year)
 time_pop <- time_pop[order(time_pop$Paper_ID),] # order by Paper_ID
-time_pop_f <- time_pop %>% unite(Paper_ID,Year,sep="_")  ##### This is wrong
-#write_csv(time_pop_f, "Genomics_scripts/Data/timeseries_pop_id.txt",col_names=FALSE)
+time_pop_f <- time_pop %>% unite(Pop_ID,Paper_ID,Year,sep="_")  ##### This is wrong
+write_tsv(time_pop_f, "Genomics_scripts/Data/timeseries_pop_id.txt",col_names=FALSE)
 
 
 #Timeseries Geo_Region ID
 time_Geo_Region <- vic_time %>% select(Read.Set.Id,Geo_Region,Year)
 time_Geo_Region <- time_Geo_Region[order(time_Geo_Region$Geo_Region),] # order by Region
-time_region_f <- time_Geo_Region %>% unite(Geo_Region,Year,sep="_")  ##### This is wrong
-#write_csv(time_region_f, "Genomics_scripts/Data/timeseries_region_id.txt",col_names=FALSE)
+time_region_f <- time_Geo_Region %>% unite(Region_ID,Geo_Region,Year,sep="_")  ##### This is wrong
+write_tsv(time_region_f, "Genomics_scripts/Data/timeseries_region_id.txt",col_names=FALSE)
 
 ###################################################################################
 #Make Site Year Combination Table
