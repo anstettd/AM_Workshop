@@ -92,6 +92,7 @@ climate <- climate_90 %>% select(Site_Name,Paper_ID,Latitude,Longitude,Elevation
 climate <- climate %>% filter(Site_Name!="Yakima, WA")
 # order by Paper_ID
 climate <- climate[order(climate$Paper_ID),]
+write_csv(climate, "Donor_selection/Data/climate_pop.csv")
 
 #make site lat file
 site_lat <- climate %>% select(Site_Name:Longitude)
