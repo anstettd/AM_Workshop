@@ -19,6 +19,7 @@ library(rnaturalearthdata)
 library(rnaturalearthhires)
 library(rgeos)
 library(geodist)
+library(RColorBrewer)
 
 ###################################################################################
 #Import population data
@@ -79,6 +80,7 @@ EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #set
 ###################################################################################
 #Map distribution of single snps
 
+
 # Map of P1, present in most localities
 b1_snp2 <- freq_1 %>% filter(SNP==224717) #select abundance data for snp 2
 #b1_snp2 <- binary_1 %>% filter(SNP==224717) #select binary data for snp 2, remove comment to see binary data
@@ -96,32 +98,11 @@ tmap_mode("plot")
 snp2 <- tm_shape(calo)+
   tm_borders()+
   tm_shape(MAT_sf_snp2)+
-  tm_bubbles(size = 0.15,col="MAT")+ 
+  tm_bubbles(size = 0.18,col="MAT")+ 
   #tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.005)
 snp2
-tmap_save(snp2, filename = "snp2_freq.pdf",width=5, hight=6)
-
-# Map of P14, missing from most localities
-b1_snp14 <- freq_1 %>% filter(SNP==477379) #filter for snp
-b1_snp14 <- b1_snp14[5:59] #take only snps values
-b1_snp14 <- as.data.frame(t(b1_snp14)) #transpose and put in dataframe
-pop_var_snp14 <- cbind(pop_var_raw,b1_snp14) #bind to lat/long population data
-colnames(pop_var_snp14)[6] <- "MAT" 
-
-MAT_points_snp14 <- pop_var_snp14 %>% dplyr::select(Long,Lat,MAT) #select relevant data
-MAT_sf_snp14 <- st_as_sf(MAT_points_snp14,coords=c("Long","Lat"), crs=EPSG4326)
-
-#Plot MAT associated allele snp14
-tmap_mode("plot")
-tmap_mode("view")
-tm_shape(calo)+
-  tm_borders()+
-  tm_shape(MAT_sf_snp14)+
-  tm_bubbles(size = 0.15,col="MAT")+ 
-  #tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-
+tmap_save(snp2, filename = "Graphs/snp2_freq.pdf",width=5, height=6)
 
 # Map of P25, missing from most localities
 b1_snp25 <- freq_1 %>% filter(SNP==946612) #filter for snp
@@ -135,14 +116,31 @@ MAT_sf_snp25 <- st_as_sf(MAT_points_snp25,coords=c("Long","Lat"), crs=EPSG4326)
 
 #Plot MAT associated allele snp25
 tmap_mode("plot")
-tmap_mode("view")
-tm_shape(calo)+
+#tmap_mode("view")
+snp25 <- tm_shape(calo)+
   tm_borders()+
   tm_shape(MAT_sf_snp25)+
-  tm_bubbles(size = 0.15,col="MAT")+ 
+  tm_bubbles(size = 0.18,col="MAT")+ 
   tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.005)
+tmap_save(snp25, filename = "Graphs/snp25_freq.pdf",width=5, height=6)
 
+
+# Population Map
+pop_map <- pop_var_snp2 %>% dplyr::select(Long,Lat) #select relevant data
+pop_map_sf <- st_as_sf(pop_map,coords=c("Long","Lat"), crs=EPSG4326)
+
+#Plot population Map
+tmap_mode("plot")
+#tmap_mode("view")
+pop_tmap <- tm_shape(calo)+
+  tm_borders()+
+  tm_shape(pop_map_sf)+
+  tm_bubbles(size = 0.18,alpha=0,border.col="black")+ 
+  #tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.005)
+pop_tmap
+tmap_save(pop_tmap, filename = "Graphs/pop_tmap.pdf",width=5, height=6)
 
 ###################################################################################
 # Map Proportion of putatively adaptive SNPs Present
@@ -169,39 +167,48 @@ ggplot()+ geom_sf(data = CMD_sf)+ ggtitle("CMD points") #check data is set up pr
 #MAT
 tmap_mode("plot")
 tmap_mode("view")
-tm_shape(calo)+
+MAT_all <- tm_shape(calo)+
   tm_borders()+
   tm_shape(MAT_sf)+
-  tm_bubbles(size = 0.15,col="MAT")+ 
+  tm_bubbles(size = 0.18,col="MAT")+ 
   #tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+MAT_all
+tmap_save(MAT_all, filename = "Graphs/MAT_all.pdf",width=5, height=6)
 
 #MAP
 tmap_mode("plot")
-tmap_mode("view")
-tm_shape(calo)+
+#tmap_mode("view")
+MAP_all <- tm_shape(calo)+
   tm_borders()+
   tm_shape(MAP_sf)+
   tm_bubbles(size = 0.15,col="MAP")+ 
   #tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+MAP_all
+tmap_save(MAP_all, filename = "Graphs/MAP_all.pdf",width=5, height=6)
 
 #CMD
 tmap_mode("plot")
-tmap_mode("view")
-tm_shape(calo)+
+#tmap_mode("view")
+CMD_all <- tm_shape(calo)+
   tm_borders()+
   tm_shape(CMD_sf)+
   tm_bubbles(size = 0.15,col="CMD")+ 
   #tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-
+CMD_all
+tmap_save(CMD_all, filename = "Graphs/CMD_all.pdf",width=5, height=6)
 
 
 
 ###################################################################################
 
 ##plot missing variation for P8 Deep Creek
+
+#Setup sf object for P8
+p8_only <- pop_var_raw %>% filter(Paper_ID==8) %>% dplyr::select(Long,Lat)
+p8_sf <- st_as_sf(p8_only,coords=c("Long","Lat"), crs=EPSG4326)
 
 ##Setup P8 MAT
 binary1_miss_p8 <- binary_1 %>% filter(P8==0) #select only snps not in P8
@@ -215,13 +222,16 @@ MAT_sf_p8 <- st_as_sf(MAT_points_p8,coords=c("Long","Lat"), crs=EPSG4326)
 
 #MAT
 tmap_mode("plot")
-tmap_mode("view")
-tm_shape(calo)+
+#tmap_mode("view")
+miss_p8_MAT <- tm_shape(calo)+
   tm_borders()+
   tm_shape(MAT_sf_p8)+
   tm_bubbles(size = 0.15,col="MAT")+ 
-  #tm_dots(size=0.1,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+miss_p8_MAT
+tmap_save(miss_p8_MAT, filename = "Graphs/miss_p8_MAT.pdf",width=5, height=6)
 
 
 ##Setup P8 MAP
@@ -236,13 +246,17 @@ MAP_sf_p8 <- st_as_sf(MAP_points_p8,coords=c("Long","Lat"), crs=EPSG4326)
 
 #MAP
 tmap_mode("plot")
-tmap_mode("view")
-tm_shape(calo)+
+#tmap_mode("view")
+miss_p8_MAP <- tm_shape(calo)+
   tm_borders()+
   tm_shape(MAP_sf_p8)+
   tm_bubbles(size = 0.15,col="MAP")+ 
-  #tm_dots(size=0.1,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+miss_p8_MAP
+tmap_save(miss_p8_MAP, filename = "Graphs/miss_p8_MAP.pdf",width=5, height=6)
+
 
 
 ##Setup P8 CMD
@@ -257,13 +271,17 @@ CMD_sf_p8 <- st_as_sf(CMD_points_p8,coords=c("Long","Lat"), crs=EPSG4326)
 
 #CMD
 tmap_mode("plot")
-tmap_mode("view")
-tm_shape(calo)+
+#tmap_mode("view")
+miss_p8_CMD <- tm_shape(calo)+
   tm_borders()+
   tm_shape(CMD_sf_p8)+
   tm_bubbles(size = 0.15,col="CMD")+ 
-  #tm_dots(size=0.1,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+miss_p8_CMD
+tmap_save(miss_p8_CMD, filename = "Graphs/miss_p8_CMD.pdf",width=5, height=6)
+
 
 
 ###################################################################################
@@ -285,9 +303,17 @@ for (i in 1:nrow(binary_1)){
 colnames(dist_p8_MAT) <- "Distance"
 
 #Make graphic
-ggplot(data=dist_p8_MAT, aes(dist_p8_MAT$Distance))+
-  geom_histogram(binwidth = 10)+
+dist_MAT <- ggplot(data=dist_p8_MAT, aes(dist_p8_MAT$Distance))+
+  geom_histogram(binwidth = 20)+
+  scale_x_continuous(name="Distance (km)")+
+  scale_y_continuous(name="Number of SNPs")+
   theme_classic()
+dist_MAT + theme(
+  axis.text.x = element_text(size=14,face="bold"),
+  axis.text.y = element_text(size=14,face="bold"),
+  axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+  axis.title.y = element_text(color="black", size=21,vjust = 2, face="bold",hjust=0.5))
+ggsave(filename = "Graphs/dist_MAT.pdf",width=9, height=6)
 
 
 ##MAP
@@ -306,10 +332,17 @@ for (i in 1:nrow(binary_2)){
 colnames(dist_p8_MAP) <- "Distance"
 
 #Make graphic
-ggplot(data=dist_p8_MAP, aes(dist_p8_MAP$Distance))+
-  geom_histogram(binwidth = 10)+
+dist_MAP <- ggplot(data=dist_p8_MAP, aes(dist_p8_MAP$Distance))+
+  geom_histogram(binwidth = 20)+
+  scale_x_continuous(name="Distance (km)")+
+  scale_y_continuous(name="Number of SNPs")+
   theme_classic()
-
+dist_MAP + theme(
+  axis.text.x = element_text(size=14,face="bold"),
+  axis.text.y = element_text(size=14,face="bold"),
+  axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+  axis.title.y = element_text(color="black", size=21,vjust = 2, face="bold",hjust=0.5))
+ggsave(filename = "Graphs/dist_MAP.pdf",width=9, height=6)
 
 
 ##CMD
@@ -328,9 +361,17 @@ for (i in 1:nrow(binary_5)){
 colnames(dist_p8_CMD) <- "Distance"
 
 #Make graphic
-ggplot(data=dist_p8_CMD, aes(dist_p8_CMD$Distance))+
-  geom_histogram(binwidth = 10)+
+dist_CMD <- ggplot(data=dist_p8_CMD, aes(dist_p8_CMD$Distance))+
+  geom_histogram(binwidth = 20)+
+  scale_x_continuous(name="Distance (km)")+
+  scale_y_continuous(name="Number of SNPs", limits=c(0,3000))+
   theme_classic()
+dist_CMD + theme(
+  axis.text.x = element_text(size=14,face="bold"),
+  axis.text.y = element_text(size=14,face="bold"),
+  axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+  axis.title.y = element_text(color="black", size=21,vjust = 2, face="bold",hjust=0.5))
+ggsave(filename = "Graphs/dist_CMD.pdf",width=9, height=6)
 
 ###################################################################################
 
