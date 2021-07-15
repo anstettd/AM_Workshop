@@ -34,13 +34,22 @@ gcc.year <- gcc.year %>% dplyr::select(GCM:Elevation,
 gcc.season <- gcc.season %>% dplyr::select(PPT_sm,PPT_wt,Tave_sm,Tave_wt,)
 gcc.clim <- cbind(gcc.year,gcc.season)
 
-#Known points with M. cardinalis
+#Set up known points within M. cardinalis into sf object
 known <- read_csv("SDM/data_files/presences.csv")
 known <- known %>% dplyr::select(Longitude,Latitude)
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
 known_sf <- st_as_sf(known,coords=c("Longitude","Latitude"), crs=EPSG4326)
 #check data is set up properly
 ggplot()+ geom_sf(data = known_sf)+ ggtitle("Known M. cardinnalis Populations")
+
+#Set up focal 55 populations into sf object
+pop_var_raw <- read_csv("Genomics_scripts/Data/paper_ID_site_select.csv")
+gen_pop <- pop_var_raw %>% dplyr::select(Long,Lat)
+gen_pop_sf <- st_as_sf(gen_pop,coords=c("Long","Lat"), crs=EPSG4326)
+#check data is set up properly
+ggplot()+ geom_sf(data = gen_pop_sf)+ ggtitle("Focal Populations")
+
+
 
 # California & Oregon Map Setup
 states<-ne_states(country=c("canada","united states of america"),returnclass= "sf")
@@ -67,6 +76,46 @@ Tave_wt.mask <- raster("Donor_selection/data/mask/Tave_wt.mask.grd")
 
 #Site S17, Deep Creek
 
+#MAT
+MAT.S17.ssp245<-MAT.mask
+plot(MAT.S17.ssp245)
+MAT.S17.ssp245[MAT.mask<gcc.clim$MAT[8]-1] <-NA
+MAT.S17.ssp245[MAT.mask>gcc.clim$MAT[8]+1] <-NA
+plot(MAT.S17.ssp245, main="MAT at ssp235")
+
+MAT.S17.ssp585<-MAT.mask
+plot(MAT.S17.ssp585)
+MAT.S17.ssp585[MAT.mask<gcc.clim$MAT[8]-1] <-NA
+MAT.S17.ssp585[MAT.mask>gcc.clim$MAT[8]+1] <-NA
+plot(MAT.S17.ssp585, main="MAT at ssp585")
+
+#plot maps
+tm_shape(MAT.mask, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+tm_shape(MAT.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+tm_shape(MAT.S17.ssp585, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+
+
 #CMD
 
 #Some climate mitigation
@@ -75,58 +124,46 @@ CMD.S17.ssp245[CMD.mask<gcc.clim$CMD[8]-100] <-NA
 CMD.S17.ssp245[CMD.mask>gcc.clim$CMD[8]+100] <-NA
 #plot(CMD.S17.ssp245, main="CMD at ssp235")
 
-tmap_mode("plot")
-tm_shape(CMD.mask, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster()+
-  tm_shape(calo)+
-  tm_borders()+
-  tm_shape(known_sf)+
-  tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-
-tm_shape(CMD.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
-  tm_shape(calo)+
-  tm_borders()+
-  tm_shape(known_sf)+
-  tm_dots(size=0.2,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-
-#use to swtich between interactive mode ("view") and stationary mode ("plot")
-tmap_mode("view")
-
-tm_shape(CMD.mask, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster()+
-  tm_shape(calo)+
-  tm_borders()+
-  tm_shape(known_sf)+
-  tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-
-tm_shape(CMD.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
-  tm_shape(calo)+
-  tm_borders()+
-  tm_shape(known_sf)+
-  tm_dots(size=0.2,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-
-tmap_mode("plot")
-
-
-
-
-
-
-
-
-
 #No climate mitigation
 CMD.S17.ssp585<-CMD.mask
 plot(CMD.S17.ssp585)
 CMD.S17.ssp585[CMD.mask<gcc.clim$CMD[8]-100] <-NA
 CMD.S17.ssp585[CMD.mask>gcc.clim$CMD[8]+100] <-NA
-plot(CMD.S17.ssp585, main="CMD at ssp585")
+#plot(CMD.S17.ssp585, main="CMD at ssp585")
+
+#use to swtich between interactive mode ("view") and stationary mode ("plot")
+tmap_mode("plot")
+tmap_mode("view")
+
+#plot maps
+#on sdm
+tm_shape(CMD.mask, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+#some mitigation
+tm_shape(CMD.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+#no mitigation
+tm_shape(CMD.S17.ssp, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+
 
 #MAP
 MAP.S17.ssp245<-MAP.mask
@@ -141,18 +178,39 @@ MAP.S17.ssp585[MAP.mask<gcc.clim$MAP[8]-100] <-NA
 MAP.S17.ssp585[MAP.mask>gcc.clim$MAP[8]+100] <-NA
 plot(MAP.S17.ssp585, main="MAP at ssp585")
 
-#MAT
-MAT.S17.ssp245<-MAT.mask
-plot(MAT.S17.ssp245)
-MAT.S17.ssp245[MAT.mask<gcc.clim$MAT[8]-1] <-NA
-MAT.S17.ssp245[MAT.mask>gcc.clim$MAT[8]+1] <-NA
-plot(MAT.S17.ssp245, main="MAT at ssp235")
+#use to swtich between interactive mode ("view") and stationary mode ("plot")
+tmap_mode("plot")
+tmap_mode("view")
 
-MAT.S17.ssp585<-MAT.mask
-plot(MAT.S17.ssp585)
-MAT.S17.ssp585[MAT.mask<gcc.clim$MAT[8]-1] <-NA
-MAT.S17.ssp585[MAT.mask>gcc.clim$MAT[8]+1] <-NA
-plot(MAT.S17.ssp585, main="MAT at ssp585")
+#plot maps
+#on sdm
+tm_shape(MAP.mask, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+#some mitigation
+tm_shape(MAP.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+#no mitigation
+tm_shape(MAP.S17.ssp585, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+
+
 
 #PAS
 PAS.S17.ssp245<-PAS.mask
