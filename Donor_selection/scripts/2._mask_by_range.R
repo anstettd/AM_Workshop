@@ -77,6 +77,19 @@ PPT_wt.clip <- raster::crop(wgs_PPT_wt, extent(c_range))
 Tave_sm.clip <- raster::crop(wgs_Tave_sm, extent(c_range))
 Tave_wt.clip <- raster::crop(wgs_Tave_wt, extent(c_range))
 
+#Write out Raster
+writeRaster(CMD.clip, file="Donor_selection/data/clip/CMD.clip.grd", overwrite=TRUE)
+writeRaster(MAP.clip, file="Donor_selection/data/clip/MAP.clip.grd", overwrite=TRUE)
+writeRaster(MAT.clip, file="Donor_selection/data/clip/MAT.clip.grd", overwrite=TRUE)
+writeRaster(PAS.clip, file="Donor_selection/data/clip/PAS.clip.grd", overwrite=TRUE)
+writeRaster(EXT.clip, file="Donor_selection/data/clip/EXT.clip.grd", overwrite=TRUE)
+
+writeRaster(PPT_sm.clip, file="Donor_selection/data/clip/PPT_sm.clip.grd", overwrite=TRUE)
+writeRaster(PPT_wt.clip, file="Donor_selection/data/clip/PPT_wt.clip.grd", overwrite=TRUE)
+writeRaster(Tave_sm.clip, file="Donor_selection/data/clip/Tave_sm.clip.grd", overwrite=TRUE)
+writeRaster(Tave_wt.clip, file="Donor_selection/data/clip/Tave_wt.clip.grd", overwrite=TRUE)
+
+
 # Mask climate variable by exact range extent
 CMD.mask <- mask(CMD.clip, c_range)
 MAP.mask <- mask(MAP.clip, c_range)
