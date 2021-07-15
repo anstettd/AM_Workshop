@@ -117,16 +117,16 @@ plot(Tave_wt.mask,main="PPT_sm = Summer precipitation (mm)")
 
 
 #Write out Raster
-writeRaster(CMD.mask, file="Donor_selection/data/mask/CMD.mask.grd", overwrite=TRUE)
-writeRaster(MAP.mask, file="Donor_selection/data/mask/MAP.mask.grd", overwrite=TRUE)
-writeRaster(MAT.mask, file="Donor_selection/data/mask/MAT.mask.grd", overwrite=TRUE)
-writeRaster(PAS.mask, file="Donor_selection/data/mask/PAS.mask.grd", overwrite=TRUE)
-writeRaster(EXT.mask, file="Donor_selection/data/mask/EXT.mask.grd", overwrite=TRUE)
+#writeRaster(CMD.mask, file="Donor_selection/data/mask/CMD.mask.grd", overwrite=TRUE)
+#writeRaster(MAP.mask, file="Donor_selection/data/mask/MAP.mask.grd", overwrite=TRUE)
+#writeRaster(MAT.mask, file="Donor_selection/data/mask/MAT.mask.grd", overwrite=TRUE)
+#writeRaster(PAS.mask, file="Donor_selection/data/mask/PAS.mask.grd", overwrite=TRUE)
+#writeRaster(EXT.mask, file="Donor_selection/data/mask/EXT.mask.grd", overwrite=TRUE)
 
-writeRaster(PPT_sm.mask, file="Donor_selection/data/mask/PPT_sm.mask.grd", overwrite=TRUE)
-writeRaster(PPT_wt.mask, file="Donor_selection/data/mask/PPT_wt.mask.grd", overwrite=TRUE)
-writeRaster(Tave_sm.mask, file="Donor_selection/data/mask/Tave_sm.mask.grd", overwrite=TRUE)
-writeRaster(Tave_wt.mask, file="Donor_selection/data/mask/Tave_wt.mask.grd", overwrite=TRUE)
+#writeRaster(PPT_sm.mask, file="Donor_selection/data/mask/PPT_sm.mask.grd", overwrite=TRUE)
+#writeRaster(PPT_wt.mask, file="Donor_selection/data/mask/PPT_wt.mask.grd", overwrite=TRUE)
+#writeRaster(Tave_sm.mask, file="Donor_selection/data/mask/Tave_sm.mask.grd", overwrite=TRUE)
+#writeRaster(Tave_wt.mask, file="Donor_selection/data/mask/Tave_wt.mask.grd", overwrite=TRUE)
 
 
 

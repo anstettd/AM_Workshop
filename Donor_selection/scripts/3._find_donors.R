@@ -1,9 +1,8 @@
 ##############################################################################
-### SCRIPT PURPOSE: Transform future climate at select sites to bioclim
+### SCRIPT PURPOSE: Find donor sites using only climate
 
-# Modified from Angert et al. 2018, American Naturalist
-# Author: Daniel Anstett & Amy Angert
-# last update:  June 24 2021
+# Author: Daniel Anstett 
+# last update:  July 15 2021
 ##############################################################################
 
 ## CLEAR WORKSPACE
@@ -60,16 +59,17 @@ calo <- states %>%
 
 #Climate Raster
 #Annual
-CMD.mask <- raster("Donor_selection/data/mask/CMD.mask.grd")
-MAP.mask <- raster("Donor_selection/data/mask/MAP.mask.grd")
-MAT.mask <- raster("Donor_selection/data/mask/MAT.mask.grd")
-PAS.mask <- raster("Donor_selection/data/mask/PAS.mask.grd")
-EXT.mask <- raster("Donor_selection/data/mask/EXT.mask.grd")
+MAT.clip <- raster("Donor_selection/data/clip/MAT.clip.grd")
+MAP.clip <- raster("Donor_selection/data/clip/MAP.clip.grd")
+PAS.clip <- raster("Donor_selection/data/clip/PAS.clip.grd")
+EXT.clip <- raster("Donor_selection/data/clip/EXT.clip.grd")
+CMD.clip <- raster("Donor_selection/data/clip/CMD.clip.grd")
+
 #Seasonal
-PPT_sm.mask <- raster("Donor_selection/data/mask/PPT_sm.mask.grd")
-PPT_wt.mask <- raster("Donor_selection/data/mask/PPT_wt.mask.grd")
-Tave_sm.mask <- raster("Donor_selection/data/mask/Tave_sm.mask.grd")
-Tave_wt.mask <- raster("Donor_selection/data/mask/Tave_wt.mask.grd")
+PPT_sm.clip <- raster("Donor_selection/data/clip/PPT_sm.clip.grd")
+PPT_wt.clip <- raster("Donor_selection/data/clip/PPT_wt.clip.grd")
+Tave_sm.clip <- raster("Donor_selection/data/clip/Tave_sm.clip.grd")
+Tave_wt.clip <- raster("Donor_selection/data/clip/Tave_wt.clip.grd")
 
 ##############################################################################
 
@@ -77,58 +77,126 @@ Tave_wt.mask <- raster("Donor_selection/data/mask/Tave_wt.mask.grd")
 #Site S17, Deep Creek
 
 #MAT
-MAT.S17.ssp245<-MAT.mask
+MAT.S17.ssp245<-MAT.clip
 plot(MAT.S17.ssp245)
-MAT.S17.ssp245[MAT.mask<gcc.clim$MAT[8]-1] <-NA
-MAT.S17.ssp245[MAT.mask>gcc.clim$MAT[8]+1] <-NA
+MAT.S17.ssp245[MAT.clip<gcc.clim$MAT[8]-1] <-NA
+MAT.S17.ssp245[MAT.clip>gcc.clim$MAT[8]+1] <-NA
 plot(MAT.S17.ssp245, main="MAT at ssp235")
 
-MAT.S17.ssp585<-MAT.mask
+MAT.S17.ssp585<-MAT.clip
 plot(MAT.S17.ssp585)
-MAT.S17.ssp585[MAT.mask<gcc.clim$MAT[8]-1] <-NA
-MAT.S17.ssp585[MAT.mask>gcc.clim$MAT[8]+1] <-NA
+MAT.S17.ssp585[MAT.clip<gcc.clim$MAT[8]-1] <-NA
+MAT.S17.ssp585[MAT.clip>gcc.clim$MAT[8]+1] <-NA
 plot(MAT.S17.ssp585, main="MAT at ssp585")
 
-#plot maps
-tm_shape(MAT.mask, bbox=st_bbox(calo)) + #legal boundires
+##plot maps
+
+#Climate Layer
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT <- tm_shape(MAT.clip, bbox=st_bbox(calo)) + #legal boundires
   tm_raster()+
   tm_shape(calo)+
   tm_borders()+
-  tm_shape(gen_pop_sf)+
-  tm_dots(size=0.1,shape=1)+
+  #tm_shape(gen_pop_sf)+
+  #tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+MAT_clim_layer
+tmap_save(clim_MAT, filename = "Graphs/clim_MAT.pdf",width=5, height=6)
 
-tm_shape(MAT.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+#ssp245 matching locations only
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT_245 <- tm_shape(MAT.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
   tm_raster(palette = "#FF00FF",legend.show = FALSE)+
   tm_shape(calo)+
   tm_borders()+
   tm_shape(gen_pop_sf)+
   tm_dots(size=0.2,shape=1)+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_MAT_245
+tmap_save(clim_MAT_245, filename = "Graphs/clim_MAT_245.pdf",width=5, height=6)
 
-tm_shape(MAT.S17.ssp585, bbox=st_bbox(calo)) + #legal boundires
+#ssp585 matching locations only
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT_585 <- tm_shape(MAT.S17.ssp585, bbox=st_bbox(calo)) + #legal boundires
   tm_raster(palette = "#FF00FF",legend.show = FALSE)+
   tm_shape(calo)+
   tm_borders()+
   tm_shape(gen_pop_sf)+
   tm_dots(size=0.2,shape=1)+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_MAT_585
+tmap_save(clim_MAT_585, filename = "Graphs/clim_MAT_585.pdf",width=5, height=6)
+
+#Additional Exploration
+#Use in presentation
+
+#ssp245 not pops
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT_245_no_pop <- tm_shape(MAT.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  #tm_shape(gen_pop_sf)+
+  #tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_MAT_245_no_pop
+tmap_save(clim_MAT_245_no_pop, filename = "Graphs/clim_MAT_245_no_pop.pdf",width=5, height=6)
+
+#Try 0.5 deg versus 1 deg
+
+MAT.S17.ssp245_0.5 <-MAT.clip
+MAT.S17.ssp245_0.5[MAT.clip<gcc.clim$MAT[8]-0.5] <-NA
+MAT.S17.ssp245_0.5[MAT.clip>gcc.clim$MAT[8]-0.5] <-NA
+plot(MAT.S17.ssp245_0.5, main="MAT at ssp235")
+
+#ssp245 not pops
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT_245_0.5 <- tm_shape(MAT.S17.ssp245_0.5, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  #tm_shape(gen_pop_sf)+
+  #tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_MAT_245_0.5 
+tmap_save(clim_MAT_245_0.5 , filename = "Graphs/clim_MAT_245_0.5.pdf",width=5, height=6)
+
+#entire_range using SDM
+
+MAT.mask <- raster("Donor_selection/data/mask/MAT.mask.grd")
+#Climate Layer masked by SDM
+tmap_mode("plot")
+#tmap_mode("view")
+smd_ver2 <- tm_shape(MAT.mask, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  #tm_shape(gen_pop_sf)+
+  #tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.show=FALSE)
+smd_ver2
+tmap_save(smd_ver2, filename = "Graphs/smd_ver2.pdf",width=5, height=6)
 
 
 
 #CMD
 
 #Some climate mitigation
-CMD.S17.ssp245<-CMD.mask
-CMD.S17.ssp245[CMD.mask<gcc.clim$CMD[8]-100] <-NA
-CMD.S17.ssp245[CMD.mask>gcc.clim$CMD[8]+100] <-NA
+CMD.S17.ssp245<-CMD.clip
+CMD.S17.ssp245[CMD.clip<gcc.clim$CMD[8]-100] <-NA
+CMD.S17.ssp245[CMD.clip>gcc.clim$CMD[8]+100] <-NA
 #plot(CMD.S17.ssp245, main="CMD at ssp235")
 
 #No climate mitigation
-CMD.S17.ssp585<-CMD.mask
+CMD.S17.ssp585<-CMD.clip
 plot(CMD.S17.ssp585)
-CMD.S17.ssp585[CMD.mask<gcc.clim$CMD[8]-100] <-NA
-CMD.S17.ssp585[CMD.mask>gcc.clim$CMD[8]+100] <-NA
+CMD.S17.ssp585[CMD.clip<gcc.clim$CMD[8]-100] <-NA
+CMD.S17.ssp585[CMD.clip>gcc.clim$CMD[8]+100] <-NA
 #plot(CMD.S17.ssp585, main="CMD at ssp585")
 
 #use to swtich between interactive mode ("view") and stationary mode ("plot")
@@ -137,7 +205,7 @@ tmap_mode("view")
 
 #plot maps
 #on sdm
-tm_shape(CMD.mask, bbox=st_bbox(calo)) + #legal boundires
+tm_shape(CMD.clip, bbox=st_bbox(calo)) + #legal boundires
   tm_raster()+
   tm_shape(calo)+
   tm_borders()+
@@ -166,16 +234,16 @@ tm_shape(CMD.S17.ssp, bbox=st_bbox(calo)) + #legal boundires
 
 
 #MAP
-MAP.S17.ssp245<-MAP.mask
+MAP.S17.ssp245<-MAP.clip
 plot(MAP.S17.ssp245)
-MAP.S17.ssp245[MAP.mask<gcc.clim$MAP[8]-100] <-NA
-MAP.S17.ssp245[MAP.mask>gcc.clim$MAP[8]+100] <-NA
+MAP.S17.ssp245[MAP.clip<gcc.clim$MAP[8]-100] <-NA
+MAP.S17.ssp245[MAP.clip>gcc.clim$MAP[8]+100] <-NA
 plot(MAP.S17.ssp245, main="MAP at ssp235")
 
-MAP.S17.ssp585<-MAP.mask
+MAP.S17.ssp585<-MAP.clip
 plot(MAP.S17.ssp585)
-MAP.S17.ssp585[MAP.mask<gcc.clim$MAP[8]-100] <-NA
-MAP.S17.ssp585[MAP.mask>gcc.clim$MAP[8]+100] <-NA
+MAP.S17.ssp585[MAP.clip<gcc.clim$MAP[8]-100] <-NA
+MAP.S17.ssp585[MAP.clip>gcc.clim$MAP[8]+100] <-NA
 plot(MAP.S17.ssp585, main="MAP at ssp585")
 
 #use to swtich between interactive mode ("view") and stationary mode ("plot")
@@ -184,7 +252,7 @@ tmap_mode("view")
 
 #plot maps
 #on sdm
-tm_shape(MAP.mask, bbox=st_bbox(calo)) + #legal boundires
+tm_shape(MAP.clip, bbox=st_bbox(calo)) + #legal boundires
   tm_raster()+
   tm_shape(calo)+
   tm_borders()+
@@ -213,81 +281,81 @@ tm_shape(MAP.S17.ssp585, bbox=st_bbox(calo)) + #legal boundires
 
 
 #PAS
-PAS.S17.ssp245<-PAS.mask
+PAS.S17.ssp245<-PAS.clip
 plot(PAS.S17.ssp245)
-PAS.S17.ssp245[PAS.mask<gcc.clim$PAS[8]-5] <-NA
-PAS.S17.ssp245[PAS.mask>gcc.clim$PAS[8]+5] <-NA
+PAS.S17.ssp245[PAS.clip<gcc.clim$PAS[8]-5] <-NA
+PAS.S17.ssp245[PAS.clip>gcc.clim$PAS[8]+5] <-NA
 plot(PAS.S17.ssp245, main="PAS at ssp235")
 
-PAS.S17.ssp585<-PAS.mask
+PAS.S17.ssp585<-PAS.clip
 plot(PAS.S17.ssp585)
-PAS.S17.ssp585[PAS.mask<gcc.clim$PAS[8]-5] <-NA
-PAS.S17.ssp585[PAS.mask>gcc.clim$PAS[8]+5] <-NA
+PAS.S17.ssp585[PAS.clip<gcc.clim$PAS[8]-5] <-NA
+PAS.S17.ssp585[PAS.clip>gcc.clim$PAS[8]+5] <-NA
 plot(PAS.S17.ssp585, main="PAS at ssp585")
 
 #EXT
-EXT.S17.ssp245<-EXT.mask
+EXT.S17.ssp245<-EXT.clip
 plot(EXT.S17.ssp245)
-EXT.S17.ssp245[EXT.mask<gcc.clim$EXT[8]-1] <-NA
-EXT.S17.ssp245[EXT.mask>gcc.clim$EXT[8]+1] <-NA
+EXT.S17.ssp245[EXT.clip<gcc.clim$EXT[8]-1] <-NA
+EXT.S17.ssp245[EXT.clip>gcc.clim$EXT[8]+1] <-NA
 plot(EXT.S17.ssp245, main="EXT at ssp235")
 
-EXT.S17.ssp585<-EXT.mask
+EXT.S17.ssp585<-EXT.clip
 plot(EXT.S17.ssp585)
-EXT.S17.ssp585[EXT.mask<gcc.clim$EXT[8]-1] <-NA
-EXT.S17.ssp585[EXT.mask>gcc.clim$EXT[8]+1] <-NA
+EXT.S17.ssp585[EXT.clip<gcc.clim$EXT[8]-1] <-NA
+EXT.S17.ssp585[EXT.clip>gcc.clim$EXT[8]+1] <-NA
 plot(EXT.S17.ssp585, main="EXT at ssp585")
 
 #Tave_sm
-Tave_sm.S17.ssp245<-Tave_sm.mask
+Tave_sm.S17.ssp245<-Tave_sm.clip
 plot(Tave_sm.S17.ssp245)
-Tave_sm.S17.ssp245[Tave_sm.mask<gcc.clim$Tave_sm[8]-1] <-NA
-Tave_sm.S17.ssp245[Tave_sm.mask>gcc.clim$Tave_sm[8]+1] <-NA
+Tave_sm.S17.ssp245[Tave_sm.clip<gcc.clim$Tave_sm[8]-1] <-NA
+Tave_sm.S17.ssp245[Tave_sm.clip>gcc.clim$Tave_sm[8]+1] <-NA
 plot(Tave_sm.S17.ssp245, main="Tave_sm at ssp235")
 
-Tave_sm.S17.ssp585<-Tave_sm.mask
+Tave_sm.S17.ssp585<-Tave_sm.clip
 plot(Tave_sm.S17.ssp585)
-Tave_sm.S17.ssp585[Tave_sm.mask<gcc.clim$Tave_sm[8]-1] <-NA
-Tave_sm.S17.ssp585[Tave_sm.mask>gcc.clim$Tave_sm[8]+1] <-NA
+Tave_sm.S17.ssp585[Tave_sm.clip<gcc.clim$Tave_sm[8]-1] <-NA
+Tave_sm.S17.ssp585[Tave_sm.clip>gcc.clim$Tave_sm[8]+1] <-NA
 plot(Tave_sm.S17.ssp585, main="Tave_sm at ssp585")
 
 #Tave_wt
-Tave_wt.S17.ssp245<-Tave_wt.mask
+Tave_wt.S17.ssp245<-Tave_wt.clip
 plot(Tave_wt.S17.ssp245)
-Tave_wt.S17.ssp245[Tave_wt.mask<gcc.clim$Tave_wt[8]-1] <-NA
-Tave_wt.S17.ssp245[Tave_wt.mask>gcc.clim$Tave_wt[8]+1] <-NA
+Tave_wt.S17.ssp245[Tave_wt.clip<gcc.clim$Tave_wt[8]-1] <-NA
+Tave_wt.S17.ssp245[Tave_wt.clip>gcc.clim$Tave_wt[8]+1] <-NA
 plot(Tave_wt.S17.ssp245, main="Tave_wt at ssp235")
 
-Tave_wt.S17.ssp585<-Tave_wt.mask
+Tave_wt.S17.ssp585<-Tave_wt.clip
 plot(Tave_wt.S17.ssp585)
-Tave_wt.S17.ssp585[Tave_wt.mask<gcc.clim$Tave_wt[8]-1] <-NA
-Tave_wt.S17.ssp585[Tave_wt.mask>gcc.clim$Tave_wt[8]+1] <-NA
+Tave_wt.S17.ssp585[Tave_wt.clip<gcc.clim$Tave_wt[8]-1] <-NA
+Tave_wt.S17.ssp585[Tave_wt.clip>gcc.clim$Tave_wt[8]+1] <-NA
 plot(Tave_wt.S17.ssp585, main="Tave_wt at ssp585")
 
 #PPT_sm
-PPT_sm.S17.ssp245<-PPT_sm.mask
+PPT_sm.S17.ssp245<-PPT_sm.clip
 plot(PPT_sm.S17.ssp245)
-PPT_sm.S17.ssp245[PPT_sm.mask<gcc.clim$PPT_sm[8]-10] <-NA
-PPT_sm.S17.ssp245[PPT_sm.mask>gcc.clim$PPT_sm[8]+10] <-NA
+PPT_sm.S17.ssp245[PPT_sm.clip<gcc.clim$PPT_sm[8]-10] <-NA
+PPT_sm.S17.ssp245[PPT_sm.clip>gcc.clim$PPT_sm[8]+10] <-NA
 plot(PPT_sm.S17.ssp245, main="PPT_sm at ssp235")
 
-PPT_sm.S17.ssp585<-PPT_sm.mask
+PPT_sm.S17.ssp585<-PPT_sm.clip
 plot(PPT_sm.S17.ssp585)
-PPT_sm.S17.ssp585[PPT_sm.mask<gcc.clim$PPT_sm[8]-10] <-NA
-PPT_sm.S17.ssp585[PPT_sm.mask>gcc.clim$PPT_sm[8]+10] <-NA
+PPT_sm.S17.ssp585[PPT_sm.clip<gcc.clim$PPT_sm[8]-10] <-NA
+PPT_sm.S17.ssp585[PPT_sm.clip>gcc.clim$PPT_sm[8]+10] <-NA
 plot(PPT_sm.S17.ssp585, main="PPT_sm at ssp585")
 
 #PPT_wt
-PPT_wt.S17.ssp245<-PPT_wt.mask
+PPT_wt.S17.ssp245<-PPT_wt.clip
 plot(PPT_wt.S17.ssp245)
-PPT_wt.S17.ssp245[PPT_wt.mask<gcc.clim$PPT_wt[8]-100] <-NA
-PPT_wt.S17.ssp245[PPT_wt.mask>gcc.clim$PPT_wt[8]+100] <-NA
+PPT_wt.S17.ssp245[PPT_wt.clip<gcc.clim$PPT_wt[8]-100] <-NA
+PPT_wt.S17.ssp245[PPT_wt.clip>gcc.clim$PPT_wt[8]+100] <-NA
 plot(PPT_wt.S17.ssp245, main="PPT_wt at ssp235")
 
-PPT_wt.S17.ssp585<-PPT_wt.mask
+PPT_wt.S17.ssp585<-PPT_wt.clip
 plot(PPT_wt.S17.ssp585)
-PPT_wt.S17.ssp585[PPT_wt.mask<gcc.clim$PPT_wt[8]-100] <-NA
-PPT_wt.S17.ssp585[PPT_wt.mask>gcc.clim$PPT_wt[8]+100] <-NA
+PPT_wt.S17.ssp585[PPT_wt.clip<gcc.clim$PPT_wt[8]-100] <-NA
+PPT_wt.S17.ssp585[PPT_wt.clip>gcc.clim$PPT_wt[8]+100] <-NA
 plot(PPT_wt.S17.ssp585, main="PPT_wt at ssp585")
 
 

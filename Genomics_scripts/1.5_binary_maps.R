@@ -142,6 +142,26 @@ pop_tmap <- tm_shape(calo)+
 pop_tmap
 tmap_save(pop_tmap, filename = "Graphs/pop_tmap.pdf",width=5, height=6)
 
+
+#Plot population Map, orange fill not working
+
+pop_map_o <- pop_var_snp2 %>% dplyr::select(Long,Lat) #select relevant data
+pop_map_o[1:55,3] <- 1
+pop_map_sf_o <- st_as_sf(pop_map_o,coords=c("Long","Lat",V3), crs=EPSG4326)
+tmap_mode("plot")
+#tmap_mode("view")
+pop_tmap_orange <- tm_shape(calo)+
+  tm_borders()+
+  tm_shape(pop_map_sf_o)+
+  tm_bubbles(size = 0.18,alpha=0,col="#FF9933")+ 
+  #tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.005)
+pop_tmap_orange
+tmap_save(pop_tmap_orange, filename = "Graphs/pop_tmap_orange.pdf",width=5, height=6)
+
+
+
+
 ###################################################################################
 # Map Proportion of putatively adaptive SNPs Present
 
