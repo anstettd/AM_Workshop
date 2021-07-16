@@ -48,6 +48,9 @@ gen_pop_sf <- st_as_sf(gen_pop,coords=c("Long","Lat"), crs=EPSG4326)
 #check data is set up properly
 ggplot()+ geom_sf(data = gen_pop_sf)+ ggtitle("Focal Populations")
 
+#Setup sf object for P8
+p8_only <- pop_var_raw %>% filter(Paper_ID==8) %>% dplyr::select(Long,Lat)
+p8_sf <- st_as_sf(p8_only,coords=c("Long","Lat"), crs=EPSG4326)
 
 
 # California & Oregon Map Setup
@@ -76,7 +79,20 @@ Tave_wt.clip <- raster("Donor_selection/data/clip/Tave_wt.clip.grd")
 
 #Site S17, Deep Creek
 
-#MAT
+#Climate Layer with pop and legend
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT_pop <- tm_shape(MAT.clip, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.show = F)
+clim_MAT_pop
+tmap_save(clim_MAT_pop, filename = "Graphs/clim_MAT_pop.pdf",width=5, height=6)
+
+###### MAT ######
 MAT.S17.ssp245<-MAT.clip
 plot(MAT.S17.ssp245)
 MAT.S17.ssp245[MAT.clip<gcc.clim$MAT[8]-1] <-NA
@@ -85,24 +101,22 @@ plot(MAT.S17.ssp245, main="MAT at ssp235")
 
 MAT.S17.ssp585<-MAT.clip
 plot(MAT.S17.ssp585)
-MAT.S17.ssp585[MAT.clip<gcc.clim$MAT[8]-1] <-NA
-MAT.S17.ssp585[MAT.clip>gcc.clim$MAT[8]+1] <-NA
+MAT.S17.ssp585[MAT.clip<gcc.clim$MAT[20]-1] <-NA
+MAT.S17.ssp585[MAT.clip>gcc.clim$MAT[20]+1] <-NA
 plot(MAT.S17.ssp585, main="MAT at ssp585")
 
-##plot maps
-
-#Climate Layer
+#Climate Layer with pop and legend
 tmap_mode("plot")
 #tmap_mode("view")
-clim_MAT <- tm_shape(MAT.clip, bbox=st_bbox(calo)) + #legal boundires
+clim_MAT_pop <- tm_shape(MAT.clip, bbox=st_bbox(calo)) + #legal boundires
   tm_raster()+
   tm_shape(calo)+
   tm_borders()+
-  #tm_shape(gen_pop_sf)+
-  #tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-MAT_clim_layer
-tmap_save(clim_MAT, filename = "Graphs/clim_MAT.pdf",width=5, height=6)
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.show = F)
+clim_MAT_pop
+tmap_save(clim_MAT_pop, filename = "Graphs/clim_MAT_pop.pdf",width=5, height=6)
 
 #ssp245 matching locations only
 tmap_mode("plot")
@@ -113,6 +127,8 @@ clim_MAT_245 <- tm_shape(MAT.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
   tm_borders()+
   tm_shape(gen_pop_sf)+
   tm_dots(size=0.2,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
 clim_MAT_245
 tmap_save(clim_MAT_245, filename = "Graphs/clim_MAT_245.pdf",width=5, height=6)
@@ -126,65 +142,171 @@ clim_MAT_585 <- tm_shape(MAT.S17.ssp585, bbox=st_bbox(calo)) + #legal boundires
   tm_borders()+
   tm_shape(gen_pop_sf)+
   tm_dots(size=0.2,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
 clim_MAT_585
 tmap_save(clim_MAT_585, filename = "Graphs/clim_MAT_585.pdf",width=5, height=6)
 
-#Additional Exploration
-#Use in presentation
 
-#ssp245 not pops
+
+###### MAP ######
+
+#Site S17, Deep Creek
+
+#Climate Layer with pop and legend
 tmap_mode("plot")
 #tmap_mode("view")
-clim_MAT_245_no_pop <- tm_shape(MAT.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
-  tm_shape(calo)+
-  tm_borders()+
-  #tm_shape(gen_pop_sf)+
-  #tm_dots(size=0.2,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-clim_MAT_245_no_pop
-tmap_save(clim_MAT_245_no_pop, filename = "Graphs/clim_MAT_245_no_pop.pdf",width=5, height=6)
-
-#Try 0.5 deg versus 1 deg
-
-MAT.S17.ssp245_0.5 <-MAT.clip
-MAT.S17.ssp245_0.5[MAT.clip<gcc.clim$MAT[8]-0.5] <-NA
-MAT.S17.ssp245_0.5[MAT.clip>gcc.clim$MAT[8]-0.5] <-NA
-plot(MAT.S17.ssp245_0.5, main="MAT at ssp235")
-
-#ssp245 not pops
-tmap_mode("plot")
-#tmap_mode("view")
-clim_MAT_245_0.5 <- tm_shape(MAT.S17.ssp245_0.5, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
-  tm_shape(calo)+
-  tm_borders()+
-  #tm_shape(gen_pop_sf)+
-  #tm_dots(size=0.2,shape=1)+
-  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
-clim_MAT_245_0.5 
-tmap_save(clim_MAT_245_0.5 , filename = "Graphs/clim_MAT_245_0.5.pdf",width=5, height=6)
-
-#entire_range using SDM
-
-MAT.mask <- raster("Donor_selection/data/mask/MAT.mask.grd")
-#Climate Layer masked by SDM
-tmap_mode("plot")
-#tmap_mode("view")
-smd_ver2 <- tm_shape(MAT.mask, bbox=st_bbox(calo)) + #legal boundires
+clim_MAP_pop <- tm_shape(MAP.clip, bbox=st_bbox(calo)) + #legal boundires
   tm_raster()+
   tm_shape(calo)+
   tm_borders()+
-  #tm_shape(gen_pop_sf)+
-  #tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.show=FALSE)
-smd_ver2
-tmap_save(smd_ver2, filename = "Graphs/smd_ver2.pdf",width=5, height=6)
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.show = F)
+clim_MAP_pop
+tmap_save(clim_MAP_pop, filename = "Graphs/clim_MAP_pop.pdf",width=5, height=6)
+
+#MAP
+MAP.S17.ssp245<-MAP.clip
+plot(MAP.S17.ssp245)
+MAP.S17.ssp245[MAP.clip<gcc.clim$MAP[8]-100] <-NA
+MAP.S17.ssp245[MAP.clip>gcc.clim$MAP[8]+100] <-NA
+plot(MAP.S17.ssp245, main="MAP at ssp235")
+
+MAP.S17.ssp585<-MAP.clip
+plot(MAP.S17.ssp585)
+MAP.S17.ssp585[MAP.clip<gcc.clim$MAP[20]-100] <-NA
+MAP.S17.ssp585[MAP.clip>gcc.clim$MAP[20]+100] <-NA
+plot(MAP.S17.ssp585, main="MAP at ssp585")
+
+#CliMAPe Layer with pop and legend
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAP_pop <- tm_shape(MAP.clip, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.show = F)
+clim_MAP_pop
+tmap_save(clim_MAP_pop, filename = "Graphs/clim_MAP_pop.pdf",width=5, height=6)
+
+#ssp245 matching locations only
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAP_245 <- tm_shape(MAP.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_MAP_245
+tmap_save(clim_MAP_245, filename = "Graphs/clim_MAP_245.pdf",width=5, height=6)
+
+#ssp585 matching locations only
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAP_585 <- tm_shape(MAP.S17.ssp585, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_MAP_585
+tmap_save(clim_MAP_585, filename = "Graphs/clim_MAP_585.pdf",width=5, height=6)
 
 
+
+###### CMD ######
+
+#Site S17, Deep Creek
+
+#Climate Layer with pop and legend
+tmap_mode("plot")
+#tmap_mode("view")
+clim_CMD_pop <- tm_shape(CMD.clip, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.show = T)
+clim_CMD_pop
+tmap_save(clim_CMD_pop, filename = "Graphs/clim_CMD_pop.pdf",width=5, height=6)
 
 #CMD
+CMD.S17.ssp245<-CMD.clip
+plot(CMD.S17.ssp245)
+CMD.S17.ssp245[CMD.clip<gcc.clim$CMD[8]-100] <-NA
+CMD.S17.ssp245[CMD.clip>gcc.clim$CMD[8]+100] <-NA
+plot(CMD.S17.ssp245, main="CMD at ssp235")
+
+CMD.S17.ssp585<-CMD.clip
+plot(CMD.S17.ssp585)
+CMD.S17.ssp585[CMD.clip<gcc.clim$CMD[20]-100] <-NA
+CMD.S17.ssp585[CMD.clip>gcc.clim$CMD[20]+100] <-NA
+plot(CMD.S17.ssp585, main="CMD at ssp585")
+
+#Climate Layer with pop and legend
+tmap_mode("plot")
+#tmap_mode("view")
+clim_CMD_pop <- tm_shape(CMD.clip, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.show = F)
+clim_CMD_pop
+tmap_save(clim_CMD_pop, filename = "Graphs/clim_CMD_pop.pdf",width=5, height=6)
+
+#ssp245 matching locations only
+tmap_mode("plot")
+#tmap_mode("view")
+clim_CMD_245 <- tm_shape(CMD.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_CMD_245
+tmap_save(clim_CMD_245, filename = "Graphs/clim_CMD_245.pdf",width=5, height=6)
+
+#ssp585 CMDching locations only
+tmap_mode("plot")
+#tmap_mode("view")
+clim_CMD_585 <- tm_shape(CMD.S17.ssp585, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(gen_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  tm_shape(p8_sf)+
+  tm_dots(size=0.3,shape=20,col= "#33FFFF")+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_CMD_585
+tmap_save(clim_CMD_585, filename = "Graphs/clim_CMD_585.pdf",width=5, height=6)
+
+
+
+
+
+
+
+
+
+
 
 #Some climate mitigation
 CMD.S17.ssp245<-CMD.clip
@@ -360,6 +482,77 @@ plot(PPT_wt.S17.ssp585, main="PPT_wt at ssp585")
 
 
 
+
+##############################################################################
+
+#Additional Exploration
+#Use in presentation
+
+
+##plot maps
+
+#Climate Layer with no pop or legend
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT <- tm_shape(MAT.clip, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  #tm_shape(gen_pop_sf)+
+  #tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.show = F)
+MAT_clim_layer
+tmap_save(clim_MAT, filename = "Graphs/clim_MAT.pdf",width=5, height=6)
+
+
+#ssp245 not pops
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT_245_no_pop <- tm_shape(MAT.S17.ssp245, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  #tm_shape(gen_pop_sf)+
+  #tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_MAT_245_no_pop
+tmap_save(clim_MAT_245_no_pop, filename = "Graphs/clim_MAT_245_no_pop.pdf",width=5, height=6)
+
+#Try 0.5 deg versus 1 deg
+
+MAT.S17.ssp245_0.5 <-MAT.clip
+MAT.S17.ssp245_0.5[MAT.clip<gcc.clim$MAT[8]-0.5] <-NA
+MAT.S17.ssp245_0.5[MAT.clip>gcc.clim$MAT[8]-0.5] <-NA
+plot(MAT.S17.ssp245_0.5, main="MAT at ssp235")
+
+#ssp245 not pops
+tmap_mode("plot")
+#tmap_mode("view")
+clim_MAT_245_0.5 <- tm_shape(MAT.S17.ssp245_0.5, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = "#FF00FF",legend.show = FALSE)+
+  tm_shape(calo)+
+  tm_borders()+
+  #tm_shape(gen_pop_sf)+
+  #tm_dots(size=0.2,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.001)
+clim_MAT_245_0.5 
+tmap_save(clim_MAT_245_0.5 , filename = "Graphs/clim_MAT_245_0.5.pdf",width=5, height=6)
+
+#entire_range using SDM
+
+MAT.mask <- raster("Donor_selection/data/mask/MAT.mask.grd")
+#Climate Layer masked by SDM
+tmap_mode("plot")
+#tmap_mode("view")
+smd_ver2 <- tm_shape(MAT.mask, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster()+
+  tm_shape(calo)+
+  tm_borders()+
+  #tm_shape(gen_pop_sf)+
+  #tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.show=FALSE)
+smd_ver2
+tmap_save(smd_ver2, filename = "Graphs/smd_ver2.pdf",width=5, height=6)
 
 
 
