@@ -20,6 +20,9 @@ library(rnaturalearthhires)
 library(rgeos)
 library(geodist)
 library(RColorBrewer)
+library(VennDiagram)
+#install.packages("viridis")  # Install
+library(viridis)
 
 ###################################################################################
 #Import population data
@@ -77,6 +80,31 @@ calo <- states %>%
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
 
 ###################################################################################
+###################################################################################
+#Venn Diagram of SNP overlap
+
+MAT_set <- pull(binary_1[,1])
+MAP_set <- pull(binary_2[,1])
+CMD_set <- pull(binary_5[,1])
+
+ven_3 <- list(MAT_set,MAP_set,CMD_set)
+
+VD_1<-venn.diagram(x=ven_3,
+             category.names = c("MAT" , "MAP" , "CMD"),
+             fill = c("yellow", "cyan","magenta"),
+             #alpha = c(0.5, 0.5, 0.5),
+             main.cex = 5,
+             cat.cex = 0, cex=1.8,
+             fontface = "bold",
+             filename = NULL,
+)
+
+pdf("Graphs/venn_3.pdf")
+grid.newpage()
+grid.draw(VD_1)
+dev.off()
+
+
 ###################################################################################
 #Map distribution of single snps
 
