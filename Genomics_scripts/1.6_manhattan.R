@@ -159,34 +159,154 @@ env9_united <- env9_united %>% mutate(CHR=as.numeric(gsub("CE10_chr","",Chromoso
                                                         ifelse(CHR==7, SNP+chr_size$poz[6],
                                                                SNP+chr_size$poz[7]))))))))
 ###
-#Make Plots
+#Make Manhattan Plots
 
+#ENV 1 - MAT 
 axisdf_1 <- env1_united %>% group_by(CHR) %>% summarize(center=( max(BP) + min(BP) ) / 2 )
 
 ggplot(env1_united, aes(x=BP, y=BF)) +
   
   # Show all points
   geom_point(aes(color=as.factor(CHR)), alpha=0.8,size=0.5) +
-  scale_color_manual(values = rep(c("grey", "skyblue"), 22 )) +
-  geom_hline(yintercept=10, linetype="dashed",color = "red", size=0.2)+
+  scale_color_manual(values = rep(c("black", "darkgoldenrod"), 22 )) +
+  geom_hline(yintercept=10, linetype="dashed",color = "red", size=0.9) +
   # custom X axis:
   scale_x_continuous(expand = c(0, 0), label = axisdf_1$CHR, breaks= axisdf_1$center) +
-  theme_bw() +
+  scale_y_continuous(breaks = c(-20,-10,0,10,20,30,40)) +
+  theme_classic() +
+  labs(
+    y = "Bayes Factor",
+    x = "Position")+
   theme(
     legend.position="none",
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     panel.background = element_blank(),
-    plot.title = element_text(hjust = 0.5),
+    plot.title = element_text(hjust = 0.8),
     strip.background = element_blank(),
-    strip.placement = "outside"
-  )+
+    strip.placement = "outside",
+    axis.text.x = element_text(size=15, face="bold"),
+    axis.text.y = element_text(size=15,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5)
+  )
+
+#Export. File is very large and somewhat hard to hande/open. 
+#ggsave("/Users/daniel_anstett/Dropbox/AM_Workshop/large_graphs/manhattan_1.pdf",width=9, height=6)
+
+
+
+#ENV 2 - MAP 
+axisdf_2 <- env2_united %>% group_by(CHR) %>% summarize(center=( max(BP) + min(BP) ) / 2 )
+
+ggplot(env2_united, aes(x=BP, y=BF)) +
+  
+  # Show all points
+  geom_point(aes(color=as.factor(CHR)), alpha=0.8,size=0.5) +
+  scale_color_manual(values = rep(c("black", "deepskyblue"), 22 )) +
+  geom_hline(yintercept=10, linetype="dashed",color = "red", size=0.9) +
+  # custom X axis:
+  scale_x_continuous(expand = c(0, 0), label = axisdf_2$CHR, breaks= axisdf_2$center) +
+  scale_y_continuous(breaks = c(-20,-10,0,10,20,30,40)) +
+  theme_classic() +
   labs(
     y = "Bayes Factor",
     x = "Position")+
+  theme(
+    legend.position="none",
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(hjust = 0.8),
+    strip.background = element_blank(),
+    strip.placement = "outside",
+    axis.text.x = element_text(size=15, face="bold"),
+    axis.text.y = element_text(size=15,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5)
+  )
+
+#Export. File is very large and somewhat hard to hande/open. 
+#ggsave("/Users/daniel_anstett/Dropbox/AM_Workshop/large_graphs/manhattan_2.pdf",width=9, height=6)
+
+
+
+
+#ENV 5 - CMD 
+axisdf_5 <- env5_united %>% group_by(CHR) %>% summarize(center=( max(BP) + min(BP) ) / 2 )
+
+ggplot(env5_united, aes(x=BP, y=BF)) +
   
-    ggsave("Graphs/manhattan_1.pdf",width=9, height=6)
+  # Show all points
+  geom_point(aes(color=as.factor(CHR)), alpha=0.8,size=0.5) +
+  scale_color_manual(values = rep(c("black", "magenta3"), 22 )) +
+  geom_hline(yintercept=10, linetype="dashed",color = "deepskyblue", size=0.9) +
+  # custom X axis:
+  scale_x_continuous(expand = c(0, 0), label = axisdf_5$CHR, breaks= axisdf_5$center) +
+  scale_y_continuous(breaks = c(-20,-10,0,10,20,30,40)) +
+  theme_classic() +
+  labs(
+    y = "Bayes Factor",
+    x = "Position")+
+  theme(
+    legend.position="none",
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(hjust = 0.8),
+    strip.background = element_blank(),
+    strip.placement = "outside",
+    axis.text.x = element_text(size=15, face="bold"),
+    axis.text.y = element_text(size=15,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5)
+  )
+
+#Export. File is very large and somewhat hard to hande/open. 
+#ggsave("/Users/daniel_anstett/Dropbox/AM_Workshop/large_graphs/manhattan_5.pdf",width=9, height=6)
+
+
+
+
+################
+#Test plot with only two chromosomes
+env1_united_chr1_2 <- env1_united %>% filter(CHR<3)
+
+axisdf_1 <- env1_united_chr1_2 %>% group_by(CHR) %>% summarize(center=( max(BP) + min(BP) ) / 2 )
+
+ggplot(env1_united_chr1_2, aes(x=BP, y=BF)) +
+  
+  # Show all points
+  geom_point(aes(color=as.factor(CHR)), alpha=0.8,size=0.5) +
+  scale_color_manual(values = rep(c("black", "magenta2"), 22 )) +
+  geom_hline(yintercept=10, linetype="dashed",color = "deepskyblue1", size=0.9) +
+  # custom X axis:
+  scale_x_continuous(expand = c(0, 0), label = axisdf_1$CHR, breaks= axisdf_1$center) +
+  scale_y_continuous(breaks = c(-20,-10,0,10,20,30,40)) +
+  theme_classic() +
+    labs(
+      y = "Bayes Factor",
+      x = "Position")+
+  theme(
+    legend.position="none",
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(hjust = 0.8),
+    strip.background = element_blank(),
+    strip.placement = "outside",
+    axis.text.x = element_text(size=15, face="bold"),
+    axis.text.y = element_text(size=15,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5)
+  )
+
+  
+
 
 
 
