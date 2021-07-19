@@ -106,7 +106,7 @@ dev.off()
 
 
 ###################################################################################
-#Map distribution of single snps
+#Map distribution of single snps as proportion
 
 
 # Map of P1, present in most localities
@@ -152,6 +152,60 @@ snp25 <- tm_shape(calo)+
   tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.005)
 tmap_save(snp25, filename = "Graphs/snp25_freq.pdf",width=5, height=6)
+
+
+###################################################################################
+
+###################################################################################
+#Map distribution of single snps Presence / absence
+
+
+# Map of P1, present in most localities
+b1_snp2 <- binary_1 %>% filter(SNP==224717) #select abundance data for snp 2
+#b1_snp2 <- binary_1 %>% filter(SNP==224717) #select binary data for snp 2, remove comment to see binary data
+b1_snp2 <- b1_snp2[5:59] #take only snps values
+b1_snp2 <- as.data.frame(t(b1_snp2)) #transpose and put in dataframe
+pop_var_snp2 <- cbind(pop_var_raw,b1_snp2) #bind to lat/long population data
+colnames(pop_var_snp2)[6] <- "MAT" 
+
+MAT_points_snp2 <- pop_var_snp2 %>% dplyr::select(Long,Lat,MAT) #select relevant data
+MAT_sf_snp2 <- st_as_sf(MAT_points_snp2,coords=c("Long","Lat"), crs=EPSG4326)
+
+#Plot MAT associated allele snp2
+tmap_mode("plot")
+#tmap_mode("view")
+snp2 <- tm_shape(calo)+
+  tm_borders()+
+  tm_shape(MAT_sf_snp2)+
+  tm_bubbles(size = 0.18,col="MAT")+ 
+  #tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.005)
+snp2
+tmap_save(snp2, filename = "Graphs/snp2_freq_p_a.pdf",width=5, height=6)
+
+# Map of P25, missing from most localities
+b1_snp25 <- binary_1 %>% filter(SNP==946612) #filter for snp
+b1_snp25 <- b1_snp25[5:59] #take only snps values
+b1_snp25 <- as.data.frame(t(b1_snp25)) #transpose and put in dataframe
+pop_var_snp25 <- cbind(pop_var_raw,b1_snp25) #bind to lat/long population data
+colnames(pop_var_snp25)[6] <- "MAT" 
+
+MAT_points_snp25 <- pop_var_snp25 %>% dplyr::select(Long,Lat,MAT) #select relevant data
+MAT_sf_snp25 <- st_as_sf(MAT_points_snp25,coords=c("Long","Lat"), crs=EPSG4326)
+
+#Plot MAT associated allele snp25
+tmap_mode("plot")
+#tmap_mode("view")
+snp25 <- tm_shape(calo)+
+  tm_borders()+
+  tm_shape(MAT_sf_snp25)+
+  tm_bubbles(size = 0.18,col="MAT")+ 
+  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.29, 0.73),legend.title.size = 0.005)
+tmap_save(snp25, filename = "Graphs/snp25_freq_p_a.pdf",width=5, height=6)
+
+
+###################################################################################
 
 
 # Population Map
@@ -294,7 +348,7 @@ MAP_sf_p8 <- st_as_sf(MAP_points_p8,coords=c("Long","Lat"), crs=EPSG4326)
 
 #MAP
 tmap_mode("plot")
-#tmap_mode("view")
+tmap_mode("view")
 miss_p8_MAP <- tm_shape(calo)+
   tm_borders()+
   tm_shape(MAP_sf_p8)+
@@ -319,7 +373,7 @@ CMD_sf_p8 <- st_as_sf(CMD_points_p8,coords=c("Long","Lat"), crs=EPSG4326)
 
 #CMD
 tmap_mode("plot")
-#tmap_mode("view")
+tmap_mode("view")
 miss_p8_CMD <- tm_shape(calo)+
   tm_borders()+
   tm_shape(CMD_sf_p8)+
