@@ -20,6 +20,7 @@ library(rnaturalearthdata)
 #devtools::install_github("ropensci/rnaturalearthhires")
 library(rnaturalearthhires)
 library(rgeos)
+library(RColorBrewer)
 ##############################################################################
 
 ## INPUTS
@@ -78,12 +79,12 @@ Tave_wt.clip <- raster("Donor_selection/data/clip/Tave_wt.clip.grd")
 
 
 #Site S17, Deep Creek
-
+pall_temp<-rev(brewer.pal(n=6, "RdYlBu"))
 #Climate Layer with pop and legend
 tmap_mode("plot")
-#tmap_mode("view")
+tmap_mode("view")
 clim_MAT_pop <- tm_shape(MAT.clip, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster()+
+  tm_raster(palette=pall_temp)+
   tm_shape(calo)+
   tm_borders()+
   tm_shape(gen_pop_sf)+
@@ -154,11 +155,14 @@ tmap_save(clim_MAT_585, filename = "Graphs/clim_MAT_585.pdf",width=5, height=6)
 
 #Site S17, Deep Creek
 
+blue_dry <- c("magenta2", "royalblue1","wheat1","goldernrod1")
+pall_ppt<-brewer.pal(n=5, "YlGnBu")
+
 #Climate Layer with pop and legend
 tmap_mode("plot")
 #tmap_mode("view")
 clim_MAP_pop <- tm_shape(MAP.clip, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster()+
+  tm_raster(palette=pall_ppt)+
   tm_shape(calo)+
   tm_borders()+
   tm_shape(gen_pop_sf)+
