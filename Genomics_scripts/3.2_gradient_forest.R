@@ -7,7 +7,7 @@
 ###################################################################################
 ##Libraries
 library(tidyverse)
-library(gradient_Forest)
+library(gradientForest)
 
 ##Import Data
 snp_clim_bf10 <- read_csv("Genomics_scripts/Data/snp_clim_bay.csv")
@@ -21,10 +21,15 @@ env_site <- snp_clim_bf10 %>% select(MAT,MAP,PAS,EXT,CMD,Tave_wt,Tave_sm,PPT_wt,
 test_snp <- snp_clim_bf10[,15:114] %>%
   select_if(~ !any(is.na(.)))
 
+env_site<-as.data.frame(env_site)
+test_snp<-as.matrix(test_snp)
+rownames(test_snp)<-as.character(c(1:dim(test_snp)[1]))
+
+
 
 # Gradient Forest Model
 gf <- gradientForest(cbind(env_site, test_snp),
-                     + predictor.vars = colnames(env_site), response.vars = colnames(Sp_mat),
-                     + ntree = 500, transform = NULL, compact = T,
-                     + nbin = 201, maxLevel = lev, corr.threshold = 0.5)
+                      predictor.vars = colnames(env_site), response.vars = colnames(test_snp),
+                      ntree = 500, transform = NULL, compact = T,
+                      nbin = 201, maxLevel = 5 , corr.threshold = 0.5)
 
