@@ -121,6 +121,8 @@ for (i in 1:length(POPS)) {
     mutate(!!sym(paste0("pop",i,"_2")) := ifelse(!!sym(paste0("pop",i)) >= as.numeric(pop_cut_off[i,3]),!!sym(paste0("V",POPS[i]+1)),0)) %>% #if the second allele is count smaller than the the threshold replace it with 0
     select(- !!sym(paste0("pop",i)),- !!sym(paste0("V",POPS[i])),- !!sym(paste0("V",POPS[i]+1))) -> SNP_TABLE
 }
+# Add filter step to remove entire entry if A or B is 0.
+## Please add "filter(A!=0,B!=0)"
 
 SNP_TABLE %>%
   rowwise() %>%
