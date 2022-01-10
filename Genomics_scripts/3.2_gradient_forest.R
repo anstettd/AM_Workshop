@@ -22,14 +22,20 @@ test_snp <- snp_clim_bf10[,15:114] %>%
   select_if(~ !any(is.na(.)))
 
 env_site<-as.data.frame(env_site)
-test_snp<-as.matrix(test_snp)
-rownames(test_snp)<-as.character(c(1:dim(test_snp)[1]))
+test_snp<-as.data.frame(test_snp)
 
 
+df_in_1<-data.frame(env_site, test_snp)
+pred<-colnames(env_site)
+resp<-colnames(test_snp)
+
+#resp<-as.factor(resp)
+#resp<-droplevels(resp)
 
 # Gradient Forest Model
-gf <- gradientForest(cbind(env_site, test_snp),
-                      predictor.vars = colnames(env_site), response.vars = colnames(test_snp),
+gf <- gradientForest(df_in_1,
+                      predictor.vars = pred, response.vars = resp,
                       ntree = 500, transform = NULL, compact = T,
-                      nbin = 201, maxLevel = 5 , corr.threshold = 0.5)
+                      nbin = 201 , corr.threshold = 0.5)
+
 
