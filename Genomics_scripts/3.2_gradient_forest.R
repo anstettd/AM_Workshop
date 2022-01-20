@@ -5,10 +5,28 @@
 ## 
 ## Last Modified Dec 13, 2021
 ###################################################################################
-##Libraries
-library(tidyverse)
-library(gradientForest)
 
+# Clear environment
+rm(list = ls())
+
+# Get this package retrieving function
+## This function will automatically load packages that you already have
+## and will install packages you don't yet have then load them
+ipak <- function(pkg){
+  # Function written by Dr. Evan Fricke
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = T)
+  sapply(pkg, require, character.only = T)
+}
+
+# Define the packages that the script needs
+myPackages <- c("tidyverse", "randomForest", "gradientForest")
+
+# Load the packages
+ipak(myPackages)
+
+###################################################################################
 ##Import Data
 snp_clim_bf10 <- read_csv("Genomics_scripts/Data/snp_clim_bay.csv")
 snp_clim_bf10NA <- snp_clim_bf10 %>%
