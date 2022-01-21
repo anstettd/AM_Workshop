@@ -21,10 +21,14 @@ ipak <- function(pkg){
 }
 
 # Define the packages that the script needs
-myPackages <- c("tidyverse", "randomForest", "gradientForest")
+myPackages <- c("randomForest", "extendedForest", "gradientForest")
 
 # Load the packages
 ipak(myPackages)
+
+# Install packages
+install.packages("extendedForest", repos="http://R-Forge.R-project.org")
+install.packages("gradientForest", repos="http://R-Forge.R-project.org")
 
 ###################################################################################
 ##Import Data
