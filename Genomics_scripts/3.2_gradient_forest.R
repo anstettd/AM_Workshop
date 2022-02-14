@@ -12,7 +12,7 @@ rm(list = ls())
 # Get this package retrieving function
 ## This function will automatically load packages that you already have
 ## and will install packages you don't yet have then load them
-ipak <- function(pkg){
+#ipak <- function(pkg){
   # Function written by Dr. Evan Fricke
   new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
   if (length(new.pkg)) 
@@ -21,14 +21,18 @@ ipak <- function(pkg){
 }
 
 # Define the packages that the script needs
-myPackages <- c("randomForest", "extendedForest", "gradientForest")
+#myPackages <- c("randomForest", "extendedForest", "gradientForest")
 
 # Load the packages
-ipak(myPackages)
+#ipak(myPackages)
 
 # Install packages
-install.packages("extendedForest", repos="http://R-Forge.R-project.org")
-install.packages("gradientForest", repos="http://R-Forge.R-project.org")
+#install.packages("extendedForest", repos="http://R-Forge.R-project.org")
+#install.packages("gradientForest", repos="http://R-Forge.R-project.org")
+
+library(randomForest)
+library(gradientForest)
+library(tidyverse)
 
 ###################################################################################
 ##Import Data
@@ -59,5 +63,46 @@ gf <- gradientForest(df_in_1,
                       predictor.vars = pred, response.vars = resp,
                       ntree = 500, transform = NULL, compact = T,
                       nbin = 201 , corr.threshold = 0.5)
+
+#Importance Plot
+plot(gf, plot.type = "O")
+
+most_important <- names(importance(gf))[1:9]
+
+##Split Density Plot
+#The second plot is the splits density plot (plot.type="S"), which shows binned 
+#split importance and location on each gradient (spikes), kernel density of splits 
+#(black lines), of observations(red lines) and of splits standardised by 
+#observations density (blue lines). Each distribution integrates to predictor 
+#importance. These show where important changes in the abundance of
+#multiple species are occurring along the gradient; they indicate a composition change rate
+plot(gf, plot.type = "S", imp.vars = most_important,leg.posn = "topright", cex.legend = 0.4, cex.axis = 0.6,
+     cex.lab = 0.7, line.ylab = 0.9, par.args = list(mgp = c(1.5, 0.5, 0), mar = c(3.1, 1.5, 0.1, 1)))
+
+##Cumulaive Plot
+#for each species shows cumulative importance distributions of splits improvement scaled by
+#R2 weighted importance, and standardised by density of observations. These show cumulative
+#change in abundance of individual species, where changes occur on the gradient, and the species
+#changing most on each gradient.
+plot(gf, plot.type = "C", imp.vars = most_important,show.overall = F, legend = T, leg.posn = "topleft",
+       leg.nspecies = 5, cex.lab = 0.7, cex.legend = 0.4,cex.axis = 0.6, line.ylab = 0.9, 
+       par.args = list(mgp = c(1.5, 0.5, 0), mar = c(2.5, 1, 0.1, 0.5), omi = c(0,0.3, 0, 0)))
+
+
+plot(gf, plot.type = "P", show.names = F, horizontal = F, cex.axis = 1, cex.labels = 0.7, line = 2.5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
