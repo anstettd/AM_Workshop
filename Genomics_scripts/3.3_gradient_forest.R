@@ -36,7 +36,9 @@ ipak(myPackages)
 
 ###################################################################################
 ##Import Data
-snp_clim_bf10 <- read_csv("Genomics_scripts/Data/snp_clim_bay.csv")
+snp_clim_bf10 <- read_csv("Genomics_scripts/Data/snp_clim_bay.csv") #pop data
+env_wna <- read_csv("Genomics_scripts/Data/env_wna.csv") #grided WNA climate data
+
 #snp_clim_bf10NA <- snp_clim_bf10 %>%
 #  select_if(~ !any(is.na(.)))
 ####snp_clim_ful <- read_csv("Genomics_scripts/Data/snp_clim_full.csv") # full data
@@ -112,7 +114,7 @@ pcaToRaster <- function(snpPreds, rast, mapCells){
 # (2) a raster mask of the study region to which the RGB data will be written
 
 # transform env using gf models, see ?predict.gradientForest
-predRef <- predict(gf, env_trns[,-1]) # remove cell column before transforming
+predRef <- predict(gf, env_wna[,-1]) # remove cell column before transforming
 
 # map continuous variation 
 refRGBmap <- pcaToRaster(predRef, mask, env_trns$cell)
