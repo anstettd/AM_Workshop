@@ -35,6 +35,7 @@ ipak(myPackages)
 #library(tidyverse)
 
 ###################################################################################
+
 ##Import Data
 snp_clim_bf10 <- read_csv("Genomics_scripts/Data/snp_clim_bay.csv") #pop data
 env_wna <- read_csv("Genomics_scripts/Data/env_wna.csv") #grided WNA climate data
@@ -53,10 +54,8 @@ env_site <- snp_clim_bf10 %>% select(MAT,MAP,PAS,EXT,CMD,Tave_wt,Tave_sm,PPT_wt,
 #Import filtered test snp datatset
 test_snp <- read.csv("Genomics_scripts/Data/test_snp.csv")
 
-
 env_site<-as.data.frame(env_site)
 test_snp<-as.data.frame(test_snp)
-
 
 df_in_1<-data.frame(env_site, test_snp)
 pred<-colnames(env_site)
@@ -64,6 +63,30 @@ resp<-colnames(test_snp)
 
 #resp<-as.factor(resp)
 #resp<-droplevels(resp)
+
+
+###################################################################################
+#Make a climatic 
+##Import 1981-2010 raster data for West NA
+MAT.clip <- raster("Donor_selection/data/clip/MAT.clip.grd")
+MAP.clip <- raster("Donor_selection/data/clip/MAP.clip.grd")
+PAS.clip <- raster("Donor_selection/data/clip/PAS.clip.grd")
+EXT.clip <- raster("Donor_selection/data/clip/EXT.clip.grd")
+CMD.clip <- raster("Donor_selection/data/clip/CMD.clip.grd")
+
+#Seasonal
+PPT_sm.clip <- raster("Donor_selection/data/clip/PPT_sm.clip.grd")
+PPT_wt.clip <- raster("Donor_selection/data/clip/PPT_wt.clip.grd")
+Tave_sm.clip <- raster("Donor_selection/data/clip/Tave_sm.clip.grd")
+Tave_wt.clip <- raster("Donor_selection/data/clip/Tave_wt.clip.grd")
+
+#Stack Raster
+env_wna <- stack(list(MAT=MAT.clip,MAP=MAP.clip,PAS=PAS.clip,EXT=EXT.clip,CMD=CMD.clip,
+                      PPT_sm=PPT_sm.clip,PPT_wt=PPT_wt.clip,Tave_sm=Tave_sm.clip,Tave_wt=Tave_wt.clip))
+env_wna <- as.data.frame(env_wna, xy=TRUE)
+
+
+###################################################################################
 
 # Gradient Forest Model
 gf <- gradientForest(df_in_1,
