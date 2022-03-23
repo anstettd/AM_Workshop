@@ -16,7 +16,7 @@ library(gradientForest)
 library(raster)
 
 # read in data file with minor allele freqs & env/space variables
-gfData <- read.csv("poplarSNP.ENV.data.4.gradientForest.csv")
+gfData <- read.csv("Genomics_scripts/Data/poplarSNP.ENV.data.4.GF.csv")
 envGF <- gfData[,3:13] # get climate & MEM variables
 
 # build individual SNP datasets

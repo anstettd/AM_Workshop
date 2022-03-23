@@ -2,7 +2,7 @@
 ## Gradient forest for full SNP dataset
 ## Author Daniel Anstett
 ## 
-## 
+## Modified from Keller & Fitzpatric 2015
 ## Last Modified Dec 13, 2021
 ###################################################################################
 
@@ -21,7 +21,7 @@ ipak <- function(pkg){
 }
 
 # Define the packages that the script needs
-myPackages <- c("randomForest", "extendedForest", "gradientForest","tidyverse")
+myPackages <- c("randomForest", "extendedForest", "gradientForest","tidyverse","raster")
 
 # Load the packages
 ipak(myPackages)
@@ -69,6 +69,99 @@ gf <- gradientForest(df_in_1,
                       ntree = 500, transform = NULL, compact = T,
                       nbin = 201 , corr.threshold = 0.5)
 
+#Importance Plot
+plot(gf, plot.type = type)
+
+
+##################################################################################################################
+
+# Mapping spatial genetic variation --------------------------------------------
+###### functions to support mapping #####
+# builds RGB raster from transformed environment
+# snpPreds = dataframe of transformed variables from gf or gdm model
+# rast = a raster mask to which RGB values are to be mapped
+# cellNums = cell IDs to which RGB values should be assigned
+pcaToRaster <- function(snpPreds, rast, mapCells){
+  require(raster)
+  
+  pca <- prcomp(snpPreds, center=TRUE, scale.=FALSE)
+  
+  ##assigns to colors, edit as needed to maximize color contrast, etc.
+  a1 <- pca$x[,1]; a2 <- pca$x[,2]; a3 <- pca$x[,3]
+  r <- a1+a2; g <- -a2; b <- a3+a2-a1
+  
+  ##scales colors
+  scalR <- (r-min(r))/(max(r)-min(r))*255
+  scalG <- (g-min(g))/(max(g)-min(g))*255
+  scalB <- (b-min(b))/(max(b)-min(b))*255
+  
+  ##assigns color to raster
+  rast1 <- rast2 <- rast3 <- rast
+  rast1[mapCells] <- scalR
+  rast2[mapCells] <- scalG
+  rast3[mapCells] <- scalB
+  ##stacks color rasters
+  outRast <- stack(rast1, rast2, rast3)
+  return(outRast)
+}
+
+# OK, on to mapping. Script assumes:
+# (1) a dataframe named env_trns containing extracted raster data (w/ cell IDs)
+# and env. variables used in the models & with columns as follows: cell, bio1, bio2, etc.
+#
+# (2) a raster mask of the study region to which the RGB data will be written
+
+# transform env using gf models, see ?predict.gradientForest
+predRef <- predict(gf, env_trns[,-1]) # remove cell column before transforming
+
+# map continuous variation 
+refRGBmap <- pcaToRaster(predRef, mask, env_trns$cell)
+plotRGB(refRGBmap)
+writeRaster(refRGBmap, "/.../refSNPs_map.tif", format="GTiff", overwrite=TRUE)
+
+
+
+
+################################################################################
+
+
+# Calculate and map "genetic offset" under climate change ----------------------
+# Script assumes:
+# (1) a dataframe of transformed env. variables for CURRENT climate 
+# (e.g., predGI5 from above).
+#
+# (2) a dataframe named env_trns_future containing extracted raster data of 
+# env. variables for FUTURE a climate scenario, same structure as env_trns
+
+# first transform FUTURE env. variables
+projGI5 <- predict(gfGI5, env_trns_future[,-1])
+
+# calculate euclidean distance between current and future genetic spaces  
+genOffsetGI5 <- sqrt((projGI5[,1]-predGI5[,1])^2+(projGI5[,2]-predGI5[,2])^2
+                     +(projGI5[,3]-predGI5[,3])^2+(projGI5[,4]-predGI5[,4])^2
+                     +(projGI5[,5]-predGI5[,5])^2+(projGI5[,6]-predGI5[,6])^2
+                     +(projGI5[,7]-predGI5[,7])^2)
+
+# assign values to raster - can be tricky if current/future climate
+# rasters are not identical in terms of # cells, extent, etc.
+mask[env_trns_future$cell] <- genOffsetGI5
+plot(mask)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -76,9 +169,6 @@ gf <- gradientForest(df_in_1,
 
 ##################################################################################################################
 #Basic Plots
-
-#Importance Plot
-plot(gf, plot.type = "O")
 
 most_important <- names(importance(gf))[1:9]
 
