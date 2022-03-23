@@ -36,7 +36,7 @@ ipak(myPackages)
 
 ###################################################################################
 ##Import Data
-#snp_clim_bf10 <- read_csv("Genomics_scripts/Data/snp_clim_bay.csv")
+snp_clim_bf10 <- read_csv("Genomics_scripts/Data/snp_clim_bay.csv")
 #snp_clim_bf10NA <- snp_clim_bf10 %>%
 #  select_if(~ !any(is.na(.)))
 ####snp_clim_ful <- read_csv("Genomics_scripts/Data/snp_clim_full.csv") # full data
