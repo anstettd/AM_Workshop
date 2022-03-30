@@ -55,7 +55,7 @@ snp1A_hist <- snp1A_hist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp1A_hist <- snp1A_hist + facet_wrap(.~climate)
 snp1A_hist
-ggsave("Graphs/snp6_all.pdf",width=10, height = 5, units = "in")
+#ggsave("Graphs/snp6_all.pdf",width=10, height = 5, units = "in")
 
 
 ## Make Figure 5
@@ -78,7 +78,7 @@ snp5A_158_hist <- snp5A_158_hist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp5A_158_hist <- snp5A_158_hist + facet_wrap(.~Site)
 snp5A_158_hist
-ggsave("Graphs/snp5A_158.pdf",width=10, height = 5, units = "in")
+#ggsave("Graphs/snp5A_158.pdf",width=10, height = 5, units = "in")
 
 
 
@@ -100,7 +100,7 @@ snp1A_hist <- snp1A_hist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp1A_hist <- snp1A_hist + facet_wrap(.~Site)
 snp1A_hist
-ggsave("Graphs/snp1A_MAT_overlap.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp1A_MAT_overlap.pdf",width=10, height = 7.5, units = "in")
 
 #snp2A 
 snp2A_hist <- ggplot(snp2A_all,aes(x=Slope,fill=data_type))+
@@ -116,7 +116,7 @@ snp2A_hist <- snp2A_hist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp2A_hist <- snp2A_hist + facet_wrap(.~Site)
 snp2A_hist
-ggsave("Graphs/snp2A_MAP_overlap.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp2A_MAP_overlap.pdf",width=10, height = 7.5, units = "in")
 
 
 #snp5A 
@@ -133,7 +133,7 @@ snp5A_hist <- snp5A_hist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp5A_hist <- snp5A_hist + facet_wrap(.~Site)
 snp5A_hist
-ggsave("Graphs/snp5A_CMD_overlap.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp5A_CMD_overlap.pdf",width=10, height = 7.5, units = "in")
 
 
 ###################################################################################
@@ -152,7 +152,7 @@ snp1A_hist <- snp1A_hist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp1A_hist <- snp1A_hist + facet_wrap(.~Site)
 snp1A_hist
-ggsave("Graphs/snp1A_MAT.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp1A_MAT.pdf",width=10, height = 7.5, units = "in")
 
 
 #Generate snp2A histogram
@@ -168,7 +168,7 @@ snp2A_hist <- snp2A_hist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp2A_hist <- snp2A_hist + facet_wrap(.~Site)
 snp2A_hist
-ggsave("Graphs/snp2A_MAP.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp2A_MAP.pdf",width=10, height = 7.5, units = "in")
 
 #Generate snp5A histogram
 snp5A_hist <- ggplot(snp5A_slope, aes(X=Slope))+
@@ -183,7 +183,7 @@ snp5A_hist <- snp5A_hist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp5A_hist <- snp5A_hist + facet_wrap(.~Site)
 snp5A_hist
-ggsave("Graphs/snp5A_CMD.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp5A_CMD.pdf",width=10, height = 7.5, units = "in")
 
 
 
@@ -203,7 +203,7 @@ snp1A_rhist <- snp1A_rhist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp1A_rhist <- snp1A_rhist + facet_wrap(.~Site)
 snp1A_rhist
-ggsave("Graphs/snp1A_MAT_random.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp1A_MAT_random.pdf",width=10, height = 7.5, units = "in")
 
 
 #Generate snp2A histogram
@@ -219,7 +219,7 @@ snp2A_rhist <- snp2A_rhist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp2A_rhist <- snp2A_rhist + facet_wrap(.~Site)
 snp2A_rhist
-ggsave("Graphs/snp2A_MAP_random.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp2A_MAP_random.pdf",width=10, height = 7.5, units = "in")
 
 #Generate snp5A histogram
 snp5A_rhist <- ggplot(snp5A_rslope, aes(X=Slope))+
@@ -234,7 +234,7 @@ snp5A_rhist <- snp5A_rhist  + theme(
   axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 snp5A_rhist <- snp5A_rhist + facet_wrap(.~Site)
 snp5A_rhist
-ggsave("Graphs/snp5A_CMD_random.pdf",width=10, height = 7.5, units = "in")
+#ggsave("Graphs/snp5A_CMD_random.pdf",width=10, height = 7.5, units = "in")
 
 
 
