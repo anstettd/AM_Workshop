@@ -11,6 +11,18 @@
 #Import libraries
 library(tidyverse)
 
+##### Annual #####
+# env 1 is MAT = Mean annual temperature (°C)
+# env 2 is MAP = Mean annual precipitation (mm)
+# env 3 is PAS = Precipitation as snow (mm) between August in previous year and July in current year
+# env 4 is EXT = Extreme temperature over 30 years
+# env 5 is CMD = Hargreaves climatic moisture deficit (mm)
+##### Seasonal #####
+# env 6 is Tave_wt = Winter mean temperature (°C)
+# env 7 is Tave_sm = Summer mean temperature (°C)
+# env 8 is PPT_wt = Winter precipitation (mm)
+# env 9 is PPT_sm = Summer precipitation (mm)
+
 #Import BF>10 SNP data
 env1 <- read_csv("Genomics_scripts/Data/env1_adapt.csv")
 env2 <- read_csv("Genomics_scripts/Data/env2_adapt.csv")
