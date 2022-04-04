@@ -30,15 +30,19 @@ ipak(myPackages)
 #install.packages("extendedForest", repos="http://R-Forge.R-project.org")
 #install.packages("gradientForest", repos="http://R-Forge.R-project.org")
 
-#library(randomForest)
-#library(gradientForest)
-#library(tidyverse)
+library(randomForest)
+library(gradientForest)
+library(tidyverse)
+library(dismo) # for biovars function
+library(raster) # for raster grids
+library(rgdal) # for transforming projections
+library(sf)
 
 ###################################################################################
 
 ##Import Data
 snp_clim_bf10 <- read_csv("Genomics_scripts/Data/snp_clim_bay.csv") #pop data
-env_wna <- read_csv("Genomics_scripts/Data/env_wna.csv") #grided WNA climate data
+#env_wna <- read_csv("Genomics_scripts/Data/env_wna.csv") #grided WNA climate data
 
 #snp_clim_bf10NA <- snp_clim_bf10 %>%
 #  select_if(~ !any(is.na(.)))
@@ -46,7 +50,9 @@ env_wna <- read_csv("Genomics_scripts/Data/env_wna.csv") #grided WNA climate dat
 
 
 ## Generate specific dataframes for GF model
-env_site <- snp_clim_bf10 %>% select(MAT,MAP,PAS,EXT,CMD,Tave_wt,Tave_sm,PPT_wt,PPT_sm)
+env_site <- snp_clim_bf10 %>% dplyr::select(MAT,MAP,PAS,EXT,CMD,Tave_wt,Tave_sm,PPT_wt,PPT_sm)
+
+#Computationally intensive, so just load resulting filtered file
 #test_snp <- snp_clim_bf10[,15:114] %>%
 #  select_if(~ !any(is.na(.)))
 #write_csv(test_snp,"Genomics_scripts/Data/test_snp.csv")
@@ -83,10 +89,40 @@ Tave_wt.clip <- raster("Donor_selection/data/clip/Tave_wt.clip.grd")
 #Stack Raster
 env_wna <- stack(list(MAT=MAT.clip,MAP=MAP.clip,PAS=PAS.clip,EXT=EXT.clip,CMD=CMD.clip,
                       PPT_sm=PPT_sm.clip,PPT_wt=PPT_wt.clip,Tave_sm=Tave_sm.clip,Tave_wt=Tave_wt.clip))
-env_wna <- as.data.frame(env_wna, xy=TRUE)
+#env_wna <- as.data.frame(env_wna, xy=TRUE)
 
+#colnames(env_wna)[1]<-"X"
+#colnames(env_wna)[2]<-"Y"
+
+# The rasters are for all of North America and too large for storage in this repo
+# Trim them to study area and save only trimmed files in the repo
+# Define extent as 1 degree beyond lat-long extent of points
+
+clim <- read_csv("SDM/data_files/points_Normal_1961_1990MSY.csv")
+prj.laea <- "+proj=laea +lon_0=-100 +lat_0=45 +type=crs" ## set laea CRS
+
+
+
+ext <- extent(min(clim$Longitude)-1, max(clim$Longitude)+1, min(clim$Latitude)-1, max(clim$Latitude)+1)
+bbox = as(ext, "SpatialPolygons") #convert coordinates to a bounding box
+prj.wgs = "+proj=longlat + type=crs" #define unprojected coordinate system
+proj4string(bbox) <- CRS(prj.wgs) #set projection
+bbox.lcc = spTransform(bbox, CRS=CRS(prj.laea)) #re-project to match rasters
+
+#Now we're going to use the bbox info as the y argument to extract info from the raster
+
+
+env_wna_df <- extract(env_wna,)
+
+extract(env_wna, bbox.lcc,cellnumbers=T)
 
 ###################################################################################
+
+
+gfRef <- gradientForest(cbind(envGF, SNPs_ref), predictor.vars=colnames(envGF),
+                        response.vars=colnames(SNPs_ref), ntree=500, 
+                        maxLevel=maxLevel, trace=T, corr.threshold=0.50)
+
 
 # Gradient Forest Model
 gf <- gradientForest(df_in_1,
@@ -94,8 +130,13 @@ gf <- gradientForest(df_in_1,
                       ntree = 500, transform = NULL, compact = T,
                       nbin = 201 , corr.threshold = 0.5)
 
+
+gf <- gradientForest(cbind(env_site, test_snp),predictor.vars = colnames(env_site),
+                     response.vars = colnames(test_snp),ntree = 500,
+                     maxLevel=maxLevel, trace=T, corr.threshold=0.50)                    
+
 #Importance Plot
-plot(gf, plot.type = type)
+plot(gf)
 
 
 ##################################################################################################################
@@ -140,7 +181,7 @@ pcaToRaster <- function(snpPreds, rast, mapCells){
 predRef <- predict(gf, env_wna[,-1]) # remove cell column before transforming
 
 # map continuous variation 
-refRGBmap <- pcaToRaster(predRef, mask, env_trns$cell)
+refRGBmap <- pcaToRaster(predRef, mask, env_wna$cell)
 plotRGB(refRGBmap)
 writeRaster(refRGBmap, "/.../refSNPs_map.tif", format="GTiff", overwrite=TRUE)
 
