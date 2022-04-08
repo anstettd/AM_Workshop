@@ -14,31 +14,19 @@ library(tidyverse)
 ##### Annual #####
 # env 1 is MAT = Mean annual temperature (°C)
 # env 2 is MAP = Mean annual precipitation (mm)
-# env 3 is PAS = Precipitation as snow (mm) between August in previous year and July in current year
-# env 4 is EXT = Extreme temperature over 30 years
 # env 5 is CMD = Hargreaves climatic moisture deficit (mm)
-##### Seasonal #####
-# env 6 is Tave_wt = Winter mean temperature (°C)
-# env 7 is Tave_sm = Summer mean temperature (°C)
-# env 8 is PPT_wt = Winter precipitation (mm)
-# env 9 is PPT_sm = Summer precipitation (mm)
+
 
 #Import BF>10 SNP data
 env1 <- read_csv("Genomics_scripts/Data/env1_adapt.csv")
 env2 <- read_csv("Genomics_scripts/Data/env2_adapt.csv")
-#env3 <- read_csv("Genomics_scripts/Data/env3_adapt.csv")
-#env4 <- read_csv("Genomics_scripts/Data/env4_adapt.csv")
 env5 <- read_csv("Genomics_scripts/Data/env5_adapt.csv")
-#env6 <- read_csv("Genomics_scripts/Data/env6_adapt.csv")
-#env7 <- read_csv("Genomics_scripts/Data/env7_adapt.csv")
-#env8 <- read_csv("Genomics_scripts/Data/env8_adapt.csv")
-#env9 <- read_csv("Genomics_scripts/Data/env9_adapt.csv")
+
 
 #Filter to BF>20 data
 env120 <- env1 %>% filter(BF>20)
 env220 <- env2 %>% filter(BF>20)
 env520 <- env5 %>% filter(BF>20)
-
 
 #Import full snp table for timeseries
 pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
@@ -50,38 +38,10 @@ loci_snp <-cbind(loci_united,snp) #add snp lables to rows
 
 #Select Timeseries SNPs with BF>20
 snp1_filter <-loci_snp %>% filter (chr_snp %in% as.character(env120$chr_snp)) #MAT
-snp2_filter <-loci_snp %>% filter (chr_snp %in% as.character(env320$chr_snp)) #MAP
+snp2_filter <-loci_snp %>% filter (chr_snp %in% as.character(env220$chr_snp)) #MAP
 snp5_filter <-loci_snp %>% filter (chr_snp %in% as.character(env520$chr_snp)) #CMD
 
-#Randomly sample the same number of SNPs for each environmental variable
-set.seed(1)
-rand1 <- loci_snp[sample(nrow(loci_snp), dim(snp1_filter)[1]), ]
-snp1_random <-loci_snp %>% filter (chr_snp %in% as.character(rand1$chr_snp)) #MAT
 
-set.seed(2)
-rand2 <- loci_snp[sample(nrow(loci_snp), dim(snp2_filter)[1]), ]
-snp2_random <-loci_snp %>% filter (chr_snp %in% as.character(rand2$chr_snp)) #MAT
-
-set.seed(5)
-rand5 <- loci_snp[sample(nrow(loci_snp), dim(snp5_filter)[1]), ]
-snp5_random <-loci_snp %>% filter (chr_snp %in% as.character(rand5$chr_snp)) #MAT
-
-
-
-#Export Files
 write_csv(snp1_filter, "Genomics_scripts/Data/snp1_filter.csv")
 write_csv(snp2_filter, "Genomics_scripts/Data/snp2_filter.csv")
 write_csv(snp5_filter, "Genomics_scripts/Data/snp5_filter.csv")
-
-write_csv(snp1_random, "Genomics_scripts/Data/snp1_random.csv")
-write_csv(snp2_random, "Genomics_scripts/Data/snp2_random.csv")
-write_csv(snp5_random, "Genomics_scripts/Data/snp5_random.csv")
-
-
-
-
-
-
-
-
-
