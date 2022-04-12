@@ -1,0 +1,24 @@
+#3.1 rasterStack --- Generating a raster stack and convert temp variables to original decimal values
+# x is the wrodkig directory
+# varList: varList <- c('mat','map','td')
+# rType='tif' or 'grid'
+# vConvert=T: 1/10 for mat,mwmt, ...
+rasterStack <- function(x,varList,rType='tif',vConvert=T){
+   library(raster)
+   for(var in varList){
+      if(rType=='tif'){inF <- paste0(x,'/',var,'.tif')}
+      if(rType=='grid'){inF <- paste0(x,'/',var)}
+      r <- raster(inF)
+      if(vConvert==T){
+        if(grepl('mat|MAT|mwmt|MWMT|mcmt|MCMT|td|TD|emt|EMT|ext|EXT             
+                |ahm|AHM|shm|SHM|mar|MAR|ta|Ta|tm|Tm',names(r))){r <- r/10}
+      }
+      if(var==varList[1]){stk=r} else{stk=stack(stk,r)}
+   }
+   return(stk)
+}
+ 
+Examples
+varList <- c('mat','map','td','tmin_sp','ahm','tmax_wt')
+wd <- 'G:/ClimateXX_out/BC2/BC800v600/Normal_1961_1990MSY'
+stk <- rasterStack(wd,varList,rType='tif',vConvert=T);stk

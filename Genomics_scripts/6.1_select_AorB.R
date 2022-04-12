@@ -3,7 +3,7 @@
 ## Author Daniel Anstett
 ## 
 ## Currently done just for ENV 1,2 and 5 (MAT, MAP and CMD)
-## Last Modified Nov 15, 2021
+## Last Modified April 11, 2022
 ###################################################################################
 
 
@@ -37,6 +37,8 @@ env5_base <- env5_base %>% filter(BF>20) %>% select(-Chromosome,-SNP,-Env,-BF)%>
 climate <- read_csv("Donor_selection/Data/climate_pop.csv")
 climate <- climate %>% select(Site_Name:MAP,CMD)
 
+#Import pop names (site_year names)
+pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
 
 ###################################################################################
 ###################################################################################
@@ -190,19 +192,44 @@ FAT_n <- function(snp_base,snp_time,climate_table,env_in){
 ########################################################################################################
 ########################################################################################################
 ## Make table with climate change associated SNPs for timeseries using baseline climate
-freq_MAT <- FAT_p(env1_base,snp1_time,climate,"MAT")
-freq_MAP <- FAT_n(env2_base,snp2_time,climate,"MAP")
-freq_CMD <- FAT_p(env5_base,snp5_time,climate,"MAP")
+freq_MAT_1 <- FAT_p(env1_base,snp1_time,climate,"MAT")
+freq_MAP_1 <- FAT_n(env2_base,snp2_time,climate,"MAP")
+freq_CMD_1 <- FAT_p(env5_base,snp5_time,climate,"MAP")
+
+#Make into dataframe from tibble
+freq_MAT<- as.data.frame(freq_MAT_1)
+freq_MAP<- as.data.frame(freq_MAP_1)
+freq_CMD<- as.data.frame(freq_CMD_1)
+
+#Make first column a row name
+rownames(freq_MAT)<- as.vector(freq_MAT$chr_snp)
+rownames(freq_MAP)<- as.vector(freq_MAP$chr_snp)
+rownames(freq_CMD)<- as.vector(freq_CMD$chr_snp)
+
+#Remove 1st column
+freq_MAT <- freq_MAT %>% select(-chr_snp)
+freq_MAP <- freq_MAP %>% select(-chr_snp)
+freq_CMD <- freq_CMD %>% select(-chr_snp)
+
+# Add in row names to SNP frequency tables 
+colnames(freq_MAT)<- pop_order[,1] #name each pop/time combination
+colnames(freq_MAP)<- pop_order[,1] #name each pop/time combination
+colnames(freq_CMD)<- pop_order[,1] #name each pop/time combination
+
+#Transpose and split up site_year
+freq_MAT_T <- as.data.frame(t(freq_MAT)) %>% rownames_to_column ("site_year") %>% separate(site_year, c("Site","Year"))
+freq_MAP_T <- as.data.frame(t(freq_MAP)) %>% rownames_to_column ("site_year") %>% separate(site_year, c("Site","Year"))
+freq_CMD_T <- as.data.frame(t(freq_CMD)) %>% rownames_to_column ("site_year") %>% separate(site_year, c("Site","Year"))
 
 # Write out climate change correlated timeseries frequency table 
-#write_csv(freq_MAT, "Genomics_scripts/Data/freq_MAT.csv")
-#write_csv(freq_MAP, "Genomics_scripts/Data/freq_MAP.csv")
-#write_csv(freq_CMD, "Genomics_scripts/Data/freq_CMD.csv")
+#write_csv(freq_MAT_T, "Genomics_scripts/Data/freq_MAT.csv")
+#write_csv(freq_MAP_T, "Genomics_scripts/Data/freq_MAP.csv")
+#write_csv(freq_CMD_T, "Genomics_scripts/Data/freq_CMD.csv")
 
 #What SNPs were filtered out by due to missing data
-diff_MAT <- as.data.frame(setdiff(env1_base$chr_snp,freq_MAT$chr_snp))
-diff_MAP <- as.data.frame(setdiff(env2_base$chr_snp,freq_MAP$chr_snp))
-diff_CMD <- as.data.frame(setdiff(env5_base$chr_snp,freq_CMD$chr_snp))
+diff_MAT <- as.data.frame(setdiff(env1_base$chr_snp,freq_MAT_1$chr_snp))
+diff_MAP <- as.data.frame(setdiff(env2_base$chr_snp,freq_MAP_1$chr_snp))
+diff_CMD <- as.data.frame(setdiff(env5_base$chr_snp,freq_CMD_1$chr_snp))
 
 diff_MAT
 diff_MAP

@@ -20,7 +20,6 @@ snp1_random <- read_csv("Genomics_scripts/Data/snp1_random.csv")
 snp2_random <- read_csv("Genomics_scripts/Data/snp2_random.csv")
 snp5_random <- read_csv("Genomics_scripts/Data/snp5_random.csv")
 
-pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
 
 ###################################################################################
 ##Generate SNP A proportion matrix
