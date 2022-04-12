@@ -23,7 +23,7 @@ freq_CMD <- read_csv("Genomics_scripts/Data/freq_CMD.csv")
 test_fMat <- freq_MAT %>% filter(Site==9) %>% select(Site,Year,CE10_chr1_865732,CE10_chr1_1521089)
 glm.test <- glm(CE10_chr1_865732~Year,family = binomial,data=test_fMat)
 summary(glm.test)
-inv.logit(glm.test$coefficients[2])
+(glm.test$coefficients[2])
 
 ###################################################################################
 ###################################################################################

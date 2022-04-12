@@ -148,22 +148,53 @@ write_csv(freq_count_CMD, "Genomics_scripts/Data/freq_count_CMD.csv")
 
 #######################################################################################################
 #Make SNP table for neutral loci
-#Caution significant computational time. Will use ~3 GB of ram
 
+#Select 2011 values for pop 8 and 10
+#For the reset select 2010 values
+
+#Filter Baseline A and B numbers
+loci_base <- snp_swiss %>% select(chr_snp,V33,V33,
+                             V43,V34,
+                             V53,V54,
+                             V67,V68,
+                             V77,V78,
+                             V87,V88,
+                             V97,V98,
+                             V107,V108,
+                             V115,V116,
+                             V3,V4,
+                             V13,V14,
+                             V23,V24)
+
+#Caution significant computational time. Will use ~3 GB of ram
 snpA <- data.frame()
 counter<-1
-for (i in seq (2,dim(snp_swiss)[2]-1,2)){
-  for(j in 1:dim(snp_swiss)[1]){
-    tmp_total<-as.numeric(snp_swiss[j,i]) + as.numeric(snp_swiss[j,i+1])
-    snpA[j,counter]<-as.numeric(snp_swiss[j,i])/tmp_total
+for (i in seq (2,dim(loci_base)[2]-1,2)){
+  for(j in 1:dim(loci_base)[1]){
+    tmp_total<-as.numeric(loci_base[j,i]) + as.numeric(loci_base[j,i+1])
+    snpA[j,counter]<-as.numeric(loci_base[j,i])/tmp_total
   }
   counter<-counter+1
 }
+
+colnames(loci_base) <- c("chr_snp","Pop1A","Pop1B",
+                         "Pop2A","Pop2B",
+                         "Pop3A","Pop3B",
+                         "Pop4A","Pop4B",
+                         "Pop5A","Pop5B",
+                         "Pop6A","Pop6B",
+                         "Pop7A","Pop7B",
+                         "Pop8A","Pop8B",
+                         "Pop9A","Pop9B",
+                         "Pop10A","Pop10B",
+                         "Pop11A","Pop11B",
+                         "Pop12A","Pop12B")
+
+
 colnames(snpA)<- pop_order[,1] #name each pop/time combination
 rownames(snpA)<- snpA$chr_snp
 
-snpA_base <- snpA %>% select(chr_snp,P1_2010,P2_2010,P3_2010,P4_2010,P5_2010,P6_2010,
-                             P7_2010,P8_2011,P9_2010,P10_2011,P11_2010,P12_2010)
+
 
 
 
