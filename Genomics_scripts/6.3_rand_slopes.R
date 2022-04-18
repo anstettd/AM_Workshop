@@ -576,7 +576,7 @@ rand_slope_map <- rbind(rand_slope_map_pop1,
                       rand_slope_map_pop11,
                       rand_slope_map_pop12)
 
-rand_slope_cmd <- rbind(rand_cmd_pop1,
+rand_slope_cmd <- rbind(rand_slope_cmd_pop1,
                       rand_slope_cmd_pop2,
                       rand_slope_cmd_pop3,
                       rand_slope_cmd_pop4,
