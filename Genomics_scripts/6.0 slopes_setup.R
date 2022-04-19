@@ -17,7 +17,7 @@ library(tidyverse)
 # env 5 is CMD = Hargreaves climatic moisture deficit (mm)
 
 
-#Import BF>10 SNP data
+#Import BF>10 Baseline SNP data 
 env1 <- read_csv("Genomics_scripts/Data/env1_adapt.csv")
 env2 <- read_csv("Genomics_scripts/Data/env2_adapt.csv")
 env5 <- read_csv("Genomics_scripts/Data/env5_adapt.csv")
