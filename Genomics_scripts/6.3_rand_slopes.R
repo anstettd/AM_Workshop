@@ -590,9 +590,9 @@ rand_slope_cmd <- rbind(rand_slope_cmd_pop1,
                       rand_slope_cmd_pop12)
 
 #Export each joint df
-write_csv(rand_slope_mat, "Genomics_scripts/Data/rand_mat.csv")
-write_csv(rand_slope_map, "Genomics_scripts/Data/rand_map.csv")
-write_csv(rand_slope_cmd, "Genomics_scripts/Data/rand_cmd.csv")
+write_csv(rand_slope_mat, "Genomics_scripts/Data/rand_slope_mat.csv")
+write_csv(rand_slope_map, "Genomics_scripts/Data/rand_slope_map.csv")
+write_csv(rand_slope_cmd, "Genomics_scripts/Data/rand_slope_cmd.csv")
 
 
 
