@@ -29,7 +29,7 @@ ven_3 <- list(MAT_set,MAP_set,CMD_set)
 
 VD_1<-venn.diagram(x=ven_3,
                    category.names = c("MAT" , "MAP" , "CMD"),
-                   fill = c("yellow", "cyan","magenta"),
+                   fill = c("#F8766D", "#00BFC4","#C77CFF"),
                    #alpha = c(0.5, 0.5, 0.5),
                    main.cex = 5,
                    cat.cex = 0, cex=1.8,
