@@ -42,7 +42,8 @@ snp5A_all <- rbind(snp5A_slope,snp5A_rslope)
 #snp1A 
 snp1A_hist <- ggplot(snp1A_all,aes(x=Slope,fill=data_type))+
   geom_histogram(position="identity",bins=40,color="black",alpha=0.5)+
-  scale_fill_manual(values = c("Observed"="deepskyblue","Random"="hotpink"))+
+  scale_fill_manual(values = c("Observed"="#440154FF","Random"="#FDE725FF"))+
+  #scale_fill_manual(values = c("Observed"="deepskyblue","Random"="hotpink"))+
   scale_y_continuous(name="Count")+
   scale_x_continuous(name="Strength of Selection (MAT)",limits=c(-2.5,2.5))+
   theme_classic()
@@ -58,7 +59,8 @@ ggsave("Graphs_overlap/trim_MAT_overlap.pdf",width=10, height = 7.5, units = "in
 #snp2A 
 snp2A_hist <- ggplot(snp2A_all,aes(x=Slope,fill=data_type))+
   geom_histogram(position="identity",bins=40,color="black",alpha=0.5)+
-  scale_fill_manual(values = c("Observed"="deepskyblue","Random"="hotpink"))+
+  scale_fill_manual(values = c("Observed"="#440154FF","Random"="#FDE725FF"))+
+  #scale_fill_manual(values = c("Observed"="deepskyblue","Random"="hotpink"))+
   scale_y_continuous(name="Count")+
   scale_x_continuous(name="Strength of Selection (MAP)",limits=c(-2.5,2.5))+
   theme_classic()
@@ -75,9 +77,10 @@ ggsave("Graphs_overlap/trim_MAP_overlap.pdf",width=10, height = 7.5, units = "in
 #snp5A 
 snp5A_hist <- ggplot(snp5A_all,aes(x=Slope,fill=data_type))+
   geom_histogram(position="identity",bins=40,color="black",alpha=0.5)+
-  scale_fill_manual(values = c("Observed"="deepskyblue","Random"="hotpink"))+
+  scale_fill_manual(values = c("Observed"="#440154FF","Random"="#FDE725FF"))+
+  #scale_fill_manual(values = c("Observed"="deepskyblue","Random"="hotpink"))+
   scale_y_continuous(name="Count")+
-  scale_x_continuous(name="Strength of Selection (CMD)",limits=c(-2.5,2.5))+
+  scale_x_continuous(name="Strength of Selection (CMD)",limits=c(-1,1))+
   theme_classic()
 snp5A_hist <- snp5A_hist  + theme(
   axis.text.x = element_text(size=12, face="bold"),
@@ -110,7 +113,7 @@ ggsave("Graphs_overlap/full_MAT_overlap.pdf",width=10, height = 7.5, units = "in
 
 #snp2A 
 snp2A_hist <- ggplot(snp2A_all,aes(x=Slope,fill=data_type))+
-  geom_histogram(position="identity",bins=40,color="black",alpha=0.5)+
+  geom_histogram(position="identity",bins=40,color="black",alpha=0.35)+
   scale_fill_manual(values = c("Observed"="deepskyblue","Random"="hotpink"))+
   scale_y_continuous(name="Count")+
   scale_x_continuous(name="Strength of Selection (MAP)")+
@@ -542,8 +545,8 @@ snpA6_all <- rbind(snp1A6,snp2A6,snp5A6)
 
 #graph
 snp1A_hist <- ggplot(snpA6_all,aes(x=Slope,fill=data_type))+
-  geom_histogram(position="identity",bins=40,color="black",alpha=0.5)+
-  scale_fill_manual(values = c("Observed"="deepskyblue","Random"="hotpink"))+
+  geom_histogram(position="identity",bins=40,color="black",alpha=0.7)+
+  scale_fill_manual(values = c("Observed"="#440154FF","Random"="#FDE725FF"))+
   scale_y_continuous(name="Count")+
   scale_x_continuous(name="Strength of Selection (S29 Oregon Creek)",limits = c(-1,1))+
   theme_classic()
@@ -1112,9 +1115,26 @@ snp5A_rhist
 
 
 
+rand = as.data.frame(rnorm(1000, mean=0, sd=0.1))
+rand$data_type="Random"
+colnames(rand)=c("Slope", "data_type")
+obs = as.data.frame(rnorm(1000, mean=0.2, sd=0.15))
+obs$data_type="Observed"
+colnames(obs)=c("Slope", "data_type")
+dummy.dat <- rbind(rand, obs)
 
-
-
+demo_hist <- ggplot(dummy.dat,aes(x=Slope,fill=data_type))+
+  geom_histogram(position="identity",bins=40,color="black",alpha=0.7)+
+  scale_fill_manual(values = c("Observed"="#440154FF","Random"="#FDE725FF"))+
+  scale_y_continuous(name="Count")+
+  scale_x_continuous(name="Strength of Selection")+
+  theme_classic()
+demo_hist <- demo_hist  + theme(
+  axis.text.x = element_text(size=12, face="bold"),
+  axis.text.y = element_text(size=12,face="bold"),
+  axis.title.x = element_text(color="black", size=14, vjust = 0.5, face="bold"),
+  axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
+demo_hist
 
 
 
