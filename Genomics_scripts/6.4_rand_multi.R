@@ -601,9 +601,18 @@ rand_slope_mat_out<-rbind(rand_slope_mat_out,rand_slope_mat)
 rand_slope_map_out<-rbind(rand_slope_map_out,rand_slope_map)
 rand_slope_cmd_out<-rbind(rand_slope_cmd_out,rand_slope_cmd)
 
+print(seed_num)
+
 }
 
-write_csv(rand_slope_mat_out, "Genomics_scripts/Data/rand_slope_mat_multi.csv")
-write_csv(rand_slope_map_out, "Genomics_scripts/Data/rand_slope_map_multi.csv")
-write_csv(rand_slope_cmd_out, "Genomics_scripts/Data/rand_slope_cmd_multi.csv")
+
+#Save large files in folder outside of github
+setwd("~/Dropbox/AM_Workshop/Large_files")
+
+#write_csv(rand_slope_mat_out, "rand_slope_mat_multi.csv")
+#write_csv(rand_slope_map_out, "rand_slope_map_multi.csv")
+#write_csv(rand_slope_cmd_out, "rand_slope_cmd_multi.csv")
+
+setwd("~/Dropbox/AM_Workshop")
+
 
