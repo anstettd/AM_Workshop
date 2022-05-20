@@ -508,6 +508,59 @@ rand_cmd_pop10 <- rand_cmd_pop10 %>% filter(Site==10)
 rand_cmd_pop11 <- rand_cmd_pop11 %>% filter(Site==11)
 rand_cmd_pop12 <- rand_cmd_pop12 %>% filter(Site==12)
 
+## Gather and merge rand for each env
+gather_mat_pop1 <- rand_mat_pop1 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop1)[2])
+gather_mat_pop2 <- rand_mat_pop2 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop2)[2])
+gather_mat_pop3 <- rand_mat_pop3 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop3)[2])
+gather_mat_pop4 <- rand_mat_pop4 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop4)[2])
+gather_mat_pop5 <- rand_mat_pop5 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop5)[2])
+gather_mat_pop6 <- rand_mat_pop6 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop6)[2])
+gather_mat_pop7 <- rand_mat_pop7 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop7)[2])
+gather_mat_pop8 <- rand_mat_pop8 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop8)[2])
+gather_mat_pop9 <- rand_mat_pop9 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop9)[2])
+gather_mat_pop10 <- rand_mat_pop10 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop10)[2])
+gather_mat_pop11 <- rand_mat_pop11 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop11)[2])
+gather_mat_pop12 <- rand_mat_pop12 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop12)[2])
+
+gather_map_pop1 <- rand_map_pop1 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop1)[2])
+gather_map_pop2 <- rand_map_pop2 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop2)[2])
+gather_map_pop3 <- rand_map_pop3 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop3)[2])
+gather_map_pop4 <- rand_map_pop4 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop4)[2])
+gather_map_pop5 <- rand_map_pop5 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop5)[2])
+gather_map_pop6 <- rand_map_pop6 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop6)[2])
+gather_map_pop7 <- rand_map_pop7 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop7)[2])
+gather_map_pop8 <- rand_map_pop8 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop8)[2])
+gather_map_pop9 <- rand_map_pop9 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop9)[2])
+gather_map_pop10 <- rand_map_pop10 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop10)[2])
+gather_map_pop11 <- rand_map_pop11 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop11)[2])
+gather_map_pop12 <- rand_map_pop12 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop12)[2])
+
+gather_cmd_pop1 <- rand_cmd_pop1 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop1)[2])
+gather_cmd_pop2 <- rand_cmd_pop2 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop2)[2])
+gather_cmd_pop3 <- rand_cmd_pop3 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop3)[2])
+gather_cmd_pop4 <- rand_cmd_pop4 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop4)[2])
+gather_cmd_pop5 <- rand_cmd_pop5 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop5)[2])
+gather_cmd_pop6 <- rand_cmd_pop6 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop6)[2])
+gather_cmd_pop7 <- rand_cmd_pop7 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop7)[2])
+gather_cmd_pop8 <- rand_cmd_pop8 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop8)[2])
+gather_cmd_pop9 <- rand_cmd_pop9 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop9)[2])
+gather_cmd_pop10 <- rand_cmd_pop10 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop10)[2])
+gather_cmd_pop11 <- rand_cmd_pop11 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop11)[2])
+gather_cmd_pop12 <- rand_cmd_pop12 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop12)[2])
+
+rand_gathered_MAT <- rbind(gather_mat_pop1,gather_mat_pop2,gather_mat_pop3,gather_mat_pop4,gather_mat_pop5,gather_mat_pop6,
+                 gather_mat_pop7,gather_mat_pop8,gather_mat_pop9,gather_mat_pop10,gather_mat_pop11,gather_mat_pop12)
+rand_gathered_MAP <- rbind(gather_map_pop1,gather_map_pop2,gather_map_pop3,gather_map_pop4,gather_map_pop5,gather_map_pop6,
+                  gather_map_pop7,gather_map_pop8,gather_map_pop9,gather_map_pop10,gather_map_pop11,gather_map_pop12)
+rand_gathered_CMD <- rbind(gather_cmd_pop1,gather_cmd_pop2,gather_cmd_pop3,gather_cmd_pop4,gather_cmd_pop5,gather_cmd_pop6,
+                  gather_cmd_pop7,gather_cmd_pop8,gather_cmd_pop9,gather_cmd_pop10,gather_cmd_pop11,gather_cmd_pop12)
+
+#Export gathered rand for each env
+write_csv(rand_gathered_MAT, "Genomics_scripts/Data/rand_gathered_MAT.csv")
+write_csv(rand_gathered_MAP, "Genomics_scripts/Data/rand_gathered_MAP.csv")
+write_csv(rand_gathered_CMD, "Genomics_scripts/Data/rand_gathered_CMD.csv")
+
+
 #Get slopes
 rand_slope_mat_pop1 <- glm_slopes(rand_mat_pop1)
 rand_slope_mat_pop2 <- glm_slopes(rand_mat_pop2)
@@ -590,9 +643,9 @@ rand_slope_cmd <- rbind(rand_slope_cmd_pop1,
                       rand_slope_cmd_pop12)
 
 #Export each joint df
-write_csv(rand_slope_mat, "Genomics_scripts/Data/rand_slope_mat.csv")
-write_csv(rand_slope_map, "Genomics_scripts/Data/rand_slope_map.csv")
-write_csv(rand_slope_cmd, "Genomics_scripts/Data/rand_slope_cmd.csv")
+#write_csv(rand_slope_mat, "Genomics_scripts/Data/rand_slope_mat.csv")
+#write_csv(rand_slope_map, "Genomics_scripts/Data/rand_slope_map.csv")
+#write_csv(rand_slope_cmd, "Genomics_scripts/Data/rand_slope_cmd.csv")
 
 
 
