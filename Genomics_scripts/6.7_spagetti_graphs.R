@@ -9,75 +9,136 @@
 library(tidyverse)
 
 #Import timeseries frequencies
-freq_MAT <- read_csv("Genomics_scripts/Data/freq_MAT.csv")
-freq_MAP <- read_csv("Genomics_scripts/Data/freq_MAP.csv")
-freq_CMD <- read_csv("Genomics_scripts/Data/freq_CMD.csv")
+freq_mat <- read_csv("Genomics_scripts/Data/freq_MAT.csv")
+freq_map <- read_csv("Genomics_scripts/Data/freq_MAP.csv")
+freq_cmd <- read_csv("Genomics_scripts/Data/freq_CMD.csv")
 
 #Gather data frames
-freq_MAT <- freq_MAT %>% gather(SNP_ID,SNP_Freq,3:275)
-freq_MAP <- freq_MAP %>% gather(SNP_ID,SNP_Freq,3:571)
-freq_CMD <- freq_CMD %>% gather(SNP_ID,SNP_Freq,3:304)
+freq_mat <- freq_mat %>% gather(SNP_ID,SNP_Freq,3:275)
+freq_map <- freq_map %>% gather(SNP_ID,SNP_Freq,3:571)
+freq_cmd <- freq_cmd %>% gather(SNP_ID,SNP_Freq,3:304)
 
 #Import gathered rand (seed=1) data frame from 6.3
-rand_MAT <- read_csv("Genomics_scripts/Data/rand_gathered_MAT.csv")
-rand_MAP <- read_csv("Genomics_scripts/Data/rand_gathered_MAP.csv")
-rand_CMD <- read_csv("Genomics_scripts/Data/rand_gathered_CMD.csv")
+rand_mat <- read_csv("Genomics_scripts/Data/rand_gathered_mat.csv")
+rand_map <- read_csv("Genomics_scripts/Data/rand_gathered_map.csv")
+rand_cmd <- read_csv("Genomics_scripts/Data/rand_gathered_cmd.csv")
 
 
 #Add Type
-freq_MAT$Type <- "Climate Associated"
-freq_MAP$Type <- "Climate Associated"
-freq_CMD$Type <- "Climate Associated"
+freq_mat$Type <- "Climate Associated"
+freq_map$Type <- "Climate Associated"
+freq_cmd$Type <- "Climate Associated"
 
-rand_MAT$Type <- "Random"
-rand_MAP$Type <- "Random"
-rand_CMD$Type <- "Random"
+rand_mat$Type <- "Random"
+rand_map$Type <- "Random"
+rand_cmd$Type <- "Random"
 
 #Merge Climate Associated and Random
-joint_MAT <- rbind(freq_MAT,rand_MAT)
-joint_MAP <- rbind(freq_MAP,rand_MAP)
-joint_CMD <- rbind(freq_CMD,rand_CMD)
+joint_mat <- rbind(freq_mat,rand_mat)
+joint_map <- rbind(freq_map,rand_map)
+joint_cmd <- rbind(freq_cmd,rand_cmd)
+
+#Add env info
+joint_mat$env <- "mat"
+joint_map$env <- "map"
+joint_cmd$env <- "cmd"
+
+#Join
+joint_env <- rbind(joint_mat,joint_map,joint_cmd)
 
 
 ###################################################################################
-###Test plot
-##MAT
+#Setup plots
+joint_env_p1 <- joint_env %>% filter(Site==1)
+joint_env_p2 <- joint_env %>% filter(Site==2)
+joint_env_p3 <- joint_env %>% filter(Site==3)
+joint_env_p4 <- joint_env %>% filter(Site==4)
+joint_env_p5 <- joint_env %>% filter(Site==5)
+joint_env_p6 <- joint_env %>% filter(Site==6)
+joint_env_p7 <- joint_env %>% filter(Site==7)
+joint_env_p8 <- joint_env %>% filter(Site==8)
+joint_env_p9 <- joint_env %>% filter(Site==9)
+joint_env_p10 <- joint_env %>% filter(Site==10)
+joint_env_p11 <- joint_env %>% filter(Site==11)
+joint_env_p12 <- joint_env %>% filter(Site==12)
+
+#For Poster
+#p4
+ggplot(data=joint_env_p4,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 20, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =0, face = "bold"), 
+    axis.text.y = element_text(size = 20, face = "bold")) + facet_wrap(.~env)
+ggsave("Graphs_CI/Frequency/env_both_freqchange_p4.pdf",width=12, height = 6, units = "in")
+
+ggplot(data=joint_env_p11,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 20, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =0, face = "bold"), 
+    axis.text.y = element_text(size = 20, face = "bold")) + facet_wrap(.~env)
+ggsave("Graphs_CI/Frequency/env_both_freqchange_p11.pdf",width=12, height = 6, units = "in")
+
+
+
+
+
+
+
+
+
+
+###################################################################################
+##Singletons
+##mat
 
 #Site 1
-freq_MAT_p1 <- freq_MAT %>% filter(Site==4)
-rand_MAT_p1 <- rand_MAT %>% filter(Site==4)
-joint_MAT_p1 <- joint_MAT %>% filter(Site==4)
+freq_map_p1 <- freq_map %>% filter(Site==4)
+rand_map_p1 <- rand_map %>% filter(Site==4)
+joint_map_p1 <- joint_map %>% filter(Site==4)
 
 
-
-ggplot(data=rand_MAT_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+#Random
+ggplot(data=rand_map_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
   geom_line(stat="smooth",method = "glm", 
             method.args = list(family = "binomial"), 
             se = F, alpha=.4,cex=0.6) + theme_classic() +
-  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue")) + 
+  labs(y="SNP Frequency Random",x="Year") + scale_color_manual(values=c("firebrick2")) + 
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
         axis.text.y = element_text(size = 16, face = "bold"))
+ggsave("Graphs_CI/map_random_freqchange_p4.pdf",width=10, height = 6, units = "in")
 
-ggplot(data=freq_MAT_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+#Climape Associated
+ggplot(data=freq_map_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
   geom_line(stat="smooth",method = "glm", 
             method.args = list(family = "binomial"), 
             se = F, alpha=.4,cex=0.6) + theme_classic() +
-  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("red")) + 
+  labs(y="SNP Frequency Climape",x="Year") + scale_color_manual(values=c("blue")) + 
   theme(legend.position = "none",
         axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
         axis.text.y = element_text(size = 16, face = "bold"))
+ggsave("Graphs_CI/map_obs_freqchange_p4.pdf",width=10, height = 6, units = "in")
 
-ggplot(data=joint_MAT_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+#Both
+ggplot(data=joint_map_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
   geom_line(stat="smooth",method = "glm", 
             method.args = list(family = "binomial"), 
             se = F, alpha=.2,cex=0.6) + theme_classic() +
-  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("red", "grey")) + theme(
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
     axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
     axis.title = element_text(size = 20, face = "bold"), 
     axis.text.y = element_text(size = 16, face = "bold"))
+ggsave("Graphs_CI/map_both_freqchange_p4.pdf",width=10, height = 6, units = "in")
 
 
 
@@ -86,13 +147,3 @@ ggplot(data=joint_MAT_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
 
 
 
-
-
-
-
-ggplot(data=long_012_merged,aes(year,geno,group=environment,color=quantile)) + 
-  geom_line(stat="smooth",method = "glm", 
-            method.args = list(family = "binomial"), 
-            se = F, alpha=.7,cex=1.5) +
-  theme_bw() +
-  labs(y="Frequency",x="Year")
