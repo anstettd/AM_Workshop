@@ -91,7 +91,7 @@ ggplot(data=joint_env_p4[joint_env_p4$env=="cmd",], aes(Year,SNP_Freq,group=SNP_
     axis.text.x = element_text(size = 20, face = "bold", angle = 45,hjust = 1, vjust = 1), 
     axis.title = element_text(size =0, face = "bold"), 
     axis.text.y = element_text(size = 20, face = "bold")) + 
-  facet_wrap(~SNP_Freq_Bin)
+  facet_wrap(~SNP_Freq_Bin, scales="free")
 
 ggplot(data=joint_env_p11,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
   geom_line(stat="smooth",method = "glm", 
