@@ -62,6 +62,7 @@ joint_env_p10 <- joint_env %>% filter(Site==10)
 joint_env_p11 <- joint_env %>% filter(Site==11)
 joint_env_p12 <- joint_env %>% filter(Site==12)
 
+###################################################################################
 #For Poster
 #p4
 ggplot(data=joint_env_p4,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -73,7 +74,7 @@ ggplot(data=joint_env_p4,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
     axis.text.x = element_text(size = 20, face = "bold", angle = 45,hjust = 1, vjust = 1), 
     axis.title = element_text(size =0, face = "bold"), 
     axis.text.y = element_text(size = 20, face = "bold")) + facet_wrap(.~env)
-ggsave("Graphs_CI/Frequency/env_both_freqchange_p4.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_CI/Frequency/Poster/env_both_freqchange_p4.pdf",width=12, height = 6, units = "in")
 
 ggplot(data=joint_env_p11,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
   geom_line(stat="smooth",method = "glm", 
@@ -84,10 +85,217 @@ ggplot(data=joint_env_p11,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
     axis.text.x = element_text(size = 20, face = "bold", angle = 45,hjust = 1, vjust = 1), 
     axis.title = element_text(size =0, face = "bold"), 
     axis.text.y = element_text(size = 20, face = "bold")) + facet_wrap(.~env)
-ggsave("Graphs_CI/Frequency/env_both_freqchange_p11.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_CI/Frequency/Poster/env_both_freqchange_p11.pdf",width=12, height = 6, units = "in")
 
 
+###################################################################################
+#For Paper
+env_labs<-c("cmd"="A CMD",
+            "map"="B MAP",
+            "mat"="C CMD")
+#p1
+ggplot(data=joint_env_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p1.pdf",width=12, height = 6, units = "in")
 
+#p2
+ggplot(data=joint_env_p2,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p2.pdf",width=12, height = 6, units = "in")
+
+#p3
+ggplot(data=joint_env_p3,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p3.pdf",width=12, height = 6, units = "in")
+
+#p4
+ggplot(data=joint_env_p4,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p4.pdf",width=12, height = 6, units = "in")
+
+#p5
+ggplot(data=joint_env_p5,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p5.pdf",width=12, height = 6, units = "in")
+
+#p6
+ggplot(data=joint_env_p6,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p6.pdf",width=12, height = 6, units = "in")
+
+#p7
+ggplot(data=joint_env_p7,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p7.pdf",width=12, height = 6, units = "in")
+
+#p8
+ggplot(data=joint_env_p8,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p8.pdf",width=12, height = 6, units = "in")
+
+#p9
+ggplot(data=joint_env_p9,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p9.pdf",width=12, height = 6, units = "in")
+
+#p10
+ggplot(data=joint_env_p10,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p10.pdf",width=12, height = 6, units = "in")
+
+#p11
+ggplot(data=joint_env_p11,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p11.pdf",width=12, height = 6, units = "in")
+
+#p12
+ggplot(data=joint_env_p12,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 14, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =16, face = "bold"), 
+    axis.text.y = element_text(size = 14, face = "bold")) + 
+  facet_wrap(.~env,labeller = labeller(env=env_labs)) +
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=12,face="bold"),
+        strip.background = element_blank(), 
+        strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
+ggsave("Graphs_CI/Frequency/env_both_freqchange_paper_p12.pdf",width=12, height = 6, units = "in")
 
 
 
@@ -96,7 +304,7 @@ ggsave("Graphs_CI/Frequency/env_both_freqchange_p11.pdf",width=12, height = 6, u
 
 
 ###################################################################################
-##Singletons
+##Separate graphs
 ##mat
 
 #Site 1
