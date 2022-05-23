@@ -46,6 +46,9 @@ joint_cmd$env <- "cmd"
 #Join
 joint_env <- rbind(joint_mat,joint_map,joint_cmd)
 
+#Make categorical variable for frequency bin
+joint_env <- joint_env %>% 
+  mutate(SNP_Freq_Bin = cut(SNP_Freq,5))
 
 ###################################################################################
 #Setup plots
@@ -69,12 +72,26 @@ ggplot(data=joint_env_p4,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
   geom_line(stat="smooth",method = "glm", 
             method.args = list(family = "binomial"), 
             se = F, alpha=.25,cex=0.6) + theme_classic() +
+  #facet_grid(SNP_Freq_Bin) +
   labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
     legend.position = "none",
     axis.text.x = element_text(size = 20, face = "bold", angle = 45,hjust = 1, vjust = 1), 
     axis.title = element_text(size =0, face = "bold"), 
-    axis.text.y = element_text(size = 20, face = "bold")) + facet_wrap(.~env)
+    axis.text.y = element_text(size = 20, face = "bold")) + 
+  facet_wrap(~env)
 ggsave("Graphs_CI/Frequency/Poster/env_both_freqchange_p4.pdf",width=12, height = 6, units = "in")
+
+# Inspecting differences by allele frequency starting points
+ggplot(data=joint_env_p4[joint_env_p4$env=="cmd",], aes(Year,SNP_Freq,group=SNP_ID, color=Type)) + 
+  geom_line(stat="smooth",method = "glm", 
+            method.args = list(family = "binomial"), 
+            se = F, alpha=.25,cex=0.6) + theme_classic() +
+  labs(y="SNP Frequency",x="Year") + scale_color_manual(values=c("blue","firebrick2")) + theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 20, face = "bold", angle = 45,hjust = 1, vjust = 1), 
+    axis.title = element_text(size =0, face = "bold"), 
+    axis.text.y = element_text(size = 20, face = "bold")) + 
+  facet_wrap(~SNP_Freq_Bin)
 
 ggplot(data=joint_env_p11,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
   geom_line(stat="smooth",method = "glm", 
