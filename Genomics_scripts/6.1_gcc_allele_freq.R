@@ -1,5 +1,7 @@
 ##################################################################################
-## Generate SNP A proportion matrix
+## Generate SNP proportion matrix per population
+## Done for all alleles positively associated with climate change
+## Select if A or B is positively associated with climate change
 ## Author Daniel Anstett
 ## 
 ## Currently done just for ENV 1,2 and 5 (MAT, MAP and CMD)
@@ -17,12 +19,14 @@ snp2_time <- read_csv("Genomics_scripts/Data/snp2_filter.csv")
 snp5_time <- read_csv("Genomics_scripts/Data/snp5_filter.csv")
 
 ###################################################################################
-#Import snp Baseline Data BF>10
+#Import snp Baseline Data BF>10, in order to get basetime frequencies
+#basetime = Spacetime combinations (population at moment in time) shared in common between the baseline and timeseries data
 env1_base <- read_csv("Genomics_scripts/Data/env1_loci.csv")
 env2_base <- read_csv("Genomics_scripts/Data/env2_loci.csv")
 env5_base <- read_csv("Genomics_scripts/Data/env5_loci.csv")
 
-#Filter to BF>20 data
+#Filter basline to BF>20, remove 4 variables, 
+#ensure basline has same SNPs as timeseries and remove any not in the timesries 
 env1_base <- env1_base %>% filter(BF>20) %>% select(-Chromosome,-SNP,-Env,-BF) %>%
   filter (chr_snp %in% as.character(snp1_time$chr_snp))
   
@@ -35,7 +39,7 @@ env5_base <- env5_base %>% filter(BF>20) %>% select(-Chromosome,-SNP,-Env,-BF)%>
 
 #Import Baseline Climate 
 climate <- read_csv("Donor_selection/Data/climate_pop.csv")
-climate <- climate %>% select(Site_Name:MAP,CMD)
+climate <- climate %>% select(Site_Name:MAP,CMD) #Select relevant climate variables
 
 #Import pop names (site_year names)
 pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")

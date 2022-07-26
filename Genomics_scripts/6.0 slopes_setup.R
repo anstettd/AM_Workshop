@@ -1,5 +1,5 @@
 ##################################################################################
-## Filter Timeseries for BF >20
+## Filter timeseries SNPs so that they only include the top SNP candiates from baseline (BF>20) 
 ## Author Daniel Anstett
 ## 
 ## Currently done just for ENV 1,2 and 5 (MAT, MAP and CMD)
@@ -36,7 +36,7 @@ colnames(loci) <- c("Chromosome","SNP")
 loci_united <- loci %>% unite(chr_snp,"Chromosome","SNP",sep="_")
 loci_snp <-cbind(loci_united,snp) #add snp lables to rows
 
-#Select Timeseries SNPs with BF>20
+#Select Timeseries SNPs with baseline SNPs at BF>20
 snp1_filter <-loci_snp %>% filter (chr_snp %in% as.character(env120$chr_snp)) #MAT
 snp2_filter <-loci_snp %>% filter (chr_snp %in% as.character(env220$chr_snp)) #MAP
 snp5_filter <-loci_snp %>% filter (chr_snp %in% as.character(env520$chr_snp)) #CMD
