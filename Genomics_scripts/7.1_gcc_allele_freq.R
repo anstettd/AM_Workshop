@@ -53,23 +53,25 @@ pop_order_wide <- pop_order %>% separate(V1,c("Pop","Year"),sep="_") %>%
   mutate(Region = ifelse(Pop == 8 | Pop == 9 | Pop == 10 | Pop == 11, "North",
                          ifelse(Pop == 1 | Pop == 12 | Pop == 2, "South","Centre")))
 
-pop_order_2 <- data.frame()
+pop_order_V <- data.frame()
 counter <- 1
 for(i in 1:dim(pop_order_wide)[1]){
-pop_order_2[counter,1] <- pop_order_wide$Region[i]
-pop_order_2[counter,2] <- pop_order_wide$Pop[i]
-pop_order_2[counter,3] <- pop_order_wide$Year[i]
-pop_order_2[counter,4] <- paste("V",counter, sep="")
-pop_order_2[counter,5] <- "A"
+pop_order_V[counter,1] <- pop_order_wide$Region[i]
+pop_order_V[counter,2] <- pop_order_wide$Pop[i]
+pop_order_V[counter,3] <- pop_order_wide$Year[i]
+pop_order_V[counter,4] <- paste("V",counter, sep="")
+pop_order_V[counter,5] <- "A"
 
-pop_order_2[counter+1,1] <- pop_order_wide$Region[i]
-pop_order_2[counter+1,2] <- pop_order_wide$Pop[i]
-pop_order_2[counter+1,3] <- pop_order_wide$Year[i]
-pop_order_2[counter+1,4] <- paste("V",counter+1, sep="")
-pop_order_2[counter+1,5] <- "B"
+pop_order_V[counter+1,1] <- pop_order_wide$Region[i]
+pop_order_V[counter+1,2] <- pop_order_wide$Pop[i]
+pop_order_V[counter+1,3] <- pop_order_wide$Year[i]
+pop_order_V[counter+1,4] <- paste("V",counter+1, sep="")
+pop_order_V[counter+1,5] <- "B"
 counter <- counter+2
 }  
-colnames(pop_order_2) <- c("Region","Pop","Year","V_ID","SNP")
+colnames(pop_order_V) <- c("Region","Pop","Year","V_ID","SNP")
+
+write_csv(pop_order_V, "Genomics_scripts/Data/pop_order_V.csv")
 
 #Make region_year
 region_year <- c("North_2010","North_2011","North_2012","North_2013","North_2014","North_2015","North_2016",
@@ -89,6 +91,7 @@ make_region_snp <- function(tabulation,data_in,region,year,snp){
   return(time_region)
 }
 
+#Generates the AB table per region/year
 weave <- function(tabulation,data_in){
   Regions<-c("North", "Centre", "South")
   Year<-c(2010, 2011, 2012, 2013, 2014, 2015, 2016)
@@ -258,9 +261,9 @@ FAT_n <- function(snp_base,snp_time,climate_table,env_in){
 ########################################################################################################
 ########################################################################################################
 ## Make region,time,snp input table
-env1_region_time <- weave(pop_order_2,snp1_time)
-env2_region_time <- weave(pop_order_2,snp2_time)
-env5_region_time <- weave(pop_order_2,snp5_time)
+env1_region_time <- weave(pop_order_V,snp1_time)
+env2_region_time <- weave(pop_order_V,snp2_time)
+env5_region_time <- weave(pop_order_V,snp5_time)
 
 ## Make table with climate change associated SNPs for timeseries using baseline climate
 freq_MAT_1 <- FAT_p(env1_base,env1_region_time,climate,"MAT")

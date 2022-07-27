@@ -23,7 +23,7 @@ colnames(env1) <- c("Chromosome","SNP","Env","BF")
 colnames(env2) <- c("Chromosome","SNP","Env","BF")
 colnames(env5) <- c("Chromosome","SNP","Env","BF")
 
-#Filter Bayes factor > |10|
+#Filter Bayes factor >= 0
 env1_filter <- env1 %>% filter(BF >= 0)
 env2_filter <- env2 %>% filter(BF >= 0)
 env5_filter <- env5 %>% filter(BF >= 0)
