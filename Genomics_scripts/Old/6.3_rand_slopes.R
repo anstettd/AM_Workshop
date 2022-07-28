@@ -165,6 +165,9 @@ pop_order_2 <- data.frame()
 pop_order_2 [1,1] <- "chr_shp"
 pop_order_2 <- rbind(pop_order_2,pop_order)
 
+#Import pop_order table with regional and V information
+pop_order_V <- read_csv("Genomics_scripts/Data/pop_order_V.csv")
+
 #Filter full snp table to remove climate associated SNPs
 snp_swiss <-loci_snp %>% filter (!chr_snp %in% as.character(MAT_bf0$chr_snp))
 snp_swiss <-snp_swiss  %>% filter (!chr_snp %in% as.character(MAP_bf0$chr_snp))
@@ -310,38 +313,53 @@ freq_count_CMD_12<-freq_count_CMD_12[!is.na(freq_count_CMD_12)]
 #######################################################################################################
 #Make SNP table for neutral loci
 
-#Select 2011 values for pop 8 and 10
-#For the reset select 2010 values
+#Filter pop_order_V to call for 2010 regional basetime V column names
+pop_V1 <- pop_order_V %>% filter(Year==2010 & Pop==1)
+pop_V2 <- pop_order_V %>% filter(Year==2010 & Pop==2)
+pop_V3 <- pop_order_V %>% filter(Year==2010 & Pop==3)
+pop_V4 <- pop_order_V %>% filter(Year==2010 & Pop==4)
+pop_V5 <- pop_order_V %>% filter(Year==2010 & Pop==5)
+pop_V6 <- pop_order_V %>% filter(Year==2010 & Pop==6)
 
-#Filter Baseline A and B numbers for 12 timebase pops
-loci_base_p1 <- snp_swiss %>% select(chr_snp,V33,V34)
-loci_base_p2 <- snp_swiss %>% select(chr_snp,V43,V44)
-loci_base_p3 <- snp_swiss %>% select(chr_snp,V53,V54)
-loci_base_p4 <- snp_swiss %>% select(chr_snp,V67,V68)
-loci_base_p5 <- snp_swiss %>% select(chr_snp,V77,V78)
-loci_base_p6 <- snp_swiss %>% select(chr_snp,V87,V88)
+pop_V7 <- pop_order_V %>% filter(Year==2010 & Pop==7)
+pop_V8 <- pop_order_V %>% filter(Year==2011 & Pop==8)
+pop_V9 <- pop_order_V %>% filter(Year==2010 & Pop==9)
+pop_V10 <- pop_order_V %>% filter(Year==2011 & Pop==10)
+pop_V11 <- pop_order_V %>% filter(Year==2010 & Pop==11)
+pop_V12 <- pop_order_V %>% filter(Year==2010 & Pop==11)
 
-loci_base_p7 <- snp_swiss %>% select(chr_snp,V97,V98)
-loci_base_p8 <- snp_swiss %>% select(chr_snp,V107,V108)
-loci_base_p9 <- snp_swiss %>% select(chr_snp,V115,V116)
-loci_base_p10 <- snp_swiss %>% select(chr_snp,V3,V4)
-loci_base_p11 <- snp_swiss %>% select(chr_snp,V13,V14)
-loci_base_p12 <- snp_swiss %>% select(chr_snp,V23,V24)
 
-#Calculate frequency for SNP A for 12 timebase pops
-p1A <- loci_base_p1 %>% mutate(snpA=V33/(V33+V34)) %>% select(-V33,-V34)
-p2A <- loci_base_p2 %>% mutate(snpA=V43/(V43+V44)) %>% select(-V43,-V44)
-p3A <- loci_base_p3 %>% mutate(snpA=V53/(V53+V54)) %>% select(-V53,-V54)
-p4A <- loci_base_p4 %>% mutate(snpA=V67/(V67+V68)) %>% select(-V67,-V68)
-p5A <- loci_base_p5 %>% mutate(snpA=V77/(V77+V78)) %>% select(-V77,-V78)
-p6A <- loci_base_p6 %>% mutate(snpA=V87/(V87+V88)) %>% select(-V87,-V88)
+#Filter Baseline A and B numbers for 3 basetime regions
+loci_base_1 <- snp_swiss %>% select(chr_snp,all_of(pop_V1$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_2 <- snp_swiss %>% select(chr_snp,all_of(pop_V2$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_3 <- snp_swiss %>% select(chr_snp,all_of(pop_V3$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_4 <- snp_swiss %>% select(chr_snp,all_of(pop_V4$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_5 <- snp_swiss %>% select(chr_snp,all_of(pop_V5$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_6 <- snp_swiss %>% select(chr_snp,all_of(pop_V6$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
 
-p7A <- loci_base_p7 %>% mutate(snpA=V97/(V97+V98)) %>% select(-V97,-V98)
-p8A <- loci_base_p8 %>% mutate(snpA=V107/(V107+V108)) %>% select(-V107,-V108)
-p9A <- loci_base_p9 %>% mutate(snpA=V115/(V115+V116)) %>% select(-V115,-V116)
-p10A <- loci_base_p10 %>% mutate(snpA=V3/(V3+V4)) %>% select(-V3,-V4)
-p11A <- loci_base_p11 %>% mutate(snpA=V13/(V13+V14)) %>% select(-V13,-V14)
-p12A <- loci_base_p12 %>% mutate(snpA=V23/(V23+V24)) %>% select(-V23,-V24)
+loci_base_7 <- snp_swiss %>% select(chr_snp,all_of(pop_V7$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_8 <- snp_swiss %>% select(chr_snp,all_of(pop_V8$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_9 <- snp_swiss %>% select(chr_snp,all_of(pop_V9$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_10 <- snp_swiss %>% select(chr_snp,all_of(pop_V10$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_11 <- snp_swiss %>% select(chr_snp,all_of(pop_V11$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+loci_base_12 <- snp_swiss %>% select(chr_snp,all_of(pop_V12$V_ID)) %>% mutate(region_sum= rowSums(across(where(is.numeric))))
+
+
+#Calculate frequency for SNP A for 12 basetime pops
+#Gives all basetime frequencies per region
+p1A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p2A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p3A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p4A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p5A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p6A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+
+p7A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p8A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p9A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p10A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p11A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
+p12A <- loci_base_1 %>% mutate(snpA=(loci_base_1[,2])/(region_sum)) %>% select(chr_snp,snpA)
 
 
 #######################################################################################################

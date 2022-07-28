@@ -1,10 +1,9 @@
 ##################################################################################
 ## Generate stratified distribution of random non-climate associated slopes
-## I.E generate random sampling 1000 times
 ## Author Daniel Anstett
 ## 
 ## 
-## Last Modified July 27, 2022
+## Last Modified April 15, 2022
 ###################################################################################
 #Import libraries
 library(tidyverse)
@@ -30,14 +29,14 @@ large <- function(pop_snp,freq_count){
       list_env_p1_n<- sample.int(dim(p1_n)[1],freq_count[i],replace = FALSE)
       
     }
-   
+    
     for (j in 1:length(list_env_p1_n)){
       rand_pop <- rbind(rand_pop ,p1_n %>% 
                           filter(chr_snp==as.character(p1_n$chr_snp[list_env_p1_n[j]])))
     }
     
   }
-
+  
   return(rand_pop)
 }
 
@@ -48,14 +47,14 @@ freq_bins <- function(basetime){
   Regions<-c("North", "Centre", "South")
   for (i in 1:3){
     
-#   if(i==1 || i==2 || i==5 || i==7 || i==10 || i==12){
-#    }else if (i==3 || i==4 || i==6 || i==11){
-#      bin_size<-4
-#    }else if (i==8){
-#      bin_size<-2
-#    }else if(i==9){
-#      bin_size<-5
-#    }
+    #   if(i==1 || i==2 || i==5 || i==7 || i==10 || i==12){
+    #    }else if (i==3 || i==4 || i==6 || i==11){
+    #      bin_size<-4
+    #    }else if (i==8){
+    #      bin_size<-2
+    #    }else if(i==9){
+    #      bin_size<-5
+    #    }
     
     bin_fraction<-1/bin_size
     bin_step<-seq(0,1,bin_fraction)
@@ -64,10 +63,10 @@ freq_bins <- function(basetime){
       test_ENV <- basetime %>% filter(Site==Regions[i]) %>% select (-Site,-Year)
       test_ENV <- as.data.frame(test_ENV)
       test_ENV <- as.numeric(test_ENV[1,])
-    if (j==bin_size){
-      freq_count_calc[j,i]<-sum(test_ENV >= bin_step[j] & test_ENV <= bin_step[j+1],na.rm=T )
-    }else{
-      freq_count_calc[j,i]<-sum(test_ENV >= bin_step[j] & test_ENV < bin_step[j+1],na.rm=T )
+      if (j==bin_size){
+        freq_count_calc[j,i]<-sum(test_ENV >= bin_step[j] & test_ENV <= bin_step[j+1],na.rm=T )
+      }else{
+        freq_count_calc[j,i]<-sum(test_ENV >= bin_step[j] & test_ENV < bin_step[j+1],na.rm=T )
       }  
     }
   }
@@ -94,7 +93,7 @@ prop_A <- function(snp_table,pop_ID) {
     counter<-counter+1
     pop_num<-pop_num+1
   }
-
+  
   colnames(snp_prop_A)<- pop_ID[,1] #name each pop/time combination
   rownames(snp_prop_A)<- snp_prop_A$chr_snp
   snp1A_T <- as.data.frame(t(snp_prop_A)) %>% rownames_to_column ("site_year") %>% separate(site_year, c("Site","Year"))
@@ -102,7 +101,7 @@ prop_A <- function(snp_table,pop_ID) {
   snp1A_T <- snp1A_T[-1,]
   colnames(snp1A_T)[1]<- "Site"
   colnames(snp1A_T)[2]<- "Year"
-
+  
   return(snp1A_T)
 }
 
@@ -136,8 +135,8 @@ glm_slopes<-function(snp_popX){
       counter<-counter+1
     }
   }
-    colnames(snp_popX_slope)<-c("Site","snp_ID","Slope")
- return(snp_popX_slope) 
+  colnames(snp_popX_slope)<-c("Site","snp_ID","Slope")
+  return(snp_popX_slope) 
 }
 
 
@@ -308,23 +307,18 @@ Year<-c(2010, 2011, 2012, 2013, 2014, 2015, 2016)
 
 for (i in 1:3){
   for(j in 1:7){
-      temp1 <- paste(Regions[i],Year[j],sep="_")
-      region_order[counter,1] <- temp1
-      counter <- counter + 1
+    temp1 <- paste(Regions[i],Year[j],sep="_")
+    region_order[counter,1] <- temp1
+    counter <- counter + 1
   }
 }
 
-#Define blank final output random slope dataframes  
-rand_slope_mat_out<-data.frame()
-rand_slope_map_out<-data.frame()
-rand_slope_cmd_out<-data.frame()
-
 #######################################################################################################
-# Stratified random sampling SNPs for a given region
-for (seed_num in 1:1000){
-set.seed(seed_num)
-# Outputs the list of SNPs selected through stratified (basetime informed) sampling of neutral SNPs 
-rand_mat_pop1 <- large(p1A,freq_count_MAT_1) 
+# Stratified random sampling SNPs for a given population
+
+set.seed(1)
+#mat
+rand_mat_pop1 <- large(p1A,freq_count_MAT_1)
 rand_mat_pop2 <- large(p2A,freq_count_MAT_2)
 rand_mat_pop3 <- large(p3A,freq_count_MAT_3)
 
@@ -336,8 +330,7 @@ rand_cmd_pop1 <- large(p1A,freq_count_CMD_1)
 rand_cmd_pop2 <- large(p2A,freq_count_CMD_2)
 rand_cmd_pop3 <- large(p3A,freq_count_CMD_3)
 
-
-#Get full timeseires for each randomly selected neutral SNP
+#Get Full timeseires for each randomly selected neutral location
 rand_time_AB_mat_1 <-loci_snp %>% filter (chr_snp %in% as.character(rand_mat_pop1$chr_snp)) #mat
 rand_time_AB_mat_2 <-loci_snp %>% filter (chr_snp %in% as.character(rand_mat_pop2$chr_snp)) #mat
 rand_time_AB_mat_3 <-loci_snp %>% filter (chr_snp %in% as.character(rand_mat_pop3$chr_snp)) #mat
@@ -390,54 +383,29 @@ rand_cmd_pop2 <- rand_cmd_pop2 %>% filter(Site=="Centre")
 rand_cmd_pop3 <- rand_cmd_pop3 %>% filter(Site=="South")
 
 
-#Get slopes
-rand_slope_mat_pop1 <- glm_slopes(rand_mat_pop1)
-rand_slope_mat_pop2 <- glm_slopes(rand_mat_pop2)
-rand_slope_mat_pop3 <- glm_slopes(rand_mat_pop3)
+## Gather and merge rand for each env
+gather_mat_pop1 <- rand_mat_pop1 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop1)[2])
+gather_mat_pop2 <- rand_mat_pop2 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop2)[2])
+gather_mat_pop3 <- rand_mat_pop3 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_mat_pop3)[2])
 
-rand_slope_map_pop1 <- glm_slopes(rand_map_pop1)
-rand_slope_map_pop2 <- glm_slopes(rand_map_pop2)
-rand_slope_map_pop3 <- glm_slopes(rand_map_pop3)
+gather_map_pop1 <- rand_map_pop1 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop1)[2])
+gather_map_pop2 <- rand_map_pop2 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop2)[2])
+gather_map_pop3 <- rand_map_pop3 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_map_pop3)[2])
 
-rand_slope_cmd_pop1 <- glm_slopes(rand_cmd_pop1)
-rand_slope_cmd_pop2 <- glm_slopes(rand_cmd_pop2)
-rand_slope_cmd_pop3 <- glm_slopes(rand_cmd_pop3)
+gather_cmd_pop1 <- rand_cmd_pop1 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop1)[2])
+gather_cmd_pop2 <- rand_cmd_pop2 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop2)[2])
+gather_cmd_pop3 <- rand_cmd_pop3 %>% gather(SNP_ID,SNP_Freq,3:dim(rand_cmd_pop3)[2])
 
+rand_gathered_MAT <- rbind(gather_mat_pop1,gather_mat_pop2,gather_mat_pop3)
+rand_gathered_MAP <- rbind(gather_map_pop1,gather_map_pop2,gather_map_pop3)
+rand_gathered_CMD <- rbind(gather_cmd_pop1,gather_cmd_pop2,gather_cmd_pop3)
 
-#Bind populations for each env
-rand_slope_mat <- rbind(rand_slope_mat_pop1,
-                      rand_slope_mat_pop2,
-                      rand_slope_mat_pop3)
-
-rand_slope_map <- rbind(rand_slope_map_pop1,
-                      rand_slope_map_pop2,
-                      rand_slope_map_pop3)
-
-rand_slope_cmd <- rbind(rand_slope_cmd_pop1,
-                      rand_slope_cmd_pop2,
-                      rand_slope_cmd_pop3)
-
-rand_slope_mat <- rand_slope_mat %>% mutate (Seed_ID = seed_num)
-rand_slope_map <- rand_slope_map %>% mutate (Seed_ID = seed_num)
-rand_slope_cmd <- rand_slope_cmd %>% mutate (Seed_ID = seed_num)
-#Export each joint df
-
-rand_slope_mat_out<-rbind(rand_slope_mat_out,rand_slope_mat)
-rand_slope_map_out<-rbind(rand_slope_map_out,rand_slope_map)
-rand_slope_cmd_out<-rbind(rand_slope_cmd_out,rand_slope_cmd)
-
-print(seed_num)
-
-}
+#Export gathered rand for each env
+write_csv(rand_gathered_MAT, "Genomics_scripts/Data/rand_gathered_MAT_region.csv")
+write_csv(rand_gathered_MAP, "Genomics_scripts/Data/rand_gathered_MAP_region.csv")
+write_csv(rand_gathered_CMD, "Genomics_scripts/Data/rand_gathered_CMD_region.csv")
 
 
-#Save large files in folder outside of github
-setwd("~/Dropbox/AM_Workshop/Large_files")
 
-write_csv(rand_slope_mat_out, "rand_slope_mat_multi_region.csv")
-write_csv(rand_slope_map_out, "rand_slope_map_multi_region.csv")
-write_csv(rand_slope_cmd_out, "rand_slope_cmd_multi_region.csv")
-
-setwd("~/Dropbox/AM_Workshop/AM_Workshop/")
 
 

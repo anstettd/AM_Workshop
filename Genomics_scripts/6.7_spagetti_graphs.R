@@ -119,7 +119,7 @@ ggsave("Graphs_CI/Frequency/Poster/env_both_freqchange_p11.pdf",width=12, height
 #For Paper
 env_labs<-c("cmd"="A CMD",
             "map"="B MAP",
-            "mat"="C CMD")
+            "mat"="C MAT")
 #p1
 ggplot(data=joint_env_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
   geom_line(stat="smooth",method = "glm", 
