@@ -39,6 +39,11 @@ env120 <- env1 %>% filter(BF>20)
 env220 <- env2 %>% filter(BF>20)
 env520 <- env5 %>% filter(BF>20)
 
+#Export BF>20 baseline snps with BF data
+write_csv(env120 , "Genomics_scripts/Data/base20_mat.csv")
+write_csv(env220 , "Genomics_scripts/Data/base20_map.csv")
+write_csv(env520, "Genomics_scripts/Data/base20_cmd.csv")
+
 
 #Import full snp table for timeseries
 pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
