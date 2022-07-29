@@ -634,6 +634,6 @@ write_csv(rand_slope_mat_out, "rand_slope_mat_multi.csv")
 write_csv(rand_slope_map_out, "rand_slope_map_multi.csv")
 write_csv(rand_slope_cmd_out, "rand_slope_cmd_multi.csv")
 
-setwd("~/Dropbox/AM_Workshop")
+setwd("~/Dropbox/AM_Workshop/AM_Workshop/")
 
 
