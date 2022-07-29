@@ -51,9 +51,8 @@ snp_clim_bay <- cbind(climate,snp_bay_T)
 write_csv(snp_clim_bay, "Genomics_scripts/Data/snp_clim_bayBF20.csv")
 
 #Remove NA's
-snp_clim_bf10NA <- snp_clim_bay %>%
-  select_if(~ !any(is.na(.)))
-write_csv(snp_clim_bay, "Genomics_scripts/Data/snp_clim_BF20NA.csv")
+snp_clim_bf10NA <- snp_clim_bay %>% select_if(~ !any(is.na(.)))
+write_csv(snp_clim_bayNA, "Genomics_scripts/Data/snp_clim_BF20NA.csv")
 
 
 #Generate snpA table for full baseline snp datatset #Does not run locally
