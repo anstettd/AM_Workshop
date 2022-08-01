@@ -11,23 +11,6 @@
 # Clear environment
 rm(list = ls())
 
-# Get this package retrieving function
-## This function will automatically load packages that you already have
-## and will install packages you don't yet have then load them
-#ipak <- function(pkg){
-  # Function written by Dr. Evan Fricke
-#  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
-#  if (length(new.pkg)) 
-#    install.packages(new.pkg, dependencies = T)
-#  sapply(pkg, require, character.only = T)
-#}
-
-# Define the packages that the script needs
-#myPackages <- c("randomForest", "extendedForest", "gradientForest","tidyverse","raster")
-
-# Load the packages
-#ipak(myPackages)
-
 # Install packages
 #install.packages("extendedForest", repos="http://R-Forge.R-project.org")
 #install.packages("gradientForest", repos="http://R-Forge.R-project.org")
@@ -42,10 +25,9 @@ library(sf)
 library(vegan)
 library(gdm)
 
+############################################################################################################
 
-#############################################################################################
-###### functions to support mapping #####
-#Function 1
+#Function 1 : go from PCA to raster
 
 # builds RGB raster from transformed environment
 # snpPreds = dataframe of transformed variables from gf or gdm model
@@ -80,9 +62,9 @@ pcaToRaster <- function(snpPreds, rast, mapCells){
   return(outRast)
 }
 
-#Function 2
 
-# Function to map difference between spatial genetic predictions
+#Function 2: Map difference between spatial genetic predictions
+
 # predMap1 = dataframe of transformed variables from gf or gdm model for first set of SNPs
 # predMap2 = dataframe of transformed variables from gf or gdm model for second set of SNPs
 # rast = a raster mask to which Procrustes residuals are to be mapped
@@ -104,10 +86,10 @@ RGBdiffMap <- function(predMap1, predMap2, rast, mapCells){
 #
 # (2) a raster mask of the study region to which the RGB data will be written
 
-#############################################################################################
-#Function 3
 
-#Generating a raster stack
+
+#Function 3: Generating a raster stack
+
 #From Tongli Wang
 
 # x is the wrodkig directory
@@ -134,22 +116,16 @@ rasterStack <- function(x,varList,rType='tif',vConvert=T){
 #wd <- 'G:/ClimateXX_out/BC2/BC800v600/Normal_1961_1990MSY'
 #stk <- rasterStack(wd,varList,rType='tif',vConvert=T);stk
 
+############################################################################################################
+############################################################################################################
 
-#############################################################################################
-#############################################################################################
-#Part 1, train the gradient forest model
-
-##Import Data
-snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_bayBF20.csv") #pop data
+## Import SNP data and arrage for gradient forest
+#Import SNP Data & and reformat
 snp_clim_bf20NA <- read_csv("Genomics_scripts/Data/snp_clim_BF20NA.csv") #pop data
-#snp_clim_ful <- read_csv("Genomics_scripts/Data/snp_clim_full.csv") # full data
-
-#Keep SNP data only
 test_snp <- snp_clim_bf20NA %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
                                        -PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
-
-#Import Raster
-#env_wna <- read_csv("Genomics_scripts/Data/env_wna.csv") #grided WNA climate data
+#snp_clim_ful <- read_csv("Genomics_scripts/Data/snp_clim_full.csv") # full data
+#snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_bayBF20.csv") #pop data, NA's included
 
 
 ## Generate specific dataframes for GF model
@@ -160,57 +136,22 @@ env_site <- snp_clim_bf20 %>% dplyr::select(MAT,MAP,CMD)
 test_snp<-as.data.frame(test_snp)
 env_site<-as.data.frame(env_site)
 
-#Merge and make lables
+
+#Merge and make labels
 df_in_1<-data.frame(env_site, test_snp)
 resp<-colnames(test_snp)
 pred<-colnames(env_site)
 
+############################################################################################################
 
-#resp<-as.factor(resp)
-#resp<-droplevels(resp)
-
-###################################################################################
-###################################################################################
-#Run Gradient Forest
-
-# Gradient Forest Model
-#gf <- gradientForest(df_in_1,predictor.vars = pred, 
-#                     response.vars = resp,ntree = 500, 
-#                     transform = NULL, compact = T, nbin = 201 , corr.threshold = 0.5)
+## Range wide polygon
+# Import M.cardinalis ensamble range extent as sf polygon
+c_range <- st_read("SDM/Output/c_range_2.shp") 
+c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
 
 
-
-maxLevel <- log2(0.368*nrow(df_in_1)/2) #account for correlations, see ?gradientForest 
-
-# Gradient Forest Model
-gf <- gradientForest(df_in_1,predictor.vars = pred, 
-                     response.vars = resp,ntree = 500, 
-                     maxLevel = maxLevel, trace=T, corr.threshold = 0.5)
-
-#Older version that doesnot work
-#gf <- gradientForest(cbind(env_site, test_snp),predictor.vars = colnames(env_site),
-#                    response.vars = colnames(test_snp),ntree = 500,
-#                    maxLevel=maxLevel, trace=T, corr.threshold=0.50)
-
-#Version from Keller & Fitzpatrick
-#gfRef <- gradientForest(cbind(envGF, SNPs_ref), predictor.vars=colnames(envGF),
-#                        response.vars=colnames(SNPs_ref), ntree=500, 
-#                        maxLevel=maxLevel, trace=T, corr.threshold=0.50)
-
-
-#Importance Plot
-plot(gf)
-
-
-##################################################################################################################
-#Part 2, use gradient forest model on rasters
-
-###################################################################################
-###################################################################################
 ## Raster import and manipulation
-
-##Import 1981-2010 raster data for West NA & and stack them
-
+#Import 1981-2010 raster data for West NA & and stack them
 wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010"
 vlist <- c("MAT","MAP","CMD")
 stk <- rasterStack(wd,vlist,rType='tif',vConvert=F)
@@ -219,17 +160,13 @@ stk <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
 stk <- projectRaster(stk, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
 
- 
-# Import M.cardinalis ensamble range extent as sf polygon
-c_range <- st_read("SDM/Output/c_range_2.shp") 
-c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
-raster_range <- 
 
-#Check CRS
+#Check CRS of Polygon and raster
 crs(c_range) 
 crs(stk)
 
-#Clip
+
+#Clip raster using range-extent polygon
 stk.clip <- raster::crop(stk, extent(c_range))
 stk.mask <- mask(stk.clip, c_range)
 
@@ -247,9 +184,47 @@ rbg_mask <- raster::crop(MAT.clip, extent(c_range))
 rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
 
+
+##Import future climate change rasters
+#Import 1981-2010 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010"
+vlist <- c("MAT","MAP","CMD")
+stk <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+
+#Reproject to WGS 1984 (EPSG4326)
+EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
+stk <- projectRaster(stk, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs()
+
+
+###################################################################################
+###################################################################################
+#Train Gradient Forest Model
+
+maxLevel <- log2(0.368*nrow(df_in_1)/2) #account for correlations, see ?gradientForest 
+
+# Gradient Forest Model
+gf <- gradientForest(df_in_1,predictor.vars = pred, 
+                     response.vars = resp,ntree = 500, 
+                     maxLevel = maxLevel, trace=T, corr.threshold = 0.5)
+plot(gf) #Importance Plot
+
+
+# Conpact version for larger datasets
+#gf <- gradientForest(df_in_1,predictor.vars = pred, 
+#                     response.vars = resp,ntree = 500, 
+#                     transform = NULL, compact = T, nbin = 201 , corr.threshold = 0.5)
+
+
+
+##################################################################################################################
+#Part 2, use gradient forest model on rasters
+
+###################################################################################
+###################################################################################
+
 ###################################################################################
 # Mapping spatial genetic variation --------------------------------------------
-# This is where I start haivng issues
 
 
 # transform env using gf models, see ?predict.gradientForest
