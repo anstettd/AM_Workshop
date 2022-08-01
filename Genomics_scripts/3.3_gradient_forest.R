@@ -265,7 +265,7 @@ mask_offset[stk_4.5.df.cell] <- offset_BF20
 #mask[env_trns_future$cell] <- offset_BF20
 plot(mask_offset)
 
-writeRaster(mask_offset,"Genomics_scripts/Data/offset_4.5.grd","raster")
+writeRaster(mask_offset,"Genomics_scripts/Data/offset_4.5.tif", format="GTiff", overwrite=TRUE)
 
 
 
