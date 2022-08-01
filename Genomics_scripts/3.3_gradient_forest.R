@@ -177,29 +177,46 @@ stk.df <- na.omit(stk.df)
 #Convert xy coordinates into cell ID
 stk.df.cell<-cellFromXY(stk.mask, cbind(stk.df$x, stk.df$y))
 
+
+##Import future climate change rasters
+#
+#Import 2041-2070 SSP2-4.5 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/ensemble_8GCMs_ssp245_2041_2070_bioclim"
+vlist <- c("ensemble_8GCMs_ssp245_2041_2070_MAT",
+           "ensemble_8GCMs_ssp245_2041_2070_MAP",
+           "ensemble_8GCMs_ssp245_2041_2070_CMD")
+stk_4.5 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+
+#Reproject to WGS 1984 (EPSG4326)
+stk_4.5 <- projectRaster(stk_4.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_4.5)
+
+#Clip raster using range-extent polygon
+stk_4.5.clip <- raster::crop(stk_4.5, extent(c_range))
+stk_4.5.mask <- mask(stk_4.5.clip, c_range)
+
+#Extract point from raster stack
+stk_4.5.df <- data.frame(rasterToPoints(stk_4.5.mask))
+stk_4.5.df <- na.omit(stk_4.5.df)
+colnames(stk_4.5.df)[3]<-"MAT"
+colnames(stk_4.5.df)[4]<-"MAP"
+colnames(stk_4.5.df)[5]<-"CMD"
+
+#Convert xy coordinates into cell ID
+stk_4.5.df.cell<-cellFromXY(stk_4.5.mask, cbind(stk_4.5.df$x, stk_4.5.df$y))
+
+
 #Get mask for RGB
-MAT.clip <- raster("Donor_selection/data/clip/MAT.clip.grd")
-#MAT.clip <- projectRaster(MAT.clip, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010/MAT.tif")
+MAT.clip <- projectRaster(MAT.clip, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
 rbg_mask <- raster::crop(MAT.clip, extent(c_range))
 rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
+mask_offset <- rbg_mask
 
 
-##Import future climate change rasters
-https://sites.ualberta.ca/~ahamann/data/climatena.html
-#Import 1981-2010 raster data for West NA & and stack them
-wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010"
-vlist <- c("MAT","MAP","CMD")
-stk <- rasterStack(wd,vlist,rType='tif',vConvert=F)
-
-#Reproject to WGS 1984 (EPSG4326)
-EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
-stk <- projectRaster(stk, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
-crs()
-
-
-###################################################################################
-###################################################################################
+############################################################################################################
+############################################################################################################
 #Train Gradient Forest Model
 
 maxLevel <- log2(0.368*nrow(df_in_1)/2) #account for correlations, see ?gradientForest 
@@ -217,33 +234,11 @@ plot(gf) #Importance Plot
 #                     transform = NULL, compact = T, nbin = 201 , corr.threshold = 0.5)
 
 
-
-##################################################################################################################
-#Part 2, use gradient forest model on rasters
-
-###################################################################################
-###################################################################################
-
-###################################################################################
-# Mapping spatial genetic variation --------------------------------------------
-
-
 # transform env using gf models, see ?predict.gradientForest
 predBF20 <- predict(gf, stk.df[,-1:-2]) # remove cell column before transforming
 
-# map continuous variation 
-BF20_RGBmap <- pcaToRaster(predBF20, stk.mask, stk.df.cell)
-plotRGB(BF20_RGBmap)
-writeRaster(BF20_RGBmap, "Offset_graphs/current_climate_BF20_map.tif", format="GTiff", overwrite=TRUE)
-
-
-
-
-################################################################################
-
-
-
-
+############################################################################################################
+#Part 2, use gradient forest model on rasters
 
 # Calculate and map "genetic offset" under climate change ----------------------
 # Script assumes:
@@ -253,27 +248,49 @@ writeRaster(BF20_RGBmap, "Offset_graphs/current_climate_BF20_map.tif", format="G
 # (2) a dataframe named env_trns_future containing extracted raster data of 
 # env. variables for FUTURE a climate scenario, same structure as env_trns
 
-#Import future clmite change raster
-#Clip & Mask
 
 # first transform FUTURE env. variables
+projBF20 <- predict(gf, stk_4.5.df[,-1:-2])
 #projGI5 <- predict(gfGI5, env_trns_future[,-1])
-projGI5 <- predict(predBF20, env_trns_future[,-1:-2])
 
 # calculate euclidean distance between current and future genetic spaces  
-genOffsetGI5 <- sqrt((projGI5[,1]-predGI5[,1])^2+(projGI5[,2]-predGI5[,2])^2
-                     +(projGI5[,3]-predGI5[,3])^2)
-                     
-                     #+(projGI5[,4]-predGI5[,4])^2
-                     #+(projGI5[,5]-predGI5[,5])^2+(projGI5[,6]-predGI5[,6])^2
-                     #+(projGI5[,7]-predGI5[,7])^2)
+offset_BF20 <- sqrt((projBF20[,1]-predBF20[,1])^2+(projBF20[,2]-predBF20[,2])^2
+                     +(projBF20[,3]-predBF20[,3])^2)
 
 # assign values to raster - can be tricky if current/future climate
 # rasters are not identical in terms of # cells, extent, etc.
-mask[env_trns_future$cell] <- genOffsetGI5
-plot(mask)
 
 
+mask_offset[stk_4.5.df.cell] <- offset_BF20
+#mask[env_trns_future$cell] <- offset_BF20
+plot(mask_offset)
+
+writeRaster(mask_offset,"Genomics_scripts/Data/offset_4.5.grd","raster")
+
+
+
+#Plot Raster in ggplot
+
+
+
+###################################################################################
+# Mapping spatial genetic variation --------------------------------------------
+
+
+# map continuous variation 
+BF20_RGBmap <- pcaToRaster(predBF20, stk.mask, stk.df.cell)
+plotRGB(BF20_RGBmap)
+writeRaster(BF20_RGBmap, "Offset_graphs/current_climate_BF20_map.tif", format="GTiff", overwrite=TRUE)
+
+# map continuous variation 
+BF20_RGBmap <- pcaToRaster(projBF20, stk_4.5.mask, stk_4.5.df.cell)
+plotRGB(BF20_RGBmap)
+writeRaster(BF20_RGBmap, "Offset_graphs/current_climate_BF20_map.tif", format="GTiff", overwrite=TRUE)
+
+
+
+
+################################################################################
 
 
 
