@@ -186,6 +186,7 @@ rbg_mask <- rbg_mask * 0
 
 
 ##Import future climate change rasters
+https://sites.ualberta.ca/~ahamann/data/climatena.html
 #Import 1981-2010 raster data for West NA & and stack them
 wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010"
 vlist <- c("MAT","MAP","CMD")
