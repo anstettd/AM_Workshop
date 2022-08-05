@@ -19,8 +19,7 @@ snps_cmd <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_
 
 
 ###########################################################################################################
-# Make empirical p-value
-snps_mat$empirical_p <- rank(snps_mat$p_val)/length(snps_mat$p_val)
+
 
 ## Plot those out p-values - it should look like a squashed version of the above Manhattan plot...
 
