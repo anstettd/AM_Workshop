@@ -128,9 +128,9 @@ snps_cmd_peak <- snps_cmd_peak %>% unite(chr_snp,"chr","snp",sep="_")
 
 
 #Export peak snps
-write_csv(snps_mat_peak,"snps_peak_mat.csv")
-write_csv(snps_map_peak,"snps_peak_map.csv")
-write_csv(snps_cmd_peak,"snps_peak_cmd.csv")
+write_csv(snps_mat_peak,"Genomics_scripts/Data/snps_peak_mat.csv")
+write_csv(snps_map_peak,"Genomics_scripts/Data/snps_peak_map.csv")
+write_csv(snps_cmd_peak,"Genomics_scripts/Data/snps_peak_cmd.csv")
 
  
 
