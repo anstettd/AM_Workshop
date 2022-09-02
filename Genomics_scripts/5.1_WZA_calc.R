@@ -147,8 +147,8 @@ snps_map$empirical_p <- rank(snps_map$p_val)/length(snps_map$p_val)
 snps_cmd$empirical_p <- rank(snps_cmd$p_val)/length(snps_cmd$p_val)
 
 #Too large to store on github. Store locally
-write_csv(snps_mat, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_mat.csv")
-write_csv(snps_map, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_map.csv")     
-write_csv(snps_cmd, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_cmd.csv")     
+#write_csv(snps_mat, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_mat.csv")
+#write_csv(snps_map, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_map.csv")     
+#write_csv(snps_cmd, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_cmd.csv")     
 
 
