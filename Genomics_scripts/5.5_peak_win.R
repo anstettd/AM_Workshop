@@ -132,7 +132,10 @@ write_csv(snps_mat_peak,"Genomics_scripts/Data/snps_peak_mat.csv")
 write_csv(snps_map_peak,"Genomics_scripts/Data/snps_peak_map.csv")
 write_csv(snps_cmd_peak,"Genomics_scripts/Data/snps_peak_cmd.csv")
 
- 
+#Export peak windows
+write_csv(mat_bon_peak,"Genomics_scripts/Data/peak_window_mat.csv")
+write_csv(map_bon_peak,"Genomics_scripts/Data/peak_window_map.csv")
+write_csv(cmd_bon_peak,"Genomics_scripts/Data/peak_window_cmd.csv")
 
 
 
