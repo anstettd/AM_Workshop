@@ -1,10 +1,10 @@
 #############################################################################################################
-## Make manhattan plots for WZA snps
+## Get peak windwos from manhattan plots with empirical p-values
 ## Author Daniel Anstett
 ## 
 ## 
-## Modified from Tom Booker WZA Vignette
-## Last Modified August 3, 2022
+## 
+## Last Modified Sept 2, 2022
 #############################################################################################################
 #Import libraries
 
@@ -36,6 +36,10 @@ snps_mat_peak <- snps_mat %>% filter(win %in% mat_bon_peak$win)
 snps_map_peak <- snps_mat %>% filter(win %in% map_bon_peak$win)
 snps_cmd_peak <- snps_mat %>% filter(win %in% cmd_bon_peak$win)
 
+#Add chr_snp column
+snps_mat_peak <- snps_mat_peak %>% unite(chr_snp,"chr","snp",sep="_")
+snps_map_peak <- snps_map_peak %>% unite(chr_snp,"chr","snp",sep="_")
+snps_cmd_peak <- snps_cmd_peak %>% unite(chr_snp,"chr","snp",sep="_")
 
 
 
@@ -121,12 +125,6 @@ wza_empri_mat <- ggplot(data = wza_win_mat, aes( x = pos/1e6, y = -log10(approx_
 ggplotly(wza_empri_mat)
 
 
-#Add chr-snp column
-snps_mat_peak <- snps_mat_peak %>% unite(chr_snp,"chr","snp",sep="_")
-snps_map_peak <- snps_map_peak %>% unite(chr_snp,"chr","snp",sep="_")
-snps_cmd_peak <- snps_cmd_peak %>% unite(chr_snp,"chr","snp",sep="_")
-
-
 #Export peak snps
 write_csv(snps_mat_peak,"Genomics_scripts/Data/snps_peak_mat.csv")
 write_csv(snps_map_peak,"Genomics_scripts/Data/snps_peak_map.csv")
@@ -136,6 +134,8 @@ write_csv(snps_cmd_peak,"Genomics_scripts/Data/snps_peak_cmd.csv")
 write_csv(mat_bon_peak,"Genomics_scripts/Data/peak_window_mat.csv")
 write_csv(map_bon_peak,"Genomics_scripts/Data/peak_window_map.csv")
 write_csv(cmd_bon_peak,"Genomics_scripts/Data/peak_window_cmd.csv")
+
+
 
 
 
