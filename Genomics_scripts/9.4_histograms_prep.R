@@ -76,16 +76,16 @@ get_range <- function(df,site){
 
 ###################################################################################
 #Import observed slopes
-mat_slope <- read_csv("Genomics_scripts/Data/freq_MAT_slope_region.csv")
-map_slope <- read_csv("Genomics_scripts/Data/freq_MAP_slope_region.csv")
-cmd_slope <- read_csv("Genomics_scripts/Data/freq_cmd_slope_region.csv")
+mat_slope <- read_csv("Genomics_scripts/Data/freq_MAT_slope_peakbf2_region.csv")
+map_slope <- read_csv("Genomics_scripts/Data/freq_MAP_slope_peakbf2_region.csv")
+cmd_slope <- read_csv("Genomics_scripts/Data/freq_cmd_slope_peakbf2_region.csv")
 
 setwd("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files")
 
 #Import large files with 1000 X random slopes
-mat_bars <- read_csv("rand_slope_mat_multi_region.csv")
-map_bars <- read_csv("rand_slope_map_multi_region.csv")
-cmd_bars <- read_csv("rand_slope_cmd_multi_region.csv")
+mat_bars <- read_csv("rand_slope_mat_multi_peakbf2_region.csv")
+map_bars <- read_csv("rand_slope_map_multi_peakbf2_region.csv")
+cmd_bars <- read_csv("rand_slope_cmd_multi_peakbf2_region.csv")
 
 setwd("/Users/daniel_anstett/Dropbox/AM_Workshop/AM_Workshop")
 
@@ -188,10 +188,10 @@ env_obs_ci <- rbind(mat_obs_ci,map_obs_ci,cmd_obs_ci)
 
 
 #Export
-write_csv(mat_obs_ci, "mat_obs_ci_region.csv")
-write_csv(map_obs_ci, "map_obs_ci_region.csv")
-write_csv(cmd_obs_ci, "cmd_obs_ci_region.csv")
-write_csv(env_obs_ci, "env_obs_ci_region.csv")
+write_csv(mat_obs_ci, "mat_obs_ci_peakbf2_region.csv")
+write_csv(map_obs_ci, "map_obs_ci_peakbf2_region.csv")
+write_csv(cmd_obs_ci, "cmd_obs_ci_peakbf2_region.csv")
+write_csv(env_obs_ci, "env_obs_ci_peakbf2_region.csv")
 
 
 

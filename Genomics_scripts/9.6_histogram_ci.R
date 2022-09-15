@@ -11,10 +11,10 @@
 library(tidyverse)
 
 #Import files
-mat_obs_ci <- read_csv("mat_obs_ci_region.csv")
-map_obs_ci <- read_csv("map_obs_ci_region.csv")
-cmd_obs_ci <- read_csv("cmd_obs_ci_region.csv")
-env_obs_ci <- read_csv("env_obs_ci_region.csv")
+mat_obs_ci <- read_csv("mat_obs_ci_peakbf2_region.csv")
+map_obs_ci <- read_csv("map_obs_ci_peakbf2_region.csv")
+cmd_obs_ci <- read_csv("cmd_obs_ci_peakbf2_region.csv")
+env_obs_ci <- read_csv("env_obs_ci_peakbf2_region.csv")
 
 
 ###################################################################################
@@ -34,7 +34,7 @@ mat_p1_hist <- mat_p1_hist +
         axis.text.y = element_text(size = 16, face = "bold"))
 mat_p1_hist <- mat_p1_hist + facet_wrap(.~env)
 mat_p1_hist 
-ggsave("Graphs_CI/env_hist_ci_North.pdf",width=10, height = 6, units = "in")
+ggsave("Graphs_CI_peak/env_hist_ci_North.pdf",width=10, height = 6, units = "in")
 
 # Centre
 mat_p2_hist <- ggplot(env_obs_ci,aes(x=S,y=Centre,ymin=p2_low,ymax=p2_up))+
@@ -49,7 +49,7 @@ mat_p2_hist <- mat_p2_hist +
         axis.text.y = element_text(size = 16, face = "bold"))
 mat_p2_hist <- mat_p2_hist + facet_wrap(.~env)
 mat_p2_hist 
-ggsave("Graphs_CI/env_hist_ci_Center.pdf",width=10, height = 6, units = "in")
+ggsave("Graphs_CI_peak/env_hist_ci_Center.pdf",width=10, height = 6, units = "in")
 
 # South
 mat_p3_hist <- ggplot(env_obs_ci,aes(x=S,y=South,ymin=p3_low,ymax=p3_up))+
@@ -64,7 +64,7 @@ mat_p3_hist <- mat_p3_hist +
         axis.text.y = element_text(size = 16, face = "bold"))
 mat_p3_hist <- mat_p3_hist + facet_wrap(.~env)
 mat_p3_hist 
-ggsave("Graphs_CI/env_hist_ci_South.pdf",width=10, height = 6, units = "in")
+ggsave("Graphs_CI_peak/env_hist_ci_South.pdf",width=10, height = 6, units = "in")
 
 
 

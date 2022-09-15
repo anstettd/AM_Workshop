@@ -143,7 +143,7 @@ ggplot(data=rand_map_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
         axis.text.y = element_text(size = 16, face = "bold"))
-#ggsave("Graphs_CI/map_random_freqchange_p4.pdf",width=10, height = 6, units = "in")
+ggsave("Graphs_CI/map_random_freqchange_p4.pdf",width=10, height = 6, units = "in")
 
 #Climape Associated
 ggplot(data=freq_map_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -155,7 +155,7 @@ ggplot(data=freq_map_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
         axis.text.y = element_text(size = 16, face = "bold"))
-#ggsave("Graphs_CI/map_obs_freqchange_p4.pdf",width=10, height = 6, units = "in")
+ggsave("Graphs_CI/map_obs_freqchange_p4.pdf",width=10, height = 6, units = "in")
 
 #Both
 ggplot(data=joint_map_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -166,7 +166,7 @@ ggplot(data=joint_map_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
     axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
     axis.title = element_text(size = 20, face = "bold"), 
     axis.text.y = element_text(size = 16, face = "bold"))
-#ggsave("Graphs_CI/map_both_freqchange_p4.pdf",width=10, height = 6, units = "in")
+ggsave("Graphs_CI/map_both_freqchange_p4.pdf",width=10, height = 6, units = "in")
 
 
 
