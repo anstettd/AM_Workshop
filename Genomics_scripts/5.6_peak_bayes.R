@@ -34,13 +34,128 @@ peak_bf_mat <- env1_united %>% filter(chr_snp %in% as.character(snps_peak_mat$ch
 peak_bf_map <- env2_united %>% filter(chr_snp %in% as.character(snps_peak_map$chr_snp))
 peak_bf_cmd <- env5_united %>% filter(chr_snp %in% as.character(snps_peak_cmd$chr_snp))
 
+#Get all info from window analysis in peak_bf
+peak_bf_all_mat <- left_join(peak_bf_mat,snps_peak_mat,by="chr_snp")
+peak_bf_all_map <- left_join(peak_bf_map,snps_peak_map,by="chr_snp")
+peak_bf_all_cmd <- left_join(peak_bf_cmd,snps_peak_cmd,by="chr_snp")
+
+#Identify max BF for each window
+max_bf_mat <- peak_bf_all_mat %>% group_by(win) %>% summarise(max = max(BF, na.rm=TRUE))
+max_bf_map <- peak_bf_all_map %>% group_by(win) %>% summarise(max = max(BF, na.rm=TRUE))
+max_bf_cmd <- peak_bf_all_cmd %>% group_by(win) %>% summarise(max = max(BF, na.rm=TRUE))
+
+
+#Calculate windows lost after filter by BF
+windows_lost <- data.frame()
+#Windows lost when BF>0
+windows_lost[1,1] <- dim(max_bf_mat)[1] - dim(max_bf_mat %>% filter(max>0))[1]
+windows_lost[1,2] <- dim(max_bf_map)[1] - dim(max_bf_map %>% filter(max>0))[1]
+windows_lost[1,3] <- dim(max_bf_cmd)[1] - dim(max_bf_cmd %>% filter(max>0))[1]
+
+windows_lost[2,1] <- dim(max_bf_mat)[1] - dim(max_bf_mat %>% filter(max>0.5))[1]
+windows_lost[2,2] <- dim(max_bf_map)[1] - dim(max_bf_map %>% filter(max>0.5))[1]
+windows_lost[2,3] <- dim(max_bf_cmd)[1] - dim(max_bf_cmd %>% filter(max>0.5))[1]
+
+windows_lost[3,1] <- dim(max_bf_mat)[1] - dim(max_bf_mat %>% filter(max>1.3))[1]
+windows_lost[3,2] <- dim(max_bf_map)[1] - dim(max_bf_map %>% filter(max>1.3))[1]
+windows_lost[3,3] <- dim(max_bf_cmd)[1] - dim(max_bf_cmd %>% filter(max>1.3))[1]
+
+windows_lost[4,1] <- dim(max_bf_mat)[1] - dim(max_bf_mat %>% filter(max>2))[1]
+windows_lost[4,2] <- dim(max_bf_map)[1] - dim(max_bf_map %>% filter(max>2))[1]
+windows_lost[4,3] <- dim(max_bf_cmd)[1] - dim(max_bf_cmd %>% filter(max>2))[1]
+
+windows_lost[5,1] <- dim(max_bf_mat)[1] - dim(max_bf_mat %>% filter(max>5))[1]
+windows_lost[5,2] <- dim(max_bf_map)[1] - dim(max_bf_map %>% filter(max>5))[1]
+windows_lost[5,3] <- dim(max_bf_cmd)[1] - dim(max_bf_cmd %>% filter(max>5))[1]
+
+windows_lost[6,1] <- dim(max_bf_mat)[1] - dim(max_bf_mat %>% filter(max>10))[1]
+windows_lost[6,2] <- dim(max_bf_map)[1] - dim(max_bf_map %>% filter(max>10))[1]
+windows_lost[6,3] <- dim(max_bf_cmd)[1] - dim(max_bf_cmd %>% filter(max>10))[1]
+
+windows_lost[7,1] <- dim(max_bf_mat)[1] - dim(max_bf_mat %>% filter(max>20))[1]
+windows_lost[7,2] <- dim(max_bf_map)[1] - dim(max_bf_map %>% filter(max>20))[1]
+windows_lost[7,3] <- dim(max_bf_cmd)[1] - dim(max_bf_cmd %>% filter(max>20))[1]
+
+colnames(windows_lost) <- c("MAT (34)","MAP(41)","CMD(36)")
+rownames(windows_lost) <- c("BF>0","BF>0.5","BF>1.3","BF>2","BF>5","BF>10","BF>20")
+
+#write_csv(windows_lost,"Genomics_scripts/Data/windows_lost.csv")
+
+#Filter by different treshholds
+#Filter by BF >0
+peak_bf0_mat <- peak_bf_mat %>% filter(BF>=0)
+peak_bf0_map <- peak_bf_map %>% filter(BF>=0)
+peak_bf0_cmd <- peak_bf_cmd %>% filter(BF>=0)
+
+#Filter by BF >0.5
+peak_bf05_mat <- peak_bf_mat %>% filter(BF>=0.5)
+peak_bf05_map <- peak_bf_map %>% filter(BF>=0.5)
+peak_bf05_cmd <- peak_bf_cmd %>% filter(BF>=0.5)
+
+#Filter by BF >1.3
+peak_bf13_mat <- peak_bf_mat %>% filter(BF>=1.3)
+peak_bf13_map <- peak_bf_map %>% filter(BF>=1.3)
+peak_bf13_cmd <- peak_bf_cmd %>% filter(BF>=1.3)
+
+#Filter by BF >2
+peak_bf2_mat <- peak_bf_mat %>% filter(BF>=2)
+peak_bf2_map <- peak_bf_map %>% filter(BF>=2)
+peak_bf2_cmd <- peak_bf_cmd %>% filter(BF>=2)
+
+#Filter by BF >5
+peak_bf5_mat <- peak_bf_mat %>% filter(BF>=5)
+peak_bf5_map <- peak_bf_map %>% filter(BF>=5)
+peak_bf5_cmd <- peak_bf_cmd %>% filter(BF>=5)
+
+#Filter by BF >10
 peak_bf10_mat <- peak_bf_mat %>% filter(BF>=10)
 peak_bf10_map <- peak_bf_map %>% filter(BF>=10)
 peak_bf10_cmd <- peak_bf_cmd %>% filter(BF>=10)
 
-write_csv(peak_bf10_mat,"Genomics_scripts/Data/win_bf_mat.csv")
-write_csv(peak_bf10_map,"Genomics_scripts/Data/win_bf_map.csv")
-write_csv(peak_bf10_cmd,"Genomics_scripts/Data/win_bf_cmd.csv")
+#Filter by BF >20
+peak_bf20_mat <- peak_bf_mat %>% filter(BF>=20)
+peak_bf20_map <- peak_bf_map %>% filter(BF>=20)
+peak_bf20_cmd <- peak_bf_cmd %>% filter(BF>=20)
+
+
+#Tabulate SNPs in each chatergory
+snps_available <- data.frame()
+
+snps_available[1,1] <-  dim(peak_bf0_mat)[1]
+snps_available[1,2] <-  dim(peak_bf0_map)[1]
+snps_available[1,3] <-  dim(peak_bf0_cmd)[1]
+
+snps_available[2,1] <-  dim(peak_bf05_mat)[1]
+snps_available[2,2] <-  dim(peak_bf05_map)[1]
+snps_available[2,3] <-  dim(peak_bf05_cmd)[1]
+
+snps_available[3,1] <-  dim(peak_bf13_mat)[1]
+snps_available[3,2] <-  dim(peak_bf13_map)[1]
+snps_available[3,3] <-  dim(peak_bf13_cmd)[1]
+
+snps_available[4,1] <-  dim(peak_bf2_mat)[1]
+snps_available[4,2] <-  dim(peak_bf2_map)[1]
+snps_available[4,3] <-  dim(peak_bf2_cmd)[1]
+
+snps_available[5,1] <-  dim(peak_bf5_mat)[1]
+snps_available[5,2] <-  dim(peak_bf5_map)[1]
+snps_available[5,3] <-  dim(peak_bf5_cmd)[1]
+
+snps_available[6,1] <-  dim(peak_bf10_mat)[1]
+snps_available[6,2] <-  dim(peak_bf10_map)[1]
+snps_available[6,3] <-  dim(peak_bf10_cmd)[1]
+
+snps_available[7,1] <-  dim(peak_bf20_mat)[1]
+snps_available[7,2] <-  dim(peak_bf20_map)[1]
+snps_available[7,3] <-  dim(peak_bf20_cmd)[1]
+
+write_csv(snps_available,"Genomics_scripts/Data/snps_available.csv")
+
+
+
+write_csv(peak_bf2_mat,"Genomics_scripts/Data/win_bf_mat.csv")
+write_csv(peak_bf2_map,"Genomics_scripts/Data/win_bf_map.csv")
+write_csv(peak_bf2_cmd,"Genomics_scripts/Data/win_bf_cmd.csv")
 
 
 
