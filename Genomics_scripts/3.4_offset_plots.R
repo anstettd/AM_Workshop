@@ -25,8 +25,9 @@ library(RColorBrewer)
 ## INPUTS
 
 #Raster
-mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5.tif") #pop data
-mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5.tif") #pop data
+mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5_peakbf2.tif") #pop data
+mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5_peakbf2.tif") #pop data
 
 # California & Oregon Map Setup
 states<-ne_states(country=c("canada","united states of america"),returnclass= "sf")

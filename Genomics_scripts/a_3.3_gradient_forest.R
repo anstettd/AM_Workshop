@@ -121,11 +121,11 @@ rasterStack <- function(x,varList,rType='tif',vConvert=T){
 
 ## Import SNP data and arrage for gradient forest
 #Import SNP Data & and reformat
-snp_clim_bf20NA <- read_csv("Genomics_scripts/Data/snp_clim_peakbf2.csv") #pop data
-test_snp <- snp_clim_bf20NA %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
+snp_clim_bf20NA <- read_csv("Genomics_scripts/Data/snp_clim_peakbf2_noNA.csv") #pop data
+test_snp <- snp_clim_bf20NA %>% dplyr::select(-Elevation, -MAT, -MAP, -CMD,
                                        -PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
 #snp_clim_ful <- read_csv("Genomics_scripts/Data/snp_clim_full.csv") # full data
-snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_.csv") #pop data, NA's included
+#snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_.csv") #pop data, NA's included
 #test_snp <- snp_clim_bf20 %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
 #-PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
 
@@ -170,17 +170,17 @@ crs(stk)
 
 #Clip raster using range-extent polygon
 stk.clip <- raster::crop(stk, extent(c_range))
-stk.mask <- mask(stk.clip, c_range)
+#stk.mask <- mask(stk.clip, c_range)
 
 #Extract point from raster stack
-stk.df <- data.frame(rasterToPoints(stk.mask))
+stk.df <- data.frame(rasterToPoints(stk.clip))
 stk.df <- na.omit(stk.df)
 
 #Convert xy coordinates into cell ID
-stk.df.cell<-cellFromXY(stk.mask, cbind(stk.df$x, stk.df$y))
+stk.df.cell<-cellFromXY(stk.clip, cbind(stk.df$x, stk.df$y))
 
 ############################################################################################################
-##Import future climate change rasters
+##Import 2010-2016 climate rasters
 #Import 2016 raster data for West NA & and stack them
 wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016"
 vlist <- c("MAT","MAP","CMD")
@@ -192,24 +192,49 @@ crs(stk_2016)
 
 #Clip raster using range-extent polygon
 stk_2016.clip <- raster::crop(stk_2016, extent(c_range))
-stk_2016.mask <- mask(stk_2016.clip, c_range)
+#stk_2016.mask <- mask(stk_2016.clip, c_range)
 
 #Extract point from raster stack
-stk_2016.df <- data.frame(rasterToPoints(stk_2016.mask))
+stk_2016.df <- data.frame(rasterToPoints(stk_2016.clip))
 stk_2016.df <- na.omit(stk_2016.df)
 colnames(stk_2016.df)[3]<-"MAT"
 colnames(stk_2016.df)[4]<-"MAP"
 colnames(stk_2016.df)[5]<-"CMD"
 
 #Convert xy coordinates into cell ID
-stk_2016.df.cell<-cellFromXY(stk_2016.mask, cbind(stk_2016.df$x, stk_2016.df$y))
+stk_2016.df.cell<-cellFromXY(stk_2016.clip, cbind(stk_2016.df$x, stk_2016.df$y))
 
 
 
 
 
 
+############################################################################################################
+##Import future climate change rasters
+#Import 2041-2070 SSP245 (RCP4.5) raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/ensemble_8GCMs_ssp245_2041_2070_bioclim"
+vlist <- c("ensemble_8GCMs_ssp245_2041_2070_MAT",
+           "ensemble_8GCMs_ssp245_2041_2070_MAP",
+           "ensemble_8GCMs_ssp245_2041_2070_CMD")
+stk_4.5 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 
+#Reproject to WGS 1984 (EPSG4326)
+stk_4.5 <- projectRaster(stk_4.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_4.5)
+
+#Clip raster using range-extent polygon
+stk_4.5.clip <- raster::crop(stk_4.5, extent(c_range))
+#stk_4.5.mask <- mask(stk_4.5.clip, c_range)
+
+#Extract point from raster stack
+stk_4.5.df <- data.frame(rasterToPoints(stk_4.5.clip))
+stk_4.5.df <- na.omit(stk_4.5.df)
+colnames(stk_4.5.df)[3]<-"MAT"
+colnames(stk_4.5.df)[4]<-"MAP"
+colnames(stk_4.5.df)[5]<-"CMD"
+
+#Convert xy coordinates into cell ID
+stk_4.5.df.cell<-cellFromXY(stk_4.5.mask, cbind(stk_4.5.df$x, stk_4.5.df$y))
 
 
 
@@ -227,10 +252,10 @@ crs(stk_8.5)
 
 #Clip raster using range-extent polygon
 stk_8.5.clip <- raster::crop(stk_8.5, extent(c_range))
-stk_8.5.mask <- mask(stk_8.5.clip, c_range)
+#stk_8.5.mask <- mask(stk_8.5.clip, c_range)
 
 #Extract point from raster stack
-stk_8.5.df <- data.frame(rasterToPoints(stk_8.5.mask))
+stk_8.5.df <- data.frame(rasterToPoints(stk_8.5.clip))
 stk_8.5.df <- na.omit(stk_8.5.df)
 colnames(stk_8.5.df)[3]<-"MAT"
 colnames(stk_8.5.df)[4]<-"MAP"
@@ -242,13 +267,15 @@ stk_8.5.df.cell<-cellFromXY(stk_8.5.mask, cbind(stk_8.5.df$x, stk_8.5.df$y))
 
 
 #Get mask for RGB
-MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010/MAT.tif")
+MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/MAT.tif")
 MAT.clip <- projectRaster(MAT.clip, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
 rbg_mask <- raster::crop(MAT.clip, extent(c_range))
-rbg_mask <- mask(rbg_mask, c_range)
+#rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
+mask_offset_2016 <- rbg_mask
 mask_offset_45 <- rbg_mask
 mask_offset_85 <- rbg_mask
+rbg_2016 <- rbg_mask
 rbg_45 <- rbg_mask
 rbg_85 <- rbg_mask
 
@@ -287,6 +314,31 @@ predBF20 <- predict(gf, stk.df[,-1:-2]) # remove cell column before transforming
 # (2) a dataframe named env_trns_future containing extracted raster data of 
 # env. variables for FUTURE a climate scenario, same structure as env_trns
 
+#2011 to 2016 climate variables
+
+# first transform FUTURE env. variables
+projBF20_2016 <- predict(gf, stk_2016.df[,-1:-2])
+
+
+
+# calculate euclidean distance between current and future genetic spaces  
+offset_BF20_2016 <- sqrt((projBF20_2016[,1]-predBF20[,1])^2+(projBF20_2016[,2]-predBF20[,2])^2
+                        +(projBF20_2016[,3]-predBF20[,3])^2)
+
+# assign values to raster - can be tricky if current/future climate
+# rasters are not identical in terms of # cells, extent, etc.
+
+
+mask_offset_2016[stk_2016.df.cell] <- offset_BF20_2016
+plot(mask_offset_2016)
+
+
+writeRaster(mask_offset_2016,"Genomics_scripts/Data/offset_2016.tif", format="GTiff", overwrite=TRUE)
+
+
+
+
+#Future Climate Change
 
 # first transform FUTURE env. variables
 projBF20_4.5 <- predict(gf, stk_4.5.df[,-1:-2])
@@ -309,8 +361,8 @@ mask_offset_85[stk_8.5.df.cell] <- offset_BF20_8.5
 plot(mask_offset_45)
 plot(mask_offset_85)
 
-writeRaster(mask_offset_45,"Genomics_scripts/Data/offset_4.5.tif", format="GTiff", overwrite=TRUE)
-writeRaster(mask_offset_85,"Genomics_scripts/Data/offset_8.5.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_45,"Genomics_scripts/Data/offset_4.5_peakbf2.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_85,"Genomics_scripts/Data/offset_8.5_peakbf2.tif", format="GTiff", overwrite=TRUE)
 
 
 
