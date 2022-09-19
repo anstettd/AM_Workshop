@@ -48,11 +48,11 @@ for (i in seq (2,dim(loci_env)[2]-1,2)){
 rownames(snp_bay)<- loci_env$chr_snp
 snp_bay_T <- as.data.frame(t(snp_bay))
 snp_clim_bay <- cbind(climate,snp_bay_T)
-write_csv(snp_clim_bay, "Genomics_scripts/Data/snp_clim_bayBF20.csv")
+#write_csv(snp_clim_bay, "Genomics_scripts/Data/snp_clim_bayBF20.csv")
 
 #Remove NA's
 snp_clim_bf20NA <- snp_clim_bay %>% select_if(~ !any(is.na(.)))
-write_csv(snp_clim_bf20NA, "Genomics_scripts/Data/snp_clim_BF20NA.csv")
+#write_csv(snp_clim_bf20NA, "Genomics_scripts/Data/snp_clim_BF20NA.csv")
 
 
 #Generate snpA table for full baseline snp datatset #Does not run locally
