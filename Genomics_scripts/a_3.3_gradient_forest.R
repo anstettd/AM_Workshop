@@ -169,8 +169,9 @@ crs(stk)
 
 
 #Clip raster using range-extent polygon
-stk.clip <- raster::crop(stk, extent(c_range))
-stk.mask <- mask(stk.clip, c_range)
+stk.mask <- raster::crop(stk, extent(c_range))
+#stk.mask <- raster::crop(stk, c_range)
+#stk.mask <- mask(stk.clip, c_range)
 
 #Extract point from raster stack
 stk.df <- data.frame(rasterToPoints(stk.mask))
@@ -191,8 +192,9 @@ stk_2016 <- projectRaster(stk_2016, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4
 crs(stk_2016)
 
 #Clip raster using range-extent polygon
-stk_2016.clip <- raster::crop(stk_2016, extent(c_range))
-stk_2016.mask <- mask(stk_2016.clip, c_range)
+stk_2016.mask <- raster::crop(stk_2016, extent(c_range))
+#stk_2016.mask <- raster::crop(stk_2016, c_range)
+#stk_2016.mask <- mask(stk_2016.clip, c_range)
 
 #Extract point from raster stack
 stk_2016.df <- data.frame(rasterToPoints(stk_2016.mask))
@@ -223,8 +225,9 @@ stk_4.5 <- projectRaster(stk_4.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 432
 crs(stk_4.5)
 
 #Clip raster using range-extent polygon
-stk_4.5.clip <- raster::crop(stk_4.5, extent(c_range))
-stk_4.5.mask <- mask(stk_4.5.clip, c_range)
+stk_4.5.mask <- raster::crop(stk_4.5, extent(c_range))
+#stk_4.5.mask <- raster::crop(stk_4.5, c_range)
+#stk_4.5.mask <- mask(stk_4.5.clip, c_range)
 
 #Extract point from raster stack
 stk_4.5.df <- data.frame(rasterToPoints(stk_4.5.mask))
@@ -251,8 +254,9 @@ stk_8.5 <- projectRaster(stk_8.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 432
 crs(stk_8.5)
 
 #Clip raster using range-extent polygon
-stk_8.5.clip <- raster::crop(stk_8.5, extent(c_range))
-stk_8.5.mask <- mask(stk_8.5.clip, c_range)
+#stk_8.5.mask <- raster::crop(stk_8.5, c_range)
+stk_8.5.mask <- raster::crop(stk_8.5, extent(c_range))
+#stk_8.5.mask <- mask(stk_8.5.clip, c_range)
 
 #Extract point from raster stack
 stk_8.5.df <- data.frame(rasterToPoints(stk_8.5.mask))
@@ -269,6 +273,7 @@ stk_8.5.df.cell<-cellFromXY(stk_8.5.mask, cbind(stk_8.5.df$x, stk_8.5.df$y))
 #Get mask for RGB
 MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/MAT.tif")
 MAT.clip <- projectRaster(MAT.clip, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+#rbg_mask <- raster::crop(MAT.clip, c_range)
 rbg_mask <- raster::crop(MAT.clip, extent(c_range))
 #rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
