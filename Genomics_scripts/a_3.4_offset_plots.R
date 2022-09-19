@@ -26,16 +26,24 @@ library(RColorBrewer)
 
 #Raster
 mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5.tif") #pop data
-mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5.tif") #pop data
+mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5_peakbf2.tif") #pop data
+mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5_peakbf2.tif") #pop data
+
+#Define CRS
+EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
+
+#Mask by M. caridnalis range extent
+c_range <- st_read("SDM/Output/c_range_2.shp") 
+c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
+mask_offset_2016 <- mask(mask_offset_2016, c_range)
+mask_offset_45 <- mask(mask_offset_45, c_range)
+mask_offset_85 <- mask(mask_offset_85, c_range)
+
 
 # California & Oregon Map Setup
 states<-ne_states(country=c("canada","united states of america"),returnclass= "sf")
 calo <- states %>%
   filter(name_en=="Oregon" | name_en=="California" | name_en=="Nevada")
-
-#Define CRS
-EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
 
 #Baseline & Timeseries
 baseline_pop <- read_csv("Genomics_scripts/Data/paper_ID_site_select.csv")
