@@ -25,6 +25,7 @@ library(RColorBrewer)
 ## INPUTS
 
 #Raster
+mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5.tif") #pop data
 mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5.tif") #pop data
 
@@ -42,6 +43,28 @@ timeseries_pop <- baseline_pop %>% filter(Paper_ID<13) %>% dplyr::select(Long,La
 timeseries_pop_sf <- st_as_sf(timeseries_pop,coords=c("Long","Lat"), crs=EPSG4326)
 baseline_pop <- baseline_pop  %>% dplyr::select(Long,Lat)
 baseline_pop_sf <- st_as_sf(baseline_pop,coords=c("Long","Lat"), crs=EPSG4326)
+##############################################################################
+
+#2011-2016
+
+off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
+
+#Plot offset SSP245 (RCP 4.5)
+tmap_mode("plot")
+#tmap_mode("view")
+offset45 <- tm_shape(mask_offset_2016, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet)+
+  #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
+  #  tm_raster(palette = "Reds")+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(timeseries_pop_sf)+
+  tm_dots(size=0.2,shape=1)+
+  #  tm_shape(baseline_pop_sf)+
+  #  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(1.03, 0.73),legend.title.size = 0.001)
+offset45
+tmap_save(offset45, filename = "Offset_graphs/offset45_BF20.pdf",width=4, height=7)
 
 
 ##############################################################################
