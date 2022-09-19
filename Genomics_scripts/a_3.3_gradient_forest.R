@@ -121,11 +121,11 @@ rasterStack <- function(x,varList,rType='tif',vConvert=T){
 
 ## Import SNP data and arrage for gradient forest
 #Import SNP Data & and reformat
-snp_clim_bf20NA <- read_csv("Genomics_scripts/Data/snp_clim_BF20NA.csv") #pop data
+snp_clim_bf20NA <- read_csv("Genomics_scripts/Data/snp_clim_peakbf2.csv") #pop data
 test_snp <- snp_clim_bf20NA %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
                                        -PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
 #snp_clim_ful <- read_csv("Genomics_scripts/Data/snp_clim_full.csv") # full data
-snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_bayBF20.csv") #pop data, NA's included
+snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_.csv") #pop data, NA's included
 #test_snp <- snp_clim_bf20 %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
 #-PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
 
@@ -181,30 +181,37 @@ stk.df.cell<-cellFromXY(stk.mask, cbind(stk.df$x, stk.df$y))
 
 ############################################################################################################
 ##Import future climate change rasters
-#Import 2041-2070 SSP245 (RCP4.5) raster data for West NA & and stack them
-wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/ensemble_8GCMs_ssp245_2041_2070_bioclim"
-vlist <- c("ensemble_8GCMs_ssp245_2041_2070_MAT",
-           "ensemble_8GCMs_ssp245_2041_2070_MAP",
-           "ensemble_8GCMs_ssp245_2041_2070_CMD")
-stk_4.5 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+#Import 2016 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016"
+vlist <- c("MAT","MAP","CMD")
+stk_2016 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 
 #Reproject to WGS 1984 (EPSG4326)
-stk_4.5 <- projectRaster(stk_4.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
-crs(stk_4.5)
+stk_2016 <- projectRaster(stk_2016, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_2016)
 
 #Clip raster using range-extent polygon
-stk_4.5.clip <- raster::crop(stk_4.5, extent(c_range))
-stk_4.5.mask <- mask(stk_4.5.clip, c_range)
+stk_2016.clip <- raster::crop(stk_2016, extent(c_range))
+stk_2016.mask <- mask(stk_2016.clip, c_range)
 
 #Extract point from raster stack
-stk_4.5.df <- data.frame(rasterToPoints(stk_4.5.mask))
-stk_4.5.df <- na.omit(stk_4.5.df)
-colnames(stk_4.5.df)[3]<-"MAT"
-colnames(stk_4.5.df)[4]<-"MAP"
-colnames(stk_4.5.df)[5]<-"CMD"
+stk_2016.df <- data.frame(rasterToPoints(stk_2016.mask))
+stk_2016.df <- na.omit(stk_2016.df)
+colnames(stk_2016.df)[3]<-"MAT"
+colnames(stk_2016.df)[4]<-"MAP"
+colnames(stk_2016.df)[5]<-"CMD"
 
 #Convert xy coordinates into cell ID
-stk_4.5.df.cell<-cellFromXY(stk_4.5.mask, cbind(stk_4.5.df$x, stk_4.5.df$y))
+stk_2016.df.cell<-cellFromXY(stk_2016.mask, cbind(stk_2016.df$x, stk_2016.df$y))
+
+
+
+
+
+
+
+
+
 
 #####################################
 #Import 2041-2070 SSP585 (RCP8.5) raster data for West NA & and stack them
