@@ -149,7 +149,7 @@ snps_available[7,1] <-  dim(peak_bf20_mat)[1]
 snps_available[7,2] <-  dim(peak_bf20_map)[1]
 snps_available[7,3] <-  dim(peak_bf20_cmd)[1]
 
-write_csv(snps_available,"Genomics_scripts/Data/snps_available.csv")
+#write_csv(snps_available,"Genomics_scripts/Data/snps_available.csv")
 
 
 
