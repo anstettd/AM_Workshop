@@ -170,14 +170,14 @@ crs(stk)
 
 #Clip raster using range-extent polygon
 stk.clip <- raster::crop(stk, extent(c_range))
-#stk.mask <- mask(stk.clip, c_range)
+stk.mask <- mask(stk.clip, c_range)
 
 #Extract point from raster stack
-stk.df <- data.frame(rasterToPoints(stk.clip))
+stk.df <- data.frame(rasterToPoints(stk.mask))
 stk.df <- na.omit(stk.df)
 
 #Convert xy coordinates into cell ID
-stk.df.cell<-cellFromXY(stk.clip, cbind(stk.df$x, stk.df$y))
+stk.df.cell<-cellFromXY(stk.mask, cbind(stk.df$x, stk.df$y))
 
 ############################################################################################################
 ##Import 2010-2016 climate rasters
@@ -191,8 +191,8 @@ stk_2016 <- projectRaster(stk_2016, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4
 crs(stk_2016)
 
 #Clip raster using range-extent polygon
-stk_2016.clip <- raster::crop(stk_2016, extent(c_range))
-#stk_2016.mask <- mask(stk_2016.clip, c_range)
+stk_2016.mask <- raster::crop(stk_2016, extent(c_range))
+stk_2016.mask <- mask(stk_2016.clip, c_range)
 
 #Extract point from raster stack
 stk_2016.df <- data.frame(rasterToPoints(stk_2016.clip))
@@ -202,7 +202,7 @@ colnames(stk_2016.df)[4]<-"MAP"
 colnames(stk_2016.df)[5]<-"CMD"
 
 #Convert xy coordinates into cell ID
-stk_2016.df.cell<-cellFromXY(stk_2016.clip, cbind(stk_2016.df$x, stk_2016.df$y))
+stk_2016.df.cell<-cellFromXY(stk_2016.mask, cbind(stk_2016.df$x, stk_2016.df$y))
 
 
 
@@ -224,7 +224,7 @@ crs(stk_4.5)
 
 #Clip raster using range-extent polygon
 stk_4.5.clip <- raster::crop(stk_4.5, extent(c_range))
-#stk_4.5.mask <- mask(stk_4.5.clip, c_range)
+stk_4.5.mask <- mask(stk_4.5.clip, c_range)
 
 #Extract point from raster stack
 stk_4.5.df <- data.frame(rasterToPoints(stk_4.5.clip))
@@ -252,7 +252,7 @@ crs(stk_8.5)
 
 #Clip raster using range-extent polygon
 stk_8.5.clip <- raster::crop(stk_8.5, extent(c_range))
-#stk_8.5.mask <- mask(stk_8.5.clip, c_range)
+stk_8.5.mask <- mask(stk_8.5.clip, c_range)
 
 #Extract point from raster stack
 stk_8.5.df <- data.frame(rasterToPoints(stk_8.5.clip))
@@ -331,7 +331,6 @@ offset_BF20_2016 <- sqrt((projBF20_2016[,1]-predBF20[,1])^2+(projBF20_2016[,2]-p
 
 mask_offset_2016[stk_2016.df.cell] <- offset_BF20_2016
 plot(mask_offset_2016)
-
 
 writeRaster(mask_offset_2016,"Genomics_scripts/Data/offset_2016.tif", format="GTiff", overwrite=TRUE)
 
