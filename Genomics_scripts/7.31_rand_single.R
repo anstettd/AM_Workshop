@@ -1,5 +1,6 @@
 ##################################################################################
 ## Generate stratified distribution of random non-climate associated slopes
+## For seed = 1
 ## Author Daniel Anstett
 ## 
 ## 
