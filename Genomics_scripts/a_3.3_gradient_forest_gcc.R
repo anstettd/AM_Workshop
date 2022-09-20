@@ -1,9 +1,11 @@
 ##################################################################################
-## Gradient forest for full SNP dataset
+## Gradient forest for peak snp20 SNP dataset
+## Works when raster stuff is done with 3.3_gradient forest
+## run SNP import and GF here
 ## Author Daniel Anstett
 ## 
 ## Modified from Keller & Fitzpatric 2015
-## Last Modified Dec 13, 2021
+## Last Modified September 19, 2022
 ###################################################################################
 
 #Library install and import
@@ -121,11 +123,11 @@ rasterStack <- function(x,varList,rType='tif',vConvert=T){
 
 ## Import SNP data and arrange for gradient forest
 #Import SNP Data & and reformat
-snp_clim_bf20NA <- read_csv("Genomics_scripts/Data/snp_clim_BF20NA.csv") #pop data
+snp_clim_bf20NA <- read_csv("Genomics_scripts/Data/snp_clim_peakbf2_noNA.csv") #pop data
 test_snp <- snp_clim_bf20NA %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
-                                       -PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
+                                              -PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
 #snp_clim_ful <- read_csv("Genomics_scripts/Data/snp_clim_full.csv") # full data
-#snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_bayBF20.csv") #pop data, NA's included
+#snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_peakbf2_NA.csv") #pop data, NA's included
 #test_snp <- snp_clim_bf20 %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
 #-PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
 
@@ -179,6 +181,7 @@ stk.df <- na.omit(stk.df)
 #Convert xy coordinates into cell ID
 stk.df.cell<-cellFromXY(stk.mask, cbind(stk.df$x, stk.df$y))
 
+
 ############################################################################################################
 ##Import future climate change rasters
 #Import 2041-2070 SSP245 (RCP4.5) raster data for West NA & and stack them
@@ -193,8 +196,8 @@ stk_4.5 <- projectRaster(stk_4.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 432
 crs(stk_4.5)
 
 #Clip raster using range-extent polygon
-stk_4.5.clip <- raster::crop(stk_4.5, extent(c_range))
-stk_4.5.mask <- mask(stk_4.5.clip, c_range)
+stk_4.5.mask <- raster::crop(stk_4.5, extent(c_range))
+#stk_4.5.mask <- mask(stk_4.5.clip, c_range)
 
 #Extract point from raster stack
 stk_4.5.df <- data.frame(rasterToPoints(stk_4.5.mask))
@@ -221,8 +224,8 @@ stk_8.5 <- projectRaster(stk_8.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 432
 crs(stk_8.5)
 
 #Clip raster using range-extent polygon
-stk_8.5.clip <- raster::crop(stk_8.5, extent(c_range))
-stk_8.5.mask <- mask(stk_8.5.clip, c_range)
+stk_8.5.mask <- raster::crop(stk_8.5, extent(c_range))
+#stk_8.5.mask <- mask(stk_8.5.mask, c_range)
 
 #Extract point from raster stack
 stk_8.5.df <- data.frame(rasterToPoints(stk_8.5.mask))
@@ -282,6 +285,9 @@ predBF20 <- predict(gf, stk.df[,-1:-2]) # remove cell column before transforming
 # (2) a dataframe named env_trns_future containing extracted raster data of 
 # env. variables for FUTURE a climate scenario, same structure as env_trns
 
+#2011 to 2016 climate variables
+
+#Future Climate Change
 
 # first transform FUTURE env. variables
 projBF20_4.5 <- predict(gf, stk_4.5.df[,-1:-2])
@@ -290,7 +296,7 @@ projBF20_8.5 <- predict(gf, stk_8.5.df[,-1:-2])
 
 # calculate euclidean distance between current and future genetic spaces  
 offset_BF20_4.5 <- sqrt((projBF20_4.5[,1]-predBF20[,1])^2+(projBF20_4.5[,2]-predBF20[,2])^2
-                     +(projBF20_4.5[,3]-predBF20[,3])^2)
+                        +(projBF20_4.5[,3]-predBF20[,3])^2)
 
 offset_BF20_8.5 <- sqrt((projBF20_8.5[,1]-predBF20[,1])^2+(projBF20_8.5[,2]-predBF20[,2])^2
                         +(projBF20_8.5[,3]-predBF20[,3])^2)
@@ -304,11 +310,8 @@ mask_offset_85[stk_8.5.df.cell] <- offset_BF20_8.5
 plot(mask_offset_45)
 plot(mask_offset_85)
 
-#writeRaster(mask_offset_45,"Genomics_scripts/Data/offset_4.5.tif", format="GTiff", overwrite=TRUE)
-#writeRaster(mask_offset_85,"Genomics_scripts/Data/offset_8.5.tif", format="GTiff", overwrite=TRUE)
-
-
-
+writeRaster(mask_offset_45,"Genomics_scripts/Data/offset_4.5_peakbf2.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_85,"Genomics_scripts/Data/offset_8.5_peakbf2.tif", format="GTiff", overwrite=TRUE)
 
 
 
@@ -354,17 +357,6 @@ writeRaster(BF20_RGBmap, "Offset_graphs/current_climate_BF20_map.tif", format="G
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 ##################################################################################################################
 #Basic Plots
 
@@ -386,8 +378,8 @@ plot(gf, plot.type = "S", imp.vars = most_important,leg.posn = "topright", cex.l
 #change in abundance of individual species, where changes occur on the gradient, and the species
 #changing most on each gradient.
 plot(gf, plot.type = "C", imp.vars = most_important,show.overall = F, legend = T, leg.posn = "topleft",
-       leg.nspecies = 5, cex.lab = 0.7, cex.legend = 0.4,cex.axis = 0.6, line.ylab = 0.9, 
-       par.args = list(mgp = c(1.5, 0.5, 0), mar = c(2.5, 1, 0.1, 0.5), omi = c(0,0.3, 0, 0)))
+     leg.nspecies = 5, cex.lab = 0.7, cex.legend = 0.4,cex.axis = 0.6, line.ylab = 0.9, 
+     par.args = list(mgp = c(1.5, 0.5, 0), mar = c(2.5, 1, 0.1, 0.5), omi = c(0,0.3, 0, 0)))
 
 
 plot(gf, plot.type = "P", show.names = F, horizontal = F, cex.axis = 1, cex.labels = 0.7, line = 2.5)
