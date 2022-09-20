@@ -150,7 +150,8 @@ pred<-colnames(env_site)
 
 ## Range wide polygon
 # Import M.cardinalis ensamble range extent as sf polygon
-c_range <- st_read("SDM/Output/c_range_2.shp") 
+#c_range <- st_read("SDM/Output/c_range_2.shp")
+c_range <- st_read("Shape/c_range50.shp") 
 c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
 
 
@@ -197,7 +198,7 @@ crs(stk_4.5)
 
 #Clip raster using range-extent polygon
 stk_4.5.mask <- raster::crop(stk_4.5, extent(c_range))
-#stk_4.5.mask <- mask(stk_4.5.clip, c_range)
+stk_4.5.mask <- mask(stk_4.5.mask, c_range)
 
 #Extract point from raster stack
 stk_4.5.df <- data.frame(rasterToPoints(stk_4.5.mask))
@@ -225,7 +226,7 @@ crs(stk_8.5)
 
 #Clip raster using range-extent polygon
 stk_8.5.mask <- raster::crop(stk_8.5, extent(c_range))
-#stk_8.5.mask <- mask(stk_8.5.mask, c_range)
+stk_8.5.mask <- mask(stk_8.5.mask, c_range)
 
 #Extract point from raster stack
 stk_8.5.df <- data.frame(rasterToPoints(stk_8.5.mask))

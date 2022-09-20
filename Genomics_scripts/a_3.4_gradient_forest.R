@@ -148,7 +148,8 @@ pred<-colnames(env_site)
 
 ## Range wide polygon
 # Import M.cardinalis ensamble range extent as sf polygon
-c_range <- st_read("SDM/Output/c_range_2.shp") 
+#c_range <- st_read("SDM/Output/c_range_2.shp")
+c_range <- st_read("Shape/c_range50.shp") 
 c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
 
 
@@ -182,6 +183,133 @@ stk.df.cell<-cellFromXY(stk.mask, cbind(stk.df$x, stk.df$y))
 ############################################################################################################
 ##Import 2010-2016 climate rasters
 
+
+
+#######################
+#Import 2011 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2011"
+vlist <- c("MAT","MAP","CMD")
+stk_2011 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+
+#Reproject to WGS 1984 (EPSG4326)
+stk_2011 <- projectRaster(stk_2011, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_2011)
+
+#Clip raster using range-extent polygon
+stk_2011.mask <- raster::crop(stk_2011, extent(c_range))
+stk_2011.mask <- mask(stk_2011.mask, c_range)
+
+#Extract point from raster stack
+stk_2011.df <- data.frame(rasterToPoints(stk_2011.mask))
+stk_2011.df <- na.omit(stk_2011.df)
+colnames(stk_2011.df)[3]<-"MAT"
+colnames(stk_2011.df)[4]<-"MAP"
+colnames(stk_2011.df)[5]<-"CMD"
+
+#Convert xy coordinates into cell ID
+stk_2011.df.cell<-cellFromXY(stk_2011.mask, cbind(stk_2011.df$x, stk_2011.df$y))
+
+
+#######################
+#Import 2012 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2012"
+vlist <- c("MAT","MAP","CMD")
+stk_2012 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+
+#Reproject to WGS 1984 (EPSG4326)
+stk_2012 <- projectRaster(stk_2012, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_2012)
+
+#Clip raster using range-extent polygon
+stk_2012.mask <- raster::crop(stk_2012, extent(c_range))
+stk_2012.mask <- mask(stk_2012.mask, c_range)
+
+#Extract point from raster stack
+stk_2012.df <- data.frame(rasterToPoints(stk_2012.mask))
+stk_2012.df <- na.omit(stk_2012.df)
+colnames(stk_2012.df)[3]<-"MAT"
+colnames(stk_2012.df)[4]<-"MAP"
+colnames(stk_2012.df)[5]<-"CMD"
+
+#Convert xy coordinates into cell ID
+stk_2012.df.cell<-cellFromXY(stk_2012.mask, cbind(stk_2012.df$x, stk_2012.df$y))
+
+
+#######################
+#Import 2013 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2013"
+vlist <- c("MAT","MAP","CMD")
+stk_2013 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+
+#Reproject to WGS 1984 (EPSG4326)
+stk_2013 <- projectRaster(stk_2013, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_2013)
+
+#Clip raster using range-extent polygon
+stk_2013.mask <- raster::crop(stk_2013, extent(c_range))
+stk_2013.mask <- mask(stk_2013.mask, c_range)
+
+#Extract point from raster stack
+stk_2013.df <- data.frame(rasterToPoints(stk_2013.mask))
+stk_2013.df <- na.omit(stk_2013.df)
+colnames(stk_2013.df)[3]<-"MAT"
+colnames(stk_2013.df)[4]<-"MAP"
+colnames(stk_2013.df)[5]<-"CMD"
+
+#Convert xy coordinates into cell ID
+stk_2013.df.cell<-cellFromXY(stk_2013.mask, cbind(stk_2013.df$x, stk_2013.df$y))
+
+
+#######################
+#Import 2014 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2014"
+vlist <- c("MAT","MAP","CMD")
+stk_2014 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+
+#Reproject to WGS 1984 (EPSG4326)
+stk_2014 <- projectRaster(stk_2014, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_2014)
+
+#Clip raster using range-extent polygon
+stk_2014.mask <- raster::crop(stk_2014, extent(c_range))
+stk_2014.mask <- mask(stk_2014.mask, c_range)
+
+#Extract point from raster stack
+stk_2014.df <- data.frame(rasterToPoints(stk_2014.mask))
+stk_2014.df <- na.omit(stk_2014.df)
+colnames(stk_2014.df)[3]<-"MAT"
+colnames(stk_2014.df)[4]<-"MAP"
+colnames(stk_2014.df)[5]<-"CMD"
+
+#Convert xy coordinates into cell ID
+stk_2014.df.cell<-cellFromXY(stk_2014.mask, cbind(stk_2014.df$x, stk_2014.df$y))
+
+
+#######################
+#Import 2015 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2015"
+vlist <- c("MAT","MAP","CMD")
+stk_2015 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+
+#Reproject to WGS 1984 (EPSG4326)
+stk_2015 <- projectRaster(stk_2015, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_2015)
+
+#Clip raster using range-extent polygon
+stk_2015.mask <- raster::crop(stk_2015, extent(c_range))
+stk_2015.mask <- mask(stk_2015.mask, c_range)
+
+#Extract point from raster stack
+stk_2015.df <- data.frame(rasterToPoints(stk_2015.mask))
+stk_2015.df <- na.omit(stk_2015.df)
+colnames(stk_2015.df)[3]<-"MAT"
+colnames(stk_2015.df)[4]<-"MAP"
+colnames(stk_2015.df)[5]<-"CMD"
+
+#Convert xy coordinates into cell ID
+stk_2015.df.cell<-cellFromXY(stk_2015.mask, cbind(stk_2015.df$x, stk_2015.df$y))
+
+
 #######################
 #Import 2016 raster data for West NA & and stack them
 wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016"
@@ -211,15 +339,23 @@ stk_2016.df.cell<-cellFromXY(stk_2016.mask, cbind(stk_2016.df$x, stk_2016.df$y))
 
 
 
-
-
 #Get mask for RGB
 MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/MAT.tif")
 MAT.clip <- projectRaster(MAT.clip, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
 rbg_mask <- raster::crop(MAT.clip, extent(c_range))
 rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
+mask_offset_2011 <- rbg_mask
+mask_offset_2012 <- rbg_mask
+mask_offset_2013 <- rbg_mask
+mask_offset_2014 <- rbg_mask
+mask_offset_2015 <- rbg_mask
 mask_offset_2016 <- rbg_mask
+rbg_2011 <- rbg_mask
+rbg_2012 <- rbg_mask
+rbg_2013 <- rbg_mask
+rbg_2014 <- rbg_mask
+rbg_2015 <- rbg_mask
 rbg_2016 <- rbg_mask
 
 
@@ -261,20 +397,47 @@ predBF20 <- predict(gf, stk.df[,-1:-2]) # remove cell column before transforming
 #2011 to 2016 climate variables
 
 # first transform FUTURE env. variables
+projBF20_2011 <- predict(gf, stk_2011.df[,-1:-2])
+projBF20_2012 <- predict(gf, stk_2012.df[,-1:-2])
+projBF20_2013 <- predict(gf, stk_2013.df[,-1:-2])
+projBF20_2014 <- predict(gf, stk_2014.df[,-1:-2])
+projBF20_2015 <- predict(gf, stk_2015.df[,-1:-2])
 projBF20_2016 <- predict(gf, stk_2016.df[,-1:-2])
 
 
 
 # calculate euclidean distance between current and future genetic spaces  
+offset_BF20_2011 <- sqrt((projBF20_2011[,1]-predBF20[,1])^2+(projBF20_2011[,2]-predBF20[,2])^2
+                        +(projBF20_2011[,3]-predBF20[,3])^2)
+offset_BF20_2012 <- sqrt((projBF20_2012[,1]-predBF20[,1])^2+(projBF20_2012[,2]-predBF20[,2])^2
+                         +(projBF20_2012[,3]-predBF20[,3])^2)
+offset_BF20_2013 <- sqrt((projBF20_2013[,1]-predBF20[,1])^2+(projBF20_2013[,2]-predBF20[,2])^2
+                         +(projBF20_2013[,3]-predBF20[,3])^2)
+offset_BF20_2014 <- sqrt((projBF20_2014[,1]-predBF20[,1])^2+(projBF20_2014[,2]-predBF20[,2])^2
+                         +(projBF20_2014[,3]-predBF20[,3])^2)
+offset_BF20_2015 <- sqrt((projBF20_2015[,1]-predBF20[,1])^2+(projBF20_2015[,2]-predBF20[,2])^2
+                         +(projBF20_2015[,3]-predBF20[,3])^2)
 offset_BF20_2016 <- sqrt((projBF20_2016[,1]-predBF20[,1])^2+(projBF20_2016[,2]-predBF20[,2])^2
-                        +(projBF20_2016[,3]-predBF20[,3])^2)
+                         +(projBF20_2016[,3]-predBF20[,3])^2)
 
 # assign values to raster - can be tricky if current/future climate
 # rasters are not identical in terms of # cells, extent, etc.
 
-
+mask_offset_2011[stk_2011.df.cell] <- offset_BF20_2011
+mask_offset_2012[stk_2012.df.cell] <- offset_BF20_2012
+mask_offset_2013[stk_2013.df.cell] <- offset_BF20_2013
+mask_offset_2014[stk_2014.df.cell] <- offset_BF20_2014
+mask_offset_2015[stk_2015.df.cell] <- offset_BF20_2015
 mask_offset_2016[stk_2016.df.cell] <- offset_BF20_2016
+
+plot(mask_offset_2011)
+plot(mask_offset_2012)
+plot(mask_offset_2013)
+plot(mask_offset_2014)
+plot(mask_offset_2015)
 plot(mask_offset_2016)
+
+
 
 #writeRaster(mask_offset_2016,"Genomics_scripts/Data/offset_2016a.tif", format="GTiff", overwrite=TRUE)
 
