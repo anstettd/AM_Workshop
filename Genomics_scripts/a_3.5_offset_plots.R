@@ -25,7 +25,12 @@ library(RColorBrewer)
 ## INPUTS
 
 #Timeseries offset raster
-#mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2011 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2012 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2013 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2014 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2015 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 
 #Future cliamte change offset raster
 mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5_peakbf2.tif") #pop data
@@ -36,9 +41,14 @@ mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5_peakbf2.tif") #pop da
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
 
 #Mask by M. caridnalis range extent
-#c_range <- st_read("SDM/Output/c_range_2.shp") 
-#c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
-#mask_offset_2016 <- mask(mask_offset_2016, c_range)
+c_range <- st_read("Shape/c_range50.shp") 
+c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
+mask_offset_2011 <- mask(mask_offset_2016, c_range)
+mask_offset_2012 <- mask(mask_offset_2016, c_range)
+mask_offset_2013 <- mask(mask_offset_2016, c_range)
+mask_offset_2014 <- mask(mask_offset_2016, c_range)
+mask_offset_2015 <- mask(mask_offset_2016, c_range)
+mask_offset_2016 <- mask(mask_offset_2016, c_range)
 #mask_offset_45 <- mask(mask_offset_45, c_range)
 #mask_offset_85 <- mask(mask_offset_85, c_range)
 
@@ -56,26 +66,50 @@ baseline_pop <- baseline_pop  %>% dplyr::select(Long,Lat)
 baseline_pop_sf <- st_as_sf(baseline_pop,coords=c("Long","Lat"), crs=EPSG4326)
 ##############################################################################
 
-#2011-2016
-
+#2016
 off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
+off_palleta <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15","#5c0915")
 
 #Plot offset SSP245 (RCP 4.5)
 tmap_mode("plot")
 #tmap_mode("view")
 offset_2016 <- tm_shape(mask_offset_2016, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = off_pallet)+
+  tm_raster(palette = off_palleta)+
   #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
   #  tm_raster(palette = "Reds")+
   tm_shape(calo)+
   tm_borders()+
   tm_shape(timeseries_pop_sf)+
-  tm_dots(size=0.2,shape=1)+
+  tm_dots(size=0.5,shape=1,col="black",border.lwd = 2.5)+
   #  tm_shape(baseline_pop_sf)+
   #  tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.position = c(1.03, 0.73),legend.title.size = 0.001)
+  tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
 offset_2016
-#tmap_save(offset_2016, filename = "Offset_graphs/offset2016_peakbf2.pdf",width=4, height=7)
+tmap_save(offset_2016, filename = "Offset_graphs/offset2016_peakbf2.pdf",width=4, height=7)
+
+#2015
+off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
+off_palleta <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15","#5c0915")
+
+#Plot offset SSP245 (RCP 4.5)
+tmap_mode("plot")
+#tmap_mode("view")
+offset_2015 <- tm_shape(mask_offset_2015, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_palleta)+
+  #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
+  #  tm_raster(palette = "Reds")+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(timeseries_pop_sf)+
+  tm_dots(size=0.5,shape=1,col="black",border.lwd = 2.5)+
+  #  tm_shape(baseline_pop_sf)+
+  #  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
+offset_2015
+tmap_save(offset_2015, filename = "Offset_graphs/offset2015_peakbf2.pdf",width=4, height=7)
+
+
+
 
 
 ##############################################################################
