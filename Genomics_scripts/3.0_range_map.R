@@ -12,6 +12,7 @@ library(rgdal)
 library(rgeos)
 library(raster)
 library(tidyverse)
+library(spatstat)
 
 ### (1) Buffered Polygon 2 (recommended)
 
@@ -31,11 +32,12 @@ us_shp_aea <- spTransform(us_shp, CRS(aea_NA))
 # load species locality and make projection
 #spp_locality = readRDS(file.choose()) # locality data
 spp_locality <- read.csv("SDM/data_files/presences.csv")
-spp_locality <- spp_locality %>% mutate(Species="M_cardinalis")
+spp_locality <- spp_locality %>% mutate(sp_name="M_cardinalis")
+spp_locality_select <- spp_locality %>% select(sp_name,Latitude,Longitude)
 spp_shp <- SpatialPoints(spp_locality[,c("Longitude","Latitude")])
-spp_shp <- SpatialPoints(spp_locality[,c("Species","Longitude","Latitude")])
-#spp_shp <- SpatialPointsDataFrame(spp_shp, 
-#                    data.frame(ID=1:nrow(spp_locality),Species=spp_locality$species_name))
+#spp_shp <- SpatialPoints(spp_locality[,c("Species","Longitude","Latitude")])
+spp_shp <- SpatialPointsDataFrame(spp_shp, 
+                    data.frame(ID=1:nrow(spp_locality),Species=spp_locality$sp_name))
 proj4string(spp_shp) <- CRS(proj_xy)
 spp_shp_aea <- spTransform(spp_shp, CRS(aea_NA))
 
@@ -55,13 +57,23 @@ temp10k2 <- gBuffer(temp50k, width = -40000) # reduce the buffer (-40km)
 spp_pb_aea10k2 <- gIntersection(temp10k2,us_shp_aea)
 
 
+
+
+#Export 50 km buffer
+shapefile(x = spp_pb_aea10k2, file = "Shape/c_range50.shp")
+
+writeOGR(spp_pb_aea10k2, dsn = '.', layer = 'poly', driver = "ESRI Shapefile")
+
+
+
+
 ### (2) Range Polygon 2 by locality density
 # ref: 'rangemap' package
 # https://cran.r-project.org/web/packages/rangemap/vignettes/rangemap_short_tutorial_I.html
 options(rgl.useNULL = TRUE)
 library(rangemap)
 rgeos::set_RGEOS_CheckValidity(2L)
-pts_temp <- spp_locality[,c("Longitude","Latitude")] # need to be this order
+pts_temp = spp_locality[,c("sp_name","Longitude","Latitude")] # need to be this order
 
 # concave hull
 # not quite sure about the parameter setting:
@@ -85,7 +97,7 @@ er_owin = as.owin(range_shp)
 
 # create a ‘ppp’ (point pattern) object from xy
 p_sp = ppp(spp_locality$Longitude, spp_locality$Latitude, window=er_owin)
-#plot(p_sp)
+plot(p_sp)
 
 # compute Kernel Density to show locality density
 ds_node_plot = density(p_sp)
