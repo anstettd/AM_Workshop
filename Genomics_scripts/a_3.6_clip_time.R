@@ -23,11 +23,11 @@ library(rnaturalearthdata)
 ## INPUTS
 
 #Timeseries offset raster
-#mask_offset_2011 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-#mask_offset_2012 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-#mask_offset_2013 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-#mask_offset_2014 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-#mask_offset_2015 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2011 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2012 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2013 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2014 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2015 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 
 #Future cliamte change offset raster
@@ -50,6 +50,8 @@ mask_offset_45 <- mask(mask_offset_45, c_range)
 mask_offset_85 <- mask(mask_offset_85, c_range)
 
 rasStack_gcc <- stack(mask_offset_45,mask_offset_85)
+rasStack_1016 <- stack(mask_offset_2011,mask_offset_2012,mask_offset_2013,
+                      mask_offset_2014,mask_offset_2015,mask_offset_2016)
 
 #Baseline & Timeseries
 baseline_pop <- read_csv("Genomics_scripts/Data/paper_ID_site_select.csv")
@@ -60,12 +62,12 @@ coordinates(timeseries_pop)=cbind(timeseries_pop$Long,timeseries_pop$Lat)
 proj4string(timeseries_pop) <- EPSG4326
 crs(timeseries_pop)
 
-rasValue_2016 <- raster::extract(mask_offset_2016,timeseries_pop)
+rasStack_1016 <- raster::extract(rasStack_1016,timeseries_pop)
 rasValue_gcc <- raster::extract(rasStack_gcc,timeseries_pop)
 
 #Save offset data in dataframe
 timeseries_offset <- baseline_pop %>% filter(Paper_ID<13)
-offset_pop <- cbind(timeseries_offset,rasValue_2016,rasValue_gcc)
+offset_pop <- cbind(timeseries_offset,rasStack_1016,rasValue_gcc)
 
 #Plot offset against latitude
 #4.5
