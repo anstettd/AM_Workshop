@@ -37,6 +37,10 @@ mat_2016 <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/asc/Year_20
 map_2016 <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/asc/Year_2016/map.asc")
 cmd_2016 <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/asc/Year_2016/cmd.asc")
 
+mat_8110 <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/asc/Normal_1981_2010_800/mat.asc")
+map_8110 <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/asc/Normal_1981_2010_800/map.asc")
+cmd_8110 <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/asc/Normal_1981_2010_800/cmd.asc")
+
 
 #Reproject to WGS 1984 (EPSG4326)
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
@@ -64,6 +68,11 @@ crs(mat_2016) <- EPSG4326
 crs(map_2016) <- EPSG4326
 crs(cmd_2016) <- EPSG4326
 
+crs(mat_8110) <- EPSG4326
+crs(map_8110) <- EPSG4326
+crs(cmd_8110) <- EPSG4326
+
+
 
 #Export tif file
 writeRaster(mat_2011, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2011/MAT.tif",format="GTiff")
@@ -89,6 +98,13 @@ writeRaster(cmd_2015, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_201
 writeRaster(mat_2016, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/MAT.tif",format="GTiff")
 writeRaster(map_2016, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/MAP.tif",format="GTiff")
 writeRaster(cmd_2016, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/CMD.tif",format="GTiff")
+
+writeRaster(mat_8110, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_8110/MAT.tif",format="GTiff")
+writeRaster(map_8110, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_8110/MAP.tif",format="GTiff")
+writeRaster(cmd_8110, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_8110/CMD.tif",format="GTiff")
+
+
+
 
 
 #Export tif file

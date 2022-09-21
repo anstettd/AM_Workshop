@@ -155,7 +155,7 @@ c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
 
 ## Raster import and manipulation
 #Import 1981-2010 raster data for West NA & and stack them
-wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010"
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_8110"
 vlist <- c("MAT","MAP","CMD")
 stk <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 
@@ -171,7 +171,7 @@ crs(stk)
 
 #Clip raster using range-extent polygon
 stk.clip <- raster::crop(stk, extent(c_range))
-#stk.mask <- mask(stk.clip, c_range)
+stk.mask <- mask(stk.clip, c_range)
 
 #Extract point from raster stack
 stk.df <- data.frame(rasterToPoints(stk.mask))
@@ -197,7 +197,7 @@ crs(stk_2011)
 
 #Clip raster using range-extent polygon
 stk_2011.mask <- raster::crop(stk_2011, extent(c_range))
-#stk_2011.mask <- mask(stk_2011.mask, c_range)
+stk_2011.mask <- mask(stk_2011.mask, c_range)
 
 #Extract point from raster stack
 stk_2011.df <- data.frame(rasterToPoints(stk_2011.mask))
@@ -222,7 +222,7 @@ crs(stk_2012)
 
 #Clip raster using range-extent polygon
 stk_2012.mask <- raster::crop(stk_2012, extent(c_range))
-#stk_2012.mask <- mask(stk_2012.mask, c_range)
+stk_2012.mask <- mask(stk_2012.mask, c_range)
 
 #Extract point from raster stack
 stk_2012.df <- data.frame(rasterToPoints(stk_2012.mask))
@@ -247,7 +247,7 @@ crs(stk_2013)
 
 #Clip raster using range-extent polygon
 stk_2013.mask <- raster::crop(stk_2013, extent(c_range))
-#stk_2013.mask <- mask(stk_2013.mask, c_range)
+stk_2013.mask <- mask(stk_2013.mask, c_range)
 
 #Extract point from raster stack
 stk_2013.df <- data.frame(rasterToPoints(stk_2013.mask))
@@ -272,7 +272,7 @@ crs(stk_2014)
 
 #Clip raster using range-extent polygon
 stk_2014.mask <- raster::crop(stk_2014, extent(c_range))
-#stk_2014.mask <- mask(stk_2014.mask, c_range)
+stk_2014.mask <- mask(stk_2014.mask, c_range)
 
 #Extract point from raster stack
 stk_2014.df <- data.frame(rasterToPoints(stk_2014.mask))
@@ -297,7 +297,7 @@ crs(stk_2015)
 
 #Clip raster using range-extent polygon
 stk_2015.mask <- raster::crop(stk_2015, extent(c_range))
-#stk_2015.mask <- mask(stk_2015.mask, c_range)
+stk_2015.mask <- mask(stk_2015.mask, c_range)
 
 #Extract point from raster stack
 stk_2015.df <- data.frame(rasterToPoints(stk_2015.mask))
@@ -322,7 +322,7 @@ crs(stk_2016)
 
 #Clip raster using range-extent polygon
 stk_2016.mask <- raster::crop(stk_2016, extent(c_range))
-#stk_2016.mask <- mask(stk_2016.mask, c_range)
+stk_2016.mask <- mask(stk_2016.mask, c_range)
 
 #Extract point from raster stack
 stk_2016.df <- data.frame(rasterToPoints(stk_2016.mask))
@@ -343,7 +343,7 @@ stk_2016.df.cell<-cellFromXY(stk_2016.mask, cbind(stk_2016.df$x, stk_2016.df$y))
 MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/MAT.tif")
 MAT.clip <- projectRaster(MAT.clip, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
 rbg_mask <- raster::crop(MAT.clip, extent(c_range))
-#rbg_mask <- mask(rbg_mask, c_range)
+rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
 mask_offset_2011 <- rbg_mask
 mask_offset_2012 <- rbg_mask
@@ -439,9 +439,12 @@ plot(mask_offset_2016)
 
 
 
-#writeRaster(mask_offset_2016,"Genomics_scripts/Data/offset_2016a.tif", format="GTiff", overwrite=TRUE)
-
-
+writeRaster(mask_offset_2011,"Genomics_scripts/Data/offset_2011.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_2012,"Genomics_scripts/Data/offset_2012.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_2013,"Genomics_scripts/Data/offset_2013.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_2014,"Genomics_scripts/Data/offset_2014.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_2015,"Genomics_scripts/Data/offset_2015.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_2016,"Genomics_scripts/Data/offset_2016.tif", format="GTiff", overwrite=TRUE)
 
 
 

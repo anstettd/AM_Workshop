@@ -1,3 +1,4 @@
+
 ##################################################################################
 ## Gradient forest for full SNP dataset
 ## Author Daniel Anstett
@@ -155,7 +156,7 @@ c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
 
 ## Raster import and manipulation
 #Import 1981-2010 raster data for West NA & and stack them
-wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010"
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_8110"
 vlist <- c("MAT","MAP","CMD")
 stk <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 
@@ -184,28 +185,28 @@ stk.df.cell<-cellFromXY(stk.mask, cbind(stk.df$x, stk.df$y))
 ##Import 2010-2016 climate rasters
 
 #######################
-#Import 2016 raster data for West NA & and stack them
+#Import 2015 raster data for West NA & and stack them
 wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2015"
 vlist <- c("MAT","MAP","CMD")
-stk_2016 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+stk_2015 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 
 #Reproject to WGS 1984 (EPSG4326)
-stk_2016 <- projectRaster(stk_2016, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
-crs(stk_2016)
+stk_2015 <- projectRaster(stk_2015, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_2015)
 
 #Clip raster using range-extent polygon
-stk_2016.mask <- raster::crop(stk_2016, extent(c_range))
-#stk_2016.mask <- mask(stk_2016.mask, c_range)
+stk_2015.mask <- raster::crop(stk_2015, extent(c_range))
+#stk_2015.mask <- mask(stk_2015.mask, c_range)
 
 #Extract point from raster stack
-stk_2016.df <- data.frame(rasterToPoints(stk_2016.mask))
-stk_2016.df <- na.omit(stk_2016.df)
-colnames(stk_2016.df)[3]<-"MAT"
-colnames(stk_2016.df)[4]<-"MAP"
-colnames(stk_2016.df)[5]<-"CMD"
+stk_2015.df <- data.frame(rasterToPoints(stk_2015.mask))
+stk_2015.df <- na.omit(stk_2015.df)
+colnames(stk_2015.df)[3]<-"MAT"
+colnames(stk_2015.df)[4]<-"MAP"
+colnames(stk_2015.df)[5]<-"CMD"
 
 #Convert xy coordinates into cell ID
-stk_2016.df.cell<-cellFromXY(stk_2016.mask, cbind(stk_2016.df$x, stk_2016.df$y))
+stk_2015.df.cell<-cellFromXY(stk_2015.mask, cbind(stk_2015.df$x, stk_2015.df$y))
 
 
 
@@ -213,13 +214,13 @@ stk_2016.df.cell<-cellFromXY(stk_2016.mask, cbind(stk_2016.df$x, stk_2016.df$y))
 
 
 #Get mask for RGB
-MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/MAT.tif")
+MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Year_2015/MAT.tif")
 MAT.clip <- projectRaster(MAT.clip, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
 rbg_mask <- raster::crop(MAT.clip, extent(c_range))
 #rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
-mask_offset_2016 <- rbg_mask
-rbg_2016 <- rbg_mask
+mask_offset_2015 <- rbg_mask
+rbg_2015 <- rbg_mask
 
 
 
@@ -264,8 +265,8 @@ predBF20 <- predict(gf, stk.df[,-1:-2]) # remove cell column before transforming
 #projBF20_2012 <- predict(gf, stk_2012.df[,-1:-2])
 #projBF20_2013 <- predict(gf, stk_2013.df[,-1:-2])
 #projBF20_2014 <- predict(gf, stk_2014.df[,-1:-2])
-#projBF20_2015 <- predict(gf, stk_2015.df[,-1:-2])
-projBF20_2016 <- predict(gf, stk_2016.df[,-1:-2])
+projBF20_2015 <- predict(gf, stk_2015.df[,-1:-2])
+#projBF20_2016 <- predict(gf, stk_2016.df[,-1:-2])
 
 
 
@@ -278,10 +279,10 @@ projBF20_2016 <- predict(gf, stk_2016.df[,-1:-2])
 #                         +(projBF20_2013[,3]-predBF20[,3])^2)
 #offset_BF20_2014 <- sqrt((projBF20_2014[,1]-predBF20[,1])^2+(projBF20_2014[,2]-predBF20[,2])^2
 #                         +(projBF20_2014[,3]-predBF20[,3])^2)
-#offset_BF20_2015 <- sqrt((projBF20_2015[,1]-predBF20[,1])^2+(projBF20_2015[,2]-predBF20[,2])^2
-#                         +(projBF20_2015[,3]-predBF20[,3])^2)
-offset_BF20_2016 <- sqrt((projBF20_2016[,1]-predBF20[,1])^2+(projBF20_2016[,2]-predBF20[,2])^2
-                         +(projBF20_2016[,3]-predBF20[,3])^2)
+offset_BF20_2015 <- sqrt((projBF20_2015[,1]-predBF20[,1])^2+(projBF20_2015[,2]-predBF20[,2])^2
+                         +(projBF20_2015[,3]-predBF20[,3])^2)
+#offset_BF20_2016 <- sqrt((projBF20_2016[,1]-predBF20[,1])^2+(projBF20_2016[,2]-predBF20[,2])^2
+#                         +(projBF20_2016[,3]-predBF20[,3])^2)
 
 # assign values to raster - can be tricky if current/future climate
 # rasters are not identical in terms of # cells, extent, etc.
@@ -290,19 +291,19 @@ offset_BF20_2016 <- sqrt((projBF20_2016[,1]-predBF20[,1])^2+(projBF20_2016[,2]-p
 #mask_offset_2012[stk_2012.df.cell] <- offset_BF20_2012
 #mask_offset_2013[stk_2013.df.cell] <- offset_BF20_2013
 #mask_offset_2014[stk_2014.df.cell] <- offset_BF20_2014
-#mask_offset_2015[stk_2015.df.cell] <- offset_BF20_2015
-mask_offset_2016[stk_2016.df.cell] <- offset_BF20_2016
+mask_offset_2015[stk_2015.df.cell] <- offset_BF20_2015
+#mask_offset_2016[stk_2016.df.cell] <- offset_BF20_2016
 
 #plot(mask_offset_2011)
 #plot(mask_offset_2012)
 #plot(mask_offset_2013)
 #plot(mask_offset_2014)
-#plot(mask_offset_2015)
-plot(mask_offset_2016)
+plot(mask_offset_2015)
+#plot(mask_offset_2016)
 
 
 
-#writeRaster(mask_offset_2016,"Genomics_scripts/Data/offset_2015.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_2015,"Genomics_scripts/Data/offset_2015.tif", format="GTiff", overwrite=TRUE)
 
 
 

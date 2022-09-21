@@ -148,13 +148,13 @@ pred<-colnames(env_site)
 
 ## Range wide polygon
 # Import M.cardinalis ensamble range extent as sf polygon
-c_range <- st_read("SDM/Output/c_range_2.shp") 
+#c_range <- st_read("SDM/Output/c_range_2.shp") 
+c_range <- st_read("Shape/c_range50.shp") 
 c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
-
 
 ## Raster import and manipulation
 #Import 1981-2010 raster data for West NA & and stack them
-wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010"
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_8110"
 vlist <- c("MAT","MAP","CMD")
 stk <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 
