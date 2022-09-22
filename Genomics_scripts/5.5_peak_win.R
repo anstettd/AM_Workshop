@@ -103,7 +103,7 @@ wza_empri_mat <- ggplot(data = wza_win_mat, aes( x = pos/1e6, y = -log10(approx_
   geom_point(aes(color=as.factor(chr), alpha=0.9))+
   geom_line()+
   scale_y_continuous("-log10(WZA Empirical p-value)", limits=c(0,20))+
-  scale_x_continuous("Position (Mbp)",limits=c(98,100))+
+  scale_x_continuous("Position (Mbp)",limits=c(0,410))+
   geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_mat)[1])), col = "red", lty = 2, lwd = 1)+
   scale_color_manual(values = rep(c("black", "darkgoldenrod"), 22 )) +
   theme_classic()+

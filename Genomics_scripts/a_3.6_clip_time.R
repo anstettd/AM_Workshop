@@ -1,5 +1,5 @@
 ##################################################################################
-## Gradient forest plots
+## Extract offset values for each timeseires population
 ## Author Daniel Anstett
 ## 
 ## 
@@ -23,11 +23,11 @@ library(rnaturalearthdata)
 ## INPUTS
 
 #Timeseries offset raster
-mask_offset_2011 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-mask_offset_2012 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-mask_offset_2013 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-mask_offset_2014 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
-mask_offset_2015 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+mask_offset_2011 <- raster("Genomics_scripts/Data/offset_2011.tif") #pop data
+mask_offset_2012 <- raster("Genomics_scripts/Data/offset_2012.tif") #pop data
+mask_offset_2013 <- raster("Genomics_scripts/Data/offset_2013.tif") #pop data
+mask_offset_2014 <- raster("Genomics_scripts/Data/offset_2014.tif") #pop data
+mask_offset_2015 <- raster("Genomics_scripts/Data/offset_2015.tif") #pop data
 mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 
 #Future cliamte change offset raster
@@ -69,56 +69,7 @@ rasValue_gcc <- raster::extract(rasStack_gcc,timeseries_pop)
 timeseries_offset <- baseline_pop %>% filter(Paper_ID<13)
 offset_pop <- cbind(timeseries_offset,rasStack_1016,rasValue_gcc)
 
-#Plot offset against latitude
-#4.5
-ggplot(offset_pop, aes(x=Elevation, y=offset_4.5_peakbf2)) + 
-  geom_point()+
-  geom_smooth(method=lm)+
-  scale_y_continuous(name="Genetic Offset RCP4.5")+
-  scale_x_continuous(name="Elevation (m)")+
-  theme_classic() + theme(
-  axis.text.x = element_text(size=12, face="bold"),
-  axis.text.y = element_text(size=12,face="bold"),
-  axis.title.x = element_text(color="black", size=14, vjust = 0.5, face="bold"),
-  axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
 
-ggplot(offset_pop, aes(x=Lat, y=offset_4.5_peakbf2)) + 
-  geom_point()+
-  geom_smooth(method=lm)+
-  scale_y_continuous(name="Genetic Offset RCP4.5")+
-  scale_x_continuous(name="Latitude")+
-  theme_classic() + theme(
-    axis.text.x = element_text(size=12, face="bold"),
-    axis.text.y = element_text(size=12,face="bold"),
-    axis.title.x = element_text(color="black", size=14, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
-
-#8.5
-ggplot(offset_pop, aes(x=Elevation, y=offset_8.5_peakbf2)) + 
-  geom_point()+
-  geom_smooth(method=lm)+
-  scale_y_continuous(name="Genetic Offset RCP8.5")+
-  scale_x_continuous(name="Elevation (m)")+
-  theme_classic() + theme(
-    axis.text.x = element_text(size=12, face="bold"),
-    axis.text.y = element_text(size=12,face="bold"),
-    axis.title.x = element_text(color="black", size=14, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
-
-ggplot(offset_pop, aes(x=Lat, y=offset_8.5_peakbf2)) + 
-  geom_point()+
-  geom_smooth(method=lm)+
-  scale_y_continuous(name="Genetic Offset RCP8.5")+
-  scale_x_continuous(name="Latitude")+
-  theme_classic() + theme(
-    axis.text.x = element_text(size=12, face="bold"),
-    axis.text.y = element_text(size=12,face="bold"),
-    axis.title.x = element_text(color="black", size=14, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=14,vjust = 2, face="bold",hjust=0.5))
-
-
-
-
-
+write_csv(offset_pop,"Genomics_scripts/Data/offset_pop.csv")
 
 
