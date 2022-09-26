@@ -46,6 +46,8 @@ wza_mat_man <- ggplot(data = wza_win_mat, aes( x = pos/1e6, y = WZA))+
   scale_y_continuous("WZA Score", limits=c(-16,20))+
   scale_x_continuous("Position (Mbp)")+
   geom_hline(aes(yintercept = quantile(WZA, 0.99)), col = "red", lty = 2, lwd = 1)+
+  geom_hline(aes(yintercept = quantile(WZA, 0.95)), col = "orange", lty = 2, lwd = 1)+
+  geom_hline(aes(yintercept = quantile(WZA, 0.90)), col = "skyblue", lty = 2, lwd = 1)+
   scale_color_manual(values = rep(c("black", "darkgoldenrod"), 22 )) +
   theme_classic()+
   theme(
@@ -62,7 +64,7 @@ wza_mat_man <- ggplot(data = wza_win_mat, aes( x = pos/1e6, y = WZA))+
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=20,vjust = 0.8, face="bold",hjust=0.5)
   )
-wza_mat_man 
+#wza_mat_man 
 ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Graphs/WZA_Graphs/wza_mat_man.png",
        wza_mat_man, width=10, height = 5, units = "in")
 
@@ -88,7 +90,7 @@ wza_map_man <- ggplot(data = wza_win_map, aes( x = pos/1e6, y = WZA))+
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=20,vjust = 0.8, face="bold",hjust=0.5)
   )
-wza_map_man 
+#wza_map_man 
 ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Graphs/WZA_Graphs/wza_map_man.png",
        wza_map_man, width=10, height = 5, units = "in")
 
@@ -115,7 +117,7 @@ wza_cmd_man <- ggplot(data = wza_win_cmd, aes( x = pos/1e6, y = WZA))+
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=20,vjust = 0.8, face="bold",hjust=0.5)
   )
-wza_cmd_man 
+#wza_cmd_man 
 ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Graphs/WZA_Graphs/wza_cmd_man.png",
        wza_cmd_man, width=10, height = 5, units = "in")
 
