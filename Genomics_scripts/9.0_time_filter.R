@@ -52,13 +52,13 @@ peak_bf2_base_map <-loci_snp_base %>% filter (chr_snp %in% as.character(win_bf_m
 peak_bf2_base_cmd <-loci_snp_base %>% filter (chr_snp %in% as.character(win_bf_cmd$chr_snp))
 
 
-#write_csv(peak_bf2_time_mat,"Genomics_scripts/Data/peak_bf2_time_mat.csv")
-#write_csv(peak_bf2_time_map,"Genomics_scripts/Data/peak_bf2_time_map.csv")
-#write_csv(peak_bf2_time_cmd,"Genomics_scripts/Data/peak_bf2_time_cmd.csv")
+write_csv(peak_bf2_time_mat,"Genomics_scripts/Data/peak_bf2_time_mat.csv")
+write_csv(peak_bf2_time_map,"Genomics_scripts/Data/peak_bf2_time_map.csv")
+write_csv(peak_bf2_time_cmd,"Genomics_scripts/Data/peak_bf2_time_cmd.csv")
 
-#write_csv(peak_bf2_base_mat,"Genomics_scripts/Data/peak_bf2_base_mat.csv")
-#write_csv(peak_bf2_base_map,"Genomics_scripts/Data/peak_bf2_base_map.csv")
-#write_csv(peak_bf2_base_cmd,"Genomics_scripts/Data/peak_bf2_base_cmd.csv")
+write_csv(peak_bf2_base_mat,"Genomics_scripts/Data/peak_bf2_base_mat.csv")
+write_csv(peak_bf2_base_map,"Genomics_scripts/Data/peak_bf2_base_map.csv")
+write_csv(peak_bf2_base_cmd,"Genomics_scripts/Data/peak_bf2_base_cmd.csv")
 
 
 

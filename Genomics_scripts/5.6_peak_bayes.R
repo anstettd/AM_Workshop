@@ -152,10 +152,13 @@ snps_available[7,3] <-  dim(peak_bf20_cmd)[1]
 #write_csv(snps_available,"Genomics_scripts/Data/snps_available.csv")
 
 
+#Select BF > 10 for peak snps. Then add BF>30 SNPs
 
-write_csv(peak_bf2_mat,"Genomics_scripts/Data/win_bf_mat.csv")
-write_csv(peak_bf2_map,"Genomics_scripts/Data/win_bf_map.csv")
-write_csv(peak_bf2_cmd,"Genomics_scripts/Data/win_bf_cmd.csv")
+
+
+#write_csv(peak_bf2_mat,"Genomics_scripts/Data/win_bf_mat.csv")
+#write_csv(peak_bf2_map,"Genomics_scripts/Data/win_bf_map.csv")
+#write_csv(peak_bf2_cmd,"Genomics_scripts/Data/win_bf_cmd.csv")
 
 
 
