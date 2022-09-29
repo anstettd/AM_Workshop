@@ -50,7 +50,7 @@ snp_clim_bayNA <- cbind(climate,snp_bay_T)
 write_csv(snp_clim_bayNA, "Genomics_scripts/Data/snp_clim_peakbf2NA.csv")
 
 #Remove NA's
-snp_clim_bay_noNA <- snp_clim_bay %>% select_if(~ !any(is.na(.)))
+snp_clim_bay_noNA <- snp_clim_bayNA %>% select_if(~ !any(is.na(.)))
 write_csv(snp_clim_bay_noNA, "Genomics_scripts/Data/snp_clim_peakbf2_noNA.csv")
 
 

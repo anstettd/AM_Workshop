@@ -45,14 +45,12 @@ freq_bins <- function(basetime){
   freq_count_calc<-data.frame()
   for (i in 1:12){
     
-    if(i==5 || i==7){
-      bin_size<-10
+    if(i==1 || i==5 || i==7 || i==9 || i==10){
+      bin_size<-5
     }else if (i==3 || i==4 || i==6 || i==11){
       bin_size<-4
-    }else if (i==8 || i==12){
+    }else if ( i==2 || i==8 || i==12){
       bin_size<-2
-    }else if(i==1 || i==2 || i==9 || i==10){
-      bin_size<-5
     }
     
     bin_fraction<-1/bin_size

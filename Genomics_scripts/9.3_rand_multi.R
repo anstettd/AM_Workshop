@@ -44,18 +44,15 @@ large <- function(pop_snp,freq_count){
 #Freq Count function
 freq_bins <- function(basetime){
   freq_count_calc<-data.frame()
-  bin_size<-5
+  bin_size<-4
   Regions<-c("North", "Centre", "South")
   for (i in 1:3){
     
-#   if(i==1 || i==2 || i==5 || i==7 || i==10 || i==12){
-#    }else if (i==3 || i==4 || i==6 || i==11){
-#      bin_size<-4
-#    }else if (i==8){
-#      bin_size<-2
-#    }else if(i==9){
-#      bin_size<-5
-#    }
+#if(i==1 || i==2){
+#    bin_size<-5
+#  }else if (i==3 ){
+#    bin_size<-4
+#}
     
     bin_fraction<-1/bin_size
     bin_step<-seq(0,1,bin_fraction)
