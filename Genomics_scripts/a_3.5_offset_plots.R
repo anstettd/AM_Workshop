@@ -25,6 +25,7 @@ library(RColorBrewer)
 ## INPUTS
 
 #Timeseries offset raster
+mask_offset_1215 <- raster("Genomics_scripts/Data/offset_1215.tif") #pop data
 mask_offset_2011 <- raster("Genomics_scripts/Data/offset_2011.tif") #pop data
 mask_offset_2012 <- raster("Genomics_scripts/Data/offset_2012.tif") #pop data
 mask_offset_2013 <- raster("Genomics_scripts/Data/offset_2013.tif") #pop data
