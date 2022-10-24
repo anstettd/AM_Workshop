@@ -1,7 +1,5 @@
 ##################################################################################
-## Gradient forest for peak snp20 SNP dataset
-## Works when raster stuff is done with 3.3_gradient forest
-## run SNP import and GF here
+## Gradient forest for full SNP dataset
 ## Author Daniel Anstett
 ## 
 ## Modified from Keller & Fitzpatric 2015
@@ -125,7 +123,7 @@ rasterStack <- function(x,varList,rType='tif',vConvert=T){
 #Import SNP Data & and reformat
 snp_clim_bf20NA <- read_csv("Genomics_scripts/Data/snp_clim_peakbf5_noNA.csv") #pop data
 test_snp <- snp_clim_bf20NA %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
-                                              -PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
+                                       -PAS, -EXT, -Tave_wt, -Tave_sm, -PPT_wt, -PPT_sm)
 #snp_clim_ful <- read_csv("Genomics_scripts/Data/snp_clim_full.csv") # full data
 #snp_clim_bf20 <- read_csv("Genomics_scripts/Data/snp_clim_peakbf5_NA.csv") #pop data, NA's included
 #test_snp <- snp_clim_bf20 %>% dplyr::select(-Site_Name, -Paper_ID, -Latitude, -Longitude, -Elevation, -MAT, -MAP, -CMD,
@@ -151,13 +149,13 @@ pred<-colnames(env_site)
 ## Range wide polygon
 # Import M.cardinalis ensamble range extent as sf polygon
 #c_range <- st_read("SDM/Output/c_range_2.shp")
-c_range <- st_read("Shape/c_range50.shp") 
+c_range <- st_read("Shape/c_range50.shp") #See 3.0 range_map
 c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
 
 
 ## Raster import and manipulation
 #Import 1981-2010 raster data for West NA & and stack them
-wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010"
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_8110"
 vlist <- c("MAT","MAP","CMD")
 stk <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 
@@ -182,74 +180,46 @@ stk.df <- na.omit(stk.df)
 #Convert xy coordinates into cell ID
 stk.df.cell<-cellFromXY(stk.mask, cbind(stk.df$x, stk.df$y))
 
-
 ############################################################################################################
-##Import future climate change rasters
-#Import 2041-2070 SSP245 (RCP4.5) raster data for West NA & and stack them
-wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/ensemble_8GCMs_ssp245_2041_2070_bioclim"
-vlist <- c("ensemble_8GCMs_ssp245_2041_2070_MAT",
-           "ensemble_8GCMs_ssp245_2041_2070_MAP",
-           "ensemble_8GCMs_ssp245_2041_2070_CMD")
-stk_4.5 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
+##Import 2012-2015 raster average
+
+#######################
+#Import 2012 raster data for West NA & and stack them
+wd <- "C:/Users/anstett3/Documents/Genomics/Large_files/Year_1215"
+vlist <- c("MAT","MAP","CMD")
+stk_2012 <- rasterStack(wd,vlist,rType='tif',vConvert=F)
 
 #Reproject to WGS 1984 (EPSG4326)
-stk_4.5 <- projectRaster(stk_4.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
-crs(stk_4.5)
+stk_2012 <- projectRaster(stk_2012, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
+crs(stk_2012)
 
 #Clip raster using range-extent polygon
-stk_4.5.mask <- raster::crop(stk_4.5, extent(c_range))
-stk_4.5.mask <- mask(stk_4.5.mask, c_range)
+stk_2012.mask <- raster::crop(stk_2012, extent(c_range))
+stk_2012.mask <- mask(stk_2012.mask, c_range)
 
 #Extract point from raster stack
-stk_4.5.df <- data.frame(rasterToPoints(stk_4.5.mask))
-stk_4.5.df <- na.omit(stk_4.5.df)
-colnames(stk_4.5.df)[3]<-"MAT"
-colnames(stk_4.5.df)[4]<-"MAP"
-colnames(stk_4.5.df)[5]<-"CMD"
+stk_2012.df <- data.frame(rasterToPoints(stk_2012.mask))
+stk_2012.df <- na.omit(stk_2012.df)
+colnames(stk_2012.df)[3]<-"MAT"
+colnames(stk_2012.df)[4]<-"MAP"
+colnames(stk_2012.df)[5]<-"CMD"
 
 #Convert xy coordinates into cell ID
-stk_4.5.df.cell<-cellFromXY(stk_4.5.mask, cbind(stk_4.5.df$x, stk_4.5.df$y))
+stk_2012.df.cell<-cellFromXY(stk_2012.mask, cbind(stk_2012.df$x, stk_2012.df$y))
 
 
-
-#####################################
-#Import 2041-2070 SSP585 (RCP8.5) raster data for West NA & and stack them
-wd_8.5 <- "C:/Users/anstett3/Documents/Genomics/Large_files/ensemble_8GCMs_ssp585_2041_2070_bioclim"
-vlist_8.5 <- c("ensemble_8GCMs_ssp585_2041_2070_MAT",
-               "ensemble_8GCMs_ssp585_2041_2070_MAP",
-               "ensemble_8GCMs_ssp585_2041_2070_CMD")
-stk_8.5 <- rasterStack(wd_8.5,vlist_8.5,rType='tif',vConvert=F)
-
-#Reproject to WGS 1984 (EPSG4326)
-stk_8.5 <- projectRaster(stk_8.5, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
-crs(stk_8.5)
-
-#Clip raster using range-extent polygon
-stk_8.5.mask <- raster::crop(stk_8.5, extent(c_range))
-stk_8.5.mask <- mask(stk_8.5.mask, c_range)
-
-#Extract point from raster stack
-stk_8.5.df <- data.frame(rasterToPoints(stk_8.5.mask))
-stk_8.5.df <- na.omit(stk_8.5.df)
-colnames(stk_8.5.df)[3]<-"MAT"
-colnames(stk_8.5.df)[4]<-"MAP"
-colnames(stk_8.5.df)[5]<-"CMD"
-
-#Convert xy coordinates into cell ID
-stk_8.5.df.cell<-cellFromXY(stk_8.5.mask, cbind(stk_8.5.df$x, stk_8.5.df$y))
 
 
 
 #Get mask for RGB
-MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Normal_1981_2010/MAT.tif")
+MAT.clip <- raster("C:/Users/anstett3/Documents/Genomics/Large_files/Year_2016/MAT.tif")
 MAT.clip <- projectRaster(MAT.clip, crs=EPSG4326) #reproject to WGS 1984 (EPSG 4326)
 rbg_mask <- raster::crop(MAT.clip, extent(c_range))
 rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
-mask_offset_45 <- rbg_mask
-mask_offset_85 <- rbg_mask
-rbg_45 <- rbg_mask
-rbg_85 <- rbg_mask
+mask_offset_2012 <- rbg_mask
+rbg_2012 <- rbg_mask
+
 
 
 
@@ -288,31 +258,21 @@ predBF20 <- predict(gf, stk.df[,-1:-2]) # remove cell column before transforming
 
 #2011 to 2016 climate variables
 
-#Future Climate Change
-
 # first transform FUTURE env. variables
-projBF20_4.5 <- predict(gf, stk_4.5.df[,-1:-2])
-projBF20_8.5 <- predict(gf, stk_8.5.df[,-1:-2])
+projBF20_2012 <- predict(gf, stk_2012.df[,-1:-2])
 
 
 # calculate euclidean distance between current and future genetic spaces  
-offset_BF20_4.5 <- sqrt((projBF20_4.5[,1]-predBF20[,1])^2+(projBF20_4.5[,2]-predBF20[,2])^2
-                        +(projBF20_4.5[,3]-predBF20[,3])^2)
-
-offset_BF20_8.5 <- sqrt((projBF20_8.5[,1]-predBF20[,1])^2+(projBF20_8.5[,2]-predBF20[,2])^2
-                        +(projBF20_8.5[,3]-predBF20[,3])^2)
+offset_BF20_2012 <- sqrt((projBF20_2012[,1]-predBF20[,1])^2+(projBF20_2012[,2]-predBF20[,2])^2
+                         +(projBF20_2012[,3]-predBF20[,3])^2)
 
 # assign values to raster - can be tricky if current/future climate
 # rasters are not identical in terms of # cells, extent, etc.
 
+mask_offset_2012[stk_2012.df.cell] <- offset_BF20_2012
+plot(mask_offset_2012)
 
-mask_offset_45[stk_4.5.df.cell] <- offset_BF20_4.5
-mask_offset_85[stk_8.5.df.cell] <- offset_BF20_8.5
-plot(mask_offset_45)
-plot(mask_offset_85)
-
-writeRaster(mask_offset_45,"Genomics_scripts/Data/offset_4.5_peakbf2.tif", format="GTiff", overwrite=TRUE)
-writeRaster(mask_offset_85,"Genomics_scripts/Data/offset_8.5_peakbf2.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_2012,"Genomics_scripts/Data/offset_1215.tif", format="GTiff", overwrite=TRUE)
 
 
 
@@ -332,107 +292,11 @@ writeRaster(mask_offset_85,"Genomics_scripts/Data/offset_8.5_peakbf2.tif", forma
 
 
 
-###################################################################################
-# Mapping spatial genetic variation --------------------------------------------
-
-
-# map continuous variation 
-BF20_RGBmap <- pcaToRaster(predBF20, rbs_4.5, stk.df.cell)
-plotRGB(BF20_RGBmap)
-writeRaster(BF20_RGBmap, "Offset_graphs/current_climate_BF20_map.tif", format="GTiff", overwrite=TRUE)
-
-# map continuous variation 
-BF20_RGBmap <- pcaToRaster(projBF20, stk_4.5.mask, stk_4.5.df.cell)
-plotRGB(BF20_RGBmap)
-writeRaster(BF20_RGBmap, "Offset_graphs/current_climate_BF20_map.tif", format="GTiff", overwrite=TRUE)
-
-
-
-
-################################################################################
 
 
 
 
 
-
-
-
-##################################################################################################################
-#Basic Plots
-
-most_important <- names(importance(gf))[1:9]
-
-##Split Density Plot
-#The second plot is the splits density plot (plot.type="S"), which shows binned 
-#split importance and location on each gradient (spikes), kernel density of splits 
-#(black lines), of observations(red lines) and of splits standardised by 
-#observations density (blue lines). Each distribution integrates to predictor 
-#importance. These show where important changes in the abundance of
-#multiple species are occurring along the gradient; they indicate a composition change rate
-plot(gf, plot.type = "S", imp.vars = most_important,leg.posn = "topright", cex.legend = 0.4, cex.axis = 0.6,
-     cex.lab = 0.7, line.ylab = 0.9, par.args = list(mgp = c(1.5, 0.5, 0), mar = c(3.1, 1.5, 0.1, 1)))
-
-##Cumulaive Plot
-#for each species shows cumulative importance distributions of splits improvement scaled by
-#R2 weighted importance, and standardised by density of observations. These show cumulative
-#change in abundance of individual species, where changes occur on the gradient, and the species
-#changing most on each gradient.
-plot(gf, plot.type = "C", imp.vars = most_important,show.overall = F, legend = T, leg.posn = "topleft",
-     leg.nspecies = 5, cex.lab = 0.7, cex.legend = 0.4,cex.axis = 0.6, line.ylab = 0.9, 
-     par.args = list(mgp = c(1.5, 0.5, 0), mar = c(2.5, 1, 0.1, 0.5), omi = c(0,0.3, 0, 0)))
-
-
-plot(gf, plot.type = "P", show.names = F, horizontal = F, cex.axis = 1, cex.labels = 0.7, line = 2.5)
-
-
-
-
-
-
-
-
-#MAT.clip <- raster("Donor_selection/data/clip/MAT.clip.grd")
-#MAP.clip <- raster("Donor_selection/data/clip/MAP.clip.grd")
-#PAS.clip <- raster("Donor_selection/data/clip/PAS.clip.grd")
-#EXT.clip <- raster("Donor_selection/data/clip/EXT.clip.grd")
-#CMD.clip <- raster("Donor_selection/data/clip/CMD.clip.grd")
-
-#Seasonal
-#PPT_sm.clip <- raster("Donor_selection/data/clip/PPT_sm.clip.grd")
-#PPT_wt.clip <- raster("Donor_selection/data/clip/PPT_wt.clip.grd")
-#Tave_sm.clip <- raster("Donor_selection/data/clip/Tave_sm.clip.grd")
-#Tave_wt.clip <- raster("Donor_selection/data/clip/Tave_wt.clip.grd")
-
-#Stack Raster
-#env_wna <- stack(list(MAT=MAT.clip,MAP=MAP.clip,CMD=CMD.clip))
-#env_wna <- as.data.frame(env_wna, xy=TRUE)
-
-#colnames(env_wna)[1]<-"X"
-#colnames(env_wna)[2]<-"Y"
-
-# The rasters are for all of North America and too large for storage in this repo
-# Trim them to study area and save only trimmed files in the repo
-# Define extent as 1 degree beyond lat-long extent of points
-
-
-
-
-
-
-
-clim <- read_csv("SDM/data_files/points_Normal_1961_1990MSY.csv")
-prj.laea <- "+proj=laea +lon_0=-100 +lat_0=45 +type=crs" ## set laea CRS
-ext <- extent(min(clim$Longitude)-1, max(clim$Longitude)+1, min(clim$Latitude)-1, max(clim$Latitude)+1)
-bbox = as(ext, "SpatialPolygons") #convert coordinates to a bounding box
-prj.wgs = "+proj=longlat + type=crs" #define unprojected coordinate system
-proj4string(bbox) <- CRS(prj.wgs) #set projection
-bbox.lcc = spTransform(bbox, CRS=CRS(prj.laea)) #re-project to match rasters
-
-
-
-#Now we're going to use the bbox info as the y argument to extract info from the raster
-#env_wna_df <-extract(stk, bbox.lcc,cellnumbers=T)
 
 
 

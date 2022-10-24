@@ -73,8 +73,19 @@ crs(map_8110) <- EPSG4326
 crs(cmd_8110) <- EPSG4326
 
 
+# Average 2012 to 2015 rasters
+mat_1215 <- (mat_2012 + mat_2013 + mat_2014 + mat_2015)/4 
+map_1215 <- (map_2012 + map_2013 + map_2014 + map_2015)/4  
+cmd_1215 <- (cmd_2012 + cmd_2013 + cmd_2014 + cmd_2015)/4  
+
+
+
 
 #Export tif file
+writeRaster(mat_1215, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_1215/MAT.tif",format="GTiff")
+writeRaster(map_1215, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_1215/MAP.tif",format="GTiff")
+writeRaster(cmd_1215, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_1215/CMD.tif",format="GTiff")
+
 writeRaster(mat_2011, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2011/MAT.tif",format="GTiff")
 writeRaster(map_2011, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2011/MAP.tif",format="GTiff")
 writeRaster(cmd_2011, "C:/Users/anstett3/Documents/Genomics/Large_files/Year_2011/CMD.tif",format="GTiff")
