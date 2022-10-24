@@ -1,6 +1,6 @@
 ##################################################################################
 ## Generate SNP proportion matrix per population
-## For peak window SNPS (WZA) with BF (BayPass) > 2
+## For peak window SNPS (WZA) with BF (BayPass) > 10 and all BF>30
 ## Done for all alleles positively associated with climate change
 ## Select if A or B is positively associated with climate change
 ## Author Daniel Anstett

@@ -1,0 +1,51 @@
+#Filter in Unix
+
+#Get column ID per SNP
+sed -n "1 s/CE10_chr1_231269.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+
+#Cuts out the fields I want
+cut -d "," -f 1,2,847,1244077 freq_MAT_slopes.csv > freq_MAT_filter_test.csv
+cut -d "," -f 1,2, freq_MAT_slopes.csv > freq_MAT_filter_test.csv
+
+
+
+
+#MAT Example
+sed -n "1 s/CE10_chr1_231269.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr2_41689666.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c	
+sed -n "1 s/CE10_chr1_305074.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_177602.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_232342.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_2389716.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_235316.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_232854.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c
+
+cut -d "," -f 1,2,847,1244077,1918,327,873,21414,969,887 freq_MAT_slopes.csv > freq_MAT_filter_test.csv
+
+#MAP Example
+sed -n "1 s/CE10_chr1_17266827.*//p" freq_MAP_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr3_5472353.*//p" freq_MAP_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_17346462.*//p" freq_MAP_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_17859195.*//p" freq_MAP_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_17120889.*//p" freq_MAP_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr2_41689666.*//p" freq_MAP_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_18123842.*//p" freq_MAP_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_17307679.*//p" freq_MAP_slopes.csv | sed 's/[^,*]//g' | wc -c
+
+cut -d "," -f 1,2,908753,1250718,908947,909871,908552,1150654,910417,908812 freq_MAP_slopes.csv > freq_MAP_filter_test.csv
+
+#CMD Example
+sed -n "1 s/CE10_chr1_231269.*//p" freq_CMD_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr2_41689666.*//p" freq_CMD_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_305074.*//p" freq_CMD_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_177602.*//p" freq_CMD_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_232342.*//p" freq_CMD_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_2389716.*//p" freq_CMD_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_235316.*//p" freq_CMD_slopes.csv | sed 's/[^,*]//g' | wc -c
+sed -n "1 s/CE10_chr1_232854.*//p" freq_CMD_slopes.csv | sed 's/[^,*]//g' | wc -c
+
+cut -d "," -f 1,2,847,1244653,1916,327,873,21416,969,887 freq_CMD_slopes.csv > freq_CMD_filter_test.csv
+
+
+

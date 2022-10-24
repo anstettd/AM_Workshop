@@ -1,45 +1,35 @@
 ##################################################################################
-## Get slopes (strength of selection) for all BF
-## 
+## Generate SNP proportion matrix per population
+## For peak window SNPS (WZA) with BF (BayPass) > 10 and all BF>30
+## Done for all alleles positively associated with climate change
+## Select if A or B is positively associated with climate change
 ## Author Daniel Anstett
 ## 
-##
-## Last Modified September 26, 2022
+## Currently done just for ENV 1,2 and 5 (MAT, MAP and CMD)
+## Last Modified September 15, 2022
 ###################################################################################
 
 
 ###################################################################################
-
 #Import libraries
 library(tidyverse)
 
-#Import full snp table for timeseries
-pop_order_time<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
-snp_time<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
-loci_time<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
-colnames(loci_time) <- c("Chromosome","SNP")
-loci_united_time <- loci_time %>% unite(chr_snp,"Chromosome","SNP",sep="_")
-loci_snp_time <-cbind(loci_united_time,snp_time) #add snp lables to rows
+#Import peak bf>5 Timeseries data
+snp1_time <- read_csv("Genomics_scripts/Data/peak_bf5_time_mat.csv")
+snp2_time <- read_csv("Genomics_scripts/Data/peak_bf5_time_map.csv")
+snp5_time <- read_csv("Genomics_scripts/Data/peak_bf5_time_cmd.csv")
 
-#Import Baseline data
-#import full snp table
-pop_order_base<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", 
-                      header=F, sep="\t")
-snp_base<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", 
-                header=F, sep=" ")
-loci_base<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", 
-                 header=F, sep="\t")
-colnames(loci_base) <- c("Chromosome","SNP")
-loci_united_base <- loci_base %>% unite(chr_snp,"Chromosome","SNP",sep="_")
-loci_snp_base <-cbind(loci_united_base,snp_base) #add snp lables to rows
-
+###################################################################################
+#Import peak snp Baseline data bf>5, in order to get basetime frequencies
+#basetime = Spacetime combinations (population at moment in time) shared in common between the baseline and timeseries data
+env1_base <- read_csv("Genomics_scripts/Data/peak_bf5_base_mat.csv")
+env2_base <- read_csv("Genomics_scripts/Data/peak_bf5_base_map.csv")
+env5_base <- read_csv("Genomics_scripts/Data/peak_bf5_base_cmd.csv")
 
 #Ensure baseline has same SNPs as timeseries and remove any not in the timeseries 
-loci_snp_base <- loci_snp_base %>% filter (chr_snp %in% as.character(loci_snp_time$chr_snp))
-
-#Ensure timeseries has same SNPs as baseline and remove any not in the baseline 
-loci_snp_time <- loci_snp_time %>% filter (chr_snp %in% as.character(loci_snp_base$chr_snp))
-
+env1_base <- env1_base %>% filter (chr_snp %in% as.character(snp1_time$chr_snp))
+env2_base <- env2_base %>% filter (chr_snp %in% as.character(snp2_time$chr_snp))
+env5_base <- env5_base %>% filter (chr_snp %in% as.character(snp5_time$chr_snp))
 
 
 #Import Baseline Climate 
@@ -201,13 +191,9 @@ FAT_n <- function(snp_base,snp_time,climate_table,env_in){
 ########################################################################################################
 ########################################################################################################
 ## Make table with climate change associated SNPs for timeseries using baseline climate
-freq_MAT_1 <- FAT_p(loci_snp_base,loci_snp_time,climate,"MAT")
-#DOES NOT WORK  
-#Error in if (lm.temp_A$coefficients[2] > 0) { : 
-#missing value where TRUE/FALSE needed
-
-freq_MAP_1 <- FAT_n(loci_snp_base,loci_snp_time,climate,"MAP")
-freq_CMD_1 <- FAT_p(loci_snp_base,loci_snp_time,climate,"MAP")
+freq_MAT_1 <- FAT_p(env1_base,snp1_time,climate,"MAT")
+freq_MAP_1 <- FAT_n(env2_base,snp2_time,climate,"MAP")
+freq_CMD_1 <- FAT_p(env5_base,snp5_time,climate,"MAP")
 
 #Make into dataframe from tibble
 freq_MAT<- as.data.frame(freq_MAT_1)
@@ -235,6 +221,12 @@ freq_MAP_T <- as.data.frame(t(freq_MAP)) %>% rownames_to_column ("site_year") %>
 freq_CMD_T <- as.data.frame(t(freq_CMD)) %>% rownames_to_column ("site_year") %>% separate(site_year, c("Site","Year"))
 
 # Write out climate change correlated timeseries frequency table 
-write_csv(freq_MAT_T, "Genomics_scripts/Data/freq_MAT_all_slopes.csv")
-write_csv(freq_MAP_T, "Genomics_scripts/Data/freq_MAP_all_slopes.csv")
-write_csv(freq_CMD_T, "Genomics_scripts/Data/freq_CMD_all_slopes.csv")
+write_csv(freq_MAT_T, "Genomics_scripts/Data/freq_MAT_peakbf5.csv")
+write_csv(freq_MAP_T, "Genomics_scripts/Data/freq_MAP_peakbf5.csv")
+write_csv(freq_CMD_T, "Genomics_scripts/Data/freq_CMD_peakbf5.csv")
+
+
+
+
+  
+

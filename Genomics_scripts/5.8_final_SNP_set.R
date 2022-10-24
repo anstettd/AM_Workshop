@@ -47,14 +47,14 @@ snp_map_peakbf <- env2_united %>% filter(BF<=30) %>% filter(chr_snp %in% as.char
 snp_cmd_peakbf <- env5_united %>% filter(BF<=30) %>% filter(chr_snp %in% as.character(snps_peak_cmd$chr_snp))
 
 #Filter peak windows by BF >10
-snp_mat_peakbf10 <- snp_mat_peakbf %>% filter(BF>10)
-snp_map_peakbf10 <- snp_map_peakbf %>% filter(BF>10)
-snp_cmd_peakbf10 <- snp_cmd_peakbf %>% filter(BF>10)
+snp_mat_peakbf10 <- snp_mat_peakbf %>% filter(BF>5)
+snp_map_peakbf10 <- snp_map_peakbf %>% filter(BF>5)
+snp_cmd_peakbf10 <- snp_cmd_peakbf %>% filter(BF>5)
 
 #Merge peakbf10 with bf30
 snp_mat_peakbf30 <- rbind(snp_mat_peakbf10,env1_united_bf30)
-snp_map_peakbf30 <- rbind(snp_map_peakbf10,env1_united_bf30)
-snp_cmd_peakbf30 <- rbind(snp_cmd_peakbf10,env1_united_bf30)
+snp_map_peakbf30 <- rbind(snp_map_peakbf10,env2_united_bf30)
+snp_cmd_peakbf30 <- rbind(snp_cmd_peakbf10,env5_united_bf30)
 
 #Get window IDs for all selected SNPs
 snp_mat_peakbf30_win <- left_join(snp_mat_peakbf30,loci_win, by="chr_snp")
@@ -66,8 +66,8 @@ colnames(snp_map_peakbf30_win)[5] <- "win"
 colnames(snp_cmd_peakbf30_win)[5] <- "win"
 
 
-write_csv(snp_mat_peakbf30_win,"Genomics_scripts/Data/win_bf_mat.csv")
-write_csv(snp_map_peakbf30_win,"Genomics_scripts/Data/win_bf_map.csv")
-write_csv(snp_cmd_peakbf30_win,"Genomics_scripts/Data/win_bf_cmd.csv")
+write_csv(snp_mat_peakbf30_win,"Genomics_scripts/Data/win_bf_mat30_5.csv")
+write_csv(snp_map_peakbf30_win,"Genomics_scripts/Data/win_bf_map30_5.csv")
+write_csv(snp_cmd_peakbf30_win,"Genomics_scripts/Data/win_bf_cmd30_5.csv")
 
 

@@ -51,7 +51,7 @@ optima <- read.csv("/Users/daniel_anstett/Dropbox/AM_Workshop/WZA_vignette/envir
 pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
 snp<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
 loci<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
-loci_win<-read_csv("Genomics_scripts/Data/loci_win.csv")
+loci_win<-read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/loci_win.csv")
 
 #Calculate frequency using prop_A
 colnames(loci) <- c("chr","snp")
