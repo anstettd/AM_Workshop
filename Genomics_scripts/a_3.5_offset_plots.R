@@ -35,9 +35,9 @@ mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 mask_offset_1215 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 
 #Future cliamte change offset raster
-mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5_peakbf2.tif") #pop data
+mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5_peakbf2.tif") #pop data 
 mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5_peakbf2.tif") #pop data
-
+#Labled as bf2, but is actually bf5
 
 #Define CRS
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
@@ -66,16 +66,23 @@ timeseries_pop <- baseline_pop %>% filter(Paper_ID<13) %>% dplyr::select(Long,La
 timeseries_pop_sf <- st_as_sf(timeseries_pop,coords=c("Long","Lat"), crs=EPSG4326)
 baseline_pop <- baseline_pop  %>% dplyr::select(Long,Lat)
 baseline_pop_sf <- st_as_sf(baseline_pop,coords=c("Long","Lat"), crs=EPSG4326)
+
+
+
+
+
+
 ##############################################################################
 
-#2016
+#Future climate change
 off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
-off_pallet16 <- c("#67A9CF","#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8","#f21836","#f21836")
+off_palletas <- c("#004C99","#004C99","#67A9CF","#67A9CF","#D1E5F0","#D1E5F0","#f7c1c8")
+off_pallet45 <- c("#67A9CF","#67A9CF","#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8")
 #Plot offset SSP245 (RCP 4.5)
 tmap_mode("plot")
 #tmap_mode("view")
-offset_2016 <- tm_shape(mask_offset_2016, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = off_pallet16)+
+offset45 <- tm_shape(mask_offset_45, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet45)+
   #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
   #  tm_raster(palette = "Reds")+
   tm_shape(calo)+
@@ -85,18 +92,65 @@ offset_2016 <- tm_shape(mask_offset_2016, bbox=st_bbox(calo)) + #legal boundires
   #  tm_shape(baseline_pop_sf)+
   #  tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
-offset_2016
-tmap_save(offset_2016, filename = "Offset_graphs/offset2016_peakbf2.pdf",width=4, height=7)
+offset45
+tmap_save(offset45, filename = "Offset_graphs/offset45_peakbf5.pdf",width=4, height=7)
 
-#2015
+#off_pallet2 <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15","#5c0915")
+#off_pallet3 <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
+#off_palleta <- c("#004C99","#67A9CF","#D1E5F0","#f7c1c8")
+#off_pallet85 <- c("#67A9CF","#67A9CF","#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8","#f21836")
+off_pallet85 <- c("#67A9CF","#67A9CF","#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8")
+#Plot offset SSP585 (RCP 8.5)
+tmap_mode("plot")
+#tmap_mode("view")
+offset85 <- tm_shape(mask_offset_85, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet85)+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(timeseries_pop_sf)+
+  tm_dots(size=0.5,shape=1,col="black",border.lwd = 2.5)+
+  #  tm_shape(baseline_pop_sf)+
+  #  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
+offset85
+tmap_save(offset85, filename = "Offset_graphs/offset85_peakbf5.pdf",width=4, height=7)
+
+
+
+##############################################################################
+#2012 to 2015 offset
 off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
-off_pallet6 <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15","#5c0915")
-off_pallet15 <- c("#D1E5F0","#f7c1c8","#f21836","#A50F15")
+off_pallet1215 <- c("#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8","#f21836","#f21836","#A50F15")
+#Plot offset 
+tmap_mode("plot")
+#tmap_mode("view")
+offset_1215 <- tm_shape(mask_offset_1215, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet1215)+
+  #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
+  #  tm_raster(palette = "Reds")+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(timeseries_pop_sf)+
+  tm_dots(size=0.5,shape=1,col="black",border.lwd = 2.5)+
+  #  tm_shape(baseline_pop_sf)+
+  #  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
+offset_1215
+tmap_save(offset_1215, filename = "Offset_graphs/offset1215_peakbf5.pdf",width=4, height=7)
+
+
+
+##############################################################################
+#Yearly offset
+
+#2011
+off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
+off_pallet11 <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836")
 
 tmap_mode("plot")
 #tmap_mode("view")
-offset_2015 <- tm_shape(mask_offset_2015, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = off_pallet15)+
+offset_2011 <- tm_shape(mask_offset_2011, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet11)+
   #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
   #  tm_raster(palette = "Reds")+
   tm_shape(calo)+
@@ -106,18 +160,18 @@ offset_2015 <- tm_shape(mask_offset_2015, bbox=st_bbox(calo)) + #legal boundires
   #  tm_shape(baseline_pop_sf)+
   #  tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
-offset_2015
-tmap_save(offset_2015, filename = "Offset_graphs/offset2015_peakbf2.pdf",width=4, height=7)
+offset_2011
+tmap_save(offset_2011, filename = "Offset_graphs/offset2011_peakbf5.pdf",width=4, height=7)
 
-#2014
+#2012
 off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
 off_pallets <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15","#5c0915")
-off_pallet4 <- c("#D1E5F0","#f7c1c8","#f7c1c8","#f21836","#f21836","#A50F15","#A50F15","#5c0915")
+off_pallet12 <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
 
 tmap_mode("plot")
 #tmap_mode("view")
-offset_2014 <- tm_shape(mask_offset_2014, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = off_pallet4)+
+offset_2012 <- tm_shape(mask_offset_2012, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet12)+
   #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
   #  tm_raster(palette = "Reds")+
   tm_shape(calo)+
@@ -127,9 +181,8 @@ offset_2014 <- tm_shape(mask_offset_2014, bbox=st_bbox(calo)) + #legal boundires
   #  tm_shape(baseline_pop_sf)+
   #  tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
-offset_2014
-tmap_save(offset_2014, filename = "Offset_graphs/offset2014_peakbf2.pdf",width=4, height=7)
-
+offset_2012
+tmap_save(offset_2012, filename = "Offset_graphs/offset2012_peakbf5.pdf",width=4, height=7)
 
 #2013
 off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
@@ -150,18 +203,20 @@ offset_2013 <- tm_shape(mask_offset_2013, bbox=st_bbox(calo)) + #legal boundires
   #  tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
 offset_2013
-tmap_save(offset_2013, filename = "Offset_graphs/offset2013_peakbf2.pdf",width=4, height=7)
+tmap_save(offset_2013, filename = "Offset_graphs/offset2013_peakbf5.pdf",width=4, height=7)
 
 
-#2012
+
+
+#2014
 off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
 off_pallets <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15","#5c0915")
-off_pallet11 <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836")
+off_pallet14 <- c("#D1E5F0","#f7c1c8","#f7c1c8","#f21836","#f21836","#A50F15","#A50F15","#5c0915")
 
 tmap_mode("plot")
 #tmap_mode("view")
-offset_2012 <- tm_shape(mask_offset_2012, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = off_pallet11)+
+offset_2014 <- tm_shape(mask_offset_2014, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet14)+
   #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
   #  tm_raster(palette = "Reds")+
   tm_shape(calo)+
@@ -171,18 +226,19 @@ offset_2012 <- tm_shape(mask_offset_2012, bbox=st_bbox(calo)) + #legal boundires
   #  tm_shape(baseline_pop_sf)+
   #  tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
-offset_2012
-tmap_save(offset_2012, filename = "Offset_graphs/offset2012_peakbf2.pdf",width=4, height=7)
+offset_2014
+tmap_save(offset_2014, filename = "Offset_graphs/offset2014_peakbf5.pdf",width=4, height=7)
 
 
-#2011
+#2015
 off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
-off_pallet11 <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836")
+off_pallet6 <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15","#5c0915")
+off_pallet15 <- c("#D1E5F0","#f7c1c8","#f7c1c8","#f21836","#f21836","#A50F15","#A50F15","#5c0915")
 
 tmap_mode("plot")
 #tmap_mode("view")
-offset_2011 <- tm_shape(mask_offset_2011, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = off_pallet11)+
+offset_2015 <- tm_shape(mask_offset_2015, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet15)+
   #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
   #  tm_raster(palette = "Reds")+
   tm_shape(calo)+
@@ -192,46 +248,20 @@ offset_2011 <- tm_shape(mask_offset_2011, bbox=st_bbox(calo)) + #legal boundires
   #  tm_shape(baseline_pop_sf)+
   #  tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
-offset_2011
-tmap_save(offset_2011, filename = "Offset_graphs/offset2011_peakbf2.pdf",width=4, height=7)
+offset_2015
+tmap_save(offset_2015, filename = "Offset_graphs/offset2015_peakbf5.pdf",width=4, height=7)
 
 
-
-
-##############################################################################
-
-#Future climate change
-
+#2016
 off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
-off_palletas <- c("#004C99","#004C99","#67A9CF","#67A9CF","#D1E5F0","#D1E5F0","#f7c1c8")
-off_pallet45 <- c("#67A9CF","#67A9CF","#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8")
+off_pallet16 <- c("#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8","#f21836","#f21836","#A50F15")
 #Plot offset SSP245 (RCP 4.5)
 tmap_mode("plot")
 #tmap_mode("view")
-offset45 <- tm_shape(mask_offset_45, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = off_pallet45)+
-#  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
-#  tm_raster(palette = "Reds")+
-  tm_shape(calo)+
-  tm_borders()+
-  tm_shape(timeseries_pop_sf)+
-  tm_dots(size=0.5,shape=1,col="black",border.lwd = 2.5)+
-#  tm_shape(baseline_pop_sf)+
-#  tm_dots(size=0.1,shape=1)+
-  tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
-offset45
-tmap_save(offset45, filename = "Offset_graphs/offset45_peakbf2.pdf",width=4, height=7)
-
-off_pallet2 <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15","#5c0915")
-off_pallet3 <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
-off_palleta <- c("#004C99","#67A9CF","#D1E5F0","#f7c1c8")
-off_pallet85 <- c("#67A9CF","#67A9CF","#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8","#f21836")
-
-#Plot offset SSP585 (RCP 8.5)
-tmap_mode("plot")
-#tmap_mode("view")
-offset85 <- tm_shape(mask_offset_85, bbox=st_bbox(calo)) + #legal boundires
-  tm_raster(palette = off_pallet85)+
+offset_2016 <- tm_shape(mask_offset_2016, bbox=st_bbox(calo)) + #legal boundires
+  tm_raster(palette = off_pallet16)+
+  #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
+  #  tm_raster(palette = "Reds")+
   tm_shape(calo)+
   tm_borders()+
   tm_shape(timeseries_pop_sf)+
@@ -239,7 +269,8 @@ offset85 <- tm_shape(mask_offset_85, bbox=st_bbox(calo)) + #legal boundires
   #  tm_shape(baseline_pop_sf)+
   #  tm_dots(size=0.1,shape=1)+
   tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
-offset85
-tmap_save(offset85, filename = "Offset_graphs/offset85_peakbf2.pdf",width=4, height=7)
+offset_2016
+tmap_save(offset_2016, filename = "Offset_graphs/offset2016_peakbf5.pdf",width=4, height=7)
+
 
 

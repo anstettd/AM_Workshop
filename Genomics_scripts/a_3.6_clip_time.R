@@ -23,6 +23,7 @@ library(rnaturalearthdata)
 ## INPUTS
 
 #Timeseries offset raster
+mask_offset_1215 <- raster("Genomics_scripts/Data/offset_1215.tif") #pop data
 mask_offset_2011 <- raster("Genomics_scripts/Data/offset_2011.tif") #pop data
 mask_offset_2012 <- raster("Genomics_scripts/Data/offset_2012.tif") #pop data
 mask_offset_2013 <- raster("Genomics_scripts/Data/offset_2013.tif") #pop data
@@ -34,24 +35,13 @@ mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5_peakbf2.tif") #pop data
 mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5_peakbf2.tif") #pop data
 
+#Stack rasters
+rasStack_gcc <- stack(mask_offset_45,mask_offset_85)
+rasStack_1016 <- stack(mask_offset_1215,mask_offset_2011,mask_offset_2012,mask_offset_2013,
+                       mask_offset_2014,mask_offset_2015,mask_offset_2016)
+
 #Define CRS
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
-
-#Mask by M. caridnalis range extent
-c_range <- st_read("Shape/c_range50.shp") 
-c_range <- st_transform(c_range, crs = 4326) # reproject to WGS 1984 (EPSG 4326)
-#mask_offset_2011 <- mask(mask_offset_2011, c_range)
-#mask_offset_2012 <- mask(mask_offset_2012, c_range)
-#mask_offset_2013 <- mask(mask_offset_2013, c_range)
-#mask_offset_2014 <- mask(mask_offset_2014, c_range)
-#mask_offset_2015 <- mask(mask_offset_2015, c_range)
-mask_offset_2016 <- mask(mask_offset_2016, c_range)
-mask_offset_45 <- mask(mask_offset_45, c_range)
-mask_offset_85 <- mask(mask_offset_85, c_range)
-
-rasStack_gcc <- stack(mask_offset_45,mask_offset_85)
-rasStack_1016 <- stack(mask_offset_2011,mask_offset_2012,mask_offset_2013,
-                      mask_offset_2014,mask_offset_2015,mask_offset_2016)
 
 #Baseline & Timeseries
 baseline_pop <- read_csv("Genomics_scripts/Data/paper_ID_site_select.csv")
@@ -70,6 +60,6 @@ timeseries_offset <- baseline_pop %>% filter(Paper_ID<13)
 offset_pop <- cbind(timeseries_offset,rasStack_1016,rasValue_gcc)
 
 
-write_csv(offset_pop,"Genomics_scripts/Data/offset_pop.csv")
+write_csv(offset_pop,"Genomics_scripts/Data/offset_pop_bf5.csv")
 
 

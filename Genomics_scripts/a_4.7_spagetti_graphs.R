@@ -9,9 +9,9 @@
 library(tidyverse)
 
 #Import timeseries frequencies
-freq_mat <- read_csv("Genomics_scripts/Data/freq_MAT_peakbf2.csv")
-freq_map <- read_csv("Genomics_scripts/Data/freq_MAP_peakbf2.csv")
-freq_cmd <- read_csv("Genomics_scripts/Data/freq_CMD_peakbf2.csv")
+freq_mat <- read_csv("Genomics_scripts/Data/freq_MAT_peakbf5.csv")
+freq_map <- read_csv("Genomics_scripts/Data/freq_MAP_peakbf5.csv")
+freq_cmd <- read_csv("Genomics_scripts/Data/freq_CMD_peakbf5.csv")
 
 #Gather data frames
 freq_mat <- freq_mat %>% gather(SNP_ID,SNP_Freq,3:dim(freq_mat)[2])
@@ -19,9 +19,9 @@ freq_map <- freq_map %>% gather(SNP_ID,SNP_Freq,3:dim(freq_map)[2])
 freq_cmd <- freq_cmd %>% gather(SNP_ID,SNP_Freq,3:dim(freq_cmd)[2])
 
 #Import gathered rand (seed=1) data frame from 6.3
-rand_mat <- read_csv("Genomics_scripts/Data/rand_gathered_mat_peakbf2.csv")
-rand_map <- read_csv("Genomics_scripts/Data/rand_gathered_map_peakbf2.csv")
-rand_cmd <- read_csv("Genomics_scripts/Data/rand_gathered_cmd_peakbf2.csv")
+rand_mat <- read_csv("Genomics_scripts/Data/rand_gathered_mat_peakbf5.csv")
+rand_map <- read_csv("Genomics_scripts/Data/rand_gathered_map_peakbf5.csv")
+rand_cmd <- read_csv("Genomics_scripts/Data/rand_gathered_cmd_peakbf5.csv")
 
 
 #Add Type
@@ -96,7 +96,7 @@ ggplot(data=joint_env_p1,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_01env_both_freqchange_paper_p1.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_01env_both_freqchange_paper_p1.pdf",width=12, height = 6, units = "in")
 
 
 #p12
@@ -114,7 +114,7 @@ ggplot(data=joint_env_p12,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_02env_both_freqchange_paper_p12.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_02env_both_freqchange_paper_p12.pdf",width=12, height = 6, units = "in")
 
 
 
@@ -133,7 +133,7 @@ ggplot(data=joint_env_p2,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_03env_both_freqchange_paper_p2.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_03env_both_freqchange_paper_p2.pdf",width=12, height = 6, units = "in")
 
 #p3
 ggplot(data=joint_env_p3,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -150,7 +150,7 @@ ggplot(data=joint_env_p3,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_04env_both_freqchange_paper_p3.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_04env_both_freqchange_paper_p3.pdf",width=12, height = 6, units = "in")
 
 #p4
 ggplot(data=joint_env_p4,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -167,7 +167,7 @@ ggplot(data=joint_env_p4,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_05env_both_freqchange_paper_p4.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_05env_both_freqchange_paper_p4.pdf",width=12, height = 6, units = "in")
 
 #p5
 ggplot(data=joint_env_p5,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -184,7 +184,7 @@ ggplot(data=joint_env_p5,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_06env_both_freqchange_paper_p5.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_06env_both_freqchange_paper_p5.pdf",width=12, height = 6, units = "in")
 
 #p6
 ggplot(data=joint_env_p6,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -201,7 +201,7 @@ ggplot(data=joint_env_p6,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_07env_both_freqchange_paper_p6.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_07env_both_freqchange_paper_p6.pdf",width=12, height = 6, units = "in")
 
 #p7
 ggplot(data=joint_env_p7,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -218,7 +218,7 @@ ggplot(data=joint_env_p7,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_08env_both_freqchange_paper_p7.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_08env_both_freqchange_paper_p7.pdf",width=12, height = 6, units = "in")
 
 #p8
 ggplot(data=joint_env_p8,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -235,7 +235,7 @@ ggplot(data=joint_env_p8,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_09env_both_freqchange_paper_p8.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_09env_both_freqchange_paper_p8.pdf",width=12, height = 6, units = "in")
 
 #p9
 ggplot(data=joint_env_p9,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -252,7 +252,7 @@ ggplot(data=joint_env_p9,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_10env_both_freqchange_paper_p9.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_10env_both_freqchange_paper_p9.pdf",width=12, height = 6, units = "in")
 
 #p10
 ggplot(data=joint_env_p10,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -269,7 +269,7 @@ ggplot(data=joint_env_p10,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_11env_both_freqchange_paper_p10.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_11env_both_freqchange_paper_p10.pdf",width=12, height = 6, units = "in")
 
 #p11
 ggplot(data=joint_env_p11,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) + 
@@ -286,7 +286,7 @@ ggplot(data=joint_env_p11,aes(Year,SNP_Freq,group=SNP_ID,color=Type)) +
         legend.text = element_text(size=12,face="bold"),
         strip.background = element_blank(), 
         strip.text.x=element_text(size=14,face="bold",hjust=0,vjust=-1.2))
-ggsave("Graphs_CI_peak_pop/2_12env_both_freqchange_paper_p11.pdf",width=12, height = 6, units = "in")
+ggsave("Graphs_Oct_22/2_12env_both_freqchange_paper_p11.pdf",width=12, height = 6, units = "in")
 
 
 
