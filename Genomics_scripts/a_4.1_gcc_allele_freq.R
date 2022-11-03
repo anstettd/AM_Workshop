@@ -193,7 +193,7 @@ FAT_n <- function(snp_base,snp_time,climate_table,env_in){
 ## Make table with climate change associated SNPs for timeseries using baseline climate
 freq_MAT_1 <- FAT_p(env1_base,snp1_time,climate,"MAT")
 freq_MAP_1 <- FAT_n(env2_base,snp2_time,climate,"MAP")
-freq_CMD_1 <- FAT_p(env5_base,snp5_time,climate,"MAP")
+freq_CMD_1 <- FAT_p(env5_base,snp5_time,climate,"CMD")
 
 #Make into dataframe from tibble
 freq_MAT<- as.data.frame(freq_MAT_1)

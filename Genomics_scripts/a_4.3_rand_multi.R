@@ -692,7 +692,6 @@ print(seed_num)
 
 }
 
-
 #Save large files in folder outside of github
 setwd("~/Dropbox/AM_Workshop/Large_files")
 
@@ -702,4 +701,110 @@ write_csv(rand_slope_cmd_out, "rand_slope_cmd_multi_peakbf5.csv")
 
 setwd("~/Dropbox/AM_Workshop/AM_Workshop/")
 
+
+
+
+
+
+
+
+rand_slope_cmd_out<-data.frame()
+
+#CMD ONLY
+
+#######################################################################################################
+# Stratified random sampling SNPs for a given population
+for (seed_num in 1:1000){
+  set.seed(seed_num)
+  
+  rand_cmd_pop1 <- large(p1A,freq_count_CMD_1)
+  rand_cmd_pop2 <- large(p2A,freq_count_CMD_2)
+  rand_cmd_pop3 <- large(p3A,freq_count_CMD_3)
+  rand_cmd_pop4 <- large(p4A,freq_count_CMD_4)
+  rand_cmd_pop5 <- large(p5A,freq_count_CMD_5)
+  rand_cmd_pop6 <- large(p6A,freq_count_CMD_6)
+  rand_cmd_pop7 <- large(p7A,freq_count_CMD_7)
+  rand_cmd_pop8 <- large(p8A,freq_count_CMD_8)
+  rand_cmd_pop9 <- large(p9A,freq_count_CMD_9)
+  rand_cmd_pop10 <- large(p10A,freq_count_CMD_10)
+  rand_cmd_pop11 <- large(p11A,freq_count_CMD_11)
+  rand_cmd_pop12 <- large(p12A,freq_count_CMD_12)
+  
+  #Get Full timeseires for each randomly selected neutral location
+  rand_time_AB_cmd_1 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop1$chr_snp)) #cmd
+  rand_time_AB_cmd_2 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop2$chr_snp)) #cmd
+  rand_time_AB_cmd_3 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop3$chr_snp)) #cmd
+  rand_time_AB_cmd_4 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop4$chr_snp)) #cmd
+  rand_time_AB_cmd_5 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop5$chr_snp)) #cmd
+  rand_time_AB_cmd_6 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop6$chr_snp)) #cmd
+  rand_time_AB_cmd_7 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop7$chr_snp)) #cmd
+  rand_time_AB_cmd_8 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop8$chr_snp)) #cmd
+  rand_time_AB_cmd_9 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop9$chr_snp)) #cmd
+  rand_time_AB_cmd_10 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop10$chr_snp)) #cmd
+  rand_time_AB_cmd_11 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop11$chr_snp)) #cmd
+  rand_time_AB_cmd_12 <-loci_snp %>% filter (chr_snp %in% as.character(rand_cmd_pop12$chr_snp)) #cmd
+  
+  # Calc SNP A and transpose
+  rand_cmd_pop1 <- prop_A(rand_time_AB_cmd_1,pop_order_2)
+  rand_cmd_pop2 <- prop_A(rand_time_AB_cmd_2,pop_order_2)
+  rand_cmd_pop3 <- prop_A(rand_time_AB_cmd_3,pop_order_2)
+  rand_cmd_pop4 <- prop_A(rand_time_AB_cmd_4,pop_order_2)
+  rand_cmd_pop5 <- prop_A(rand_time_AB_cmd_5,pop_order_2)
+  rand_cmd_pop6 <- prop_A(rand_time_AB_cmd_6,pop_order_2)
+  rand_cmd_pop7 <- prop_A(rand_time_AB_cmd_7,pop_order_2)
+  rand_cmd_pop8 <- prop_A(rand_time_AB_cmd_8,pop_order_2)
+  rand_cmd_pop9 <- prop_A(rand_time_AB_cmd_9,pop_order_2)
+  rand_cmd_pop10 <- prop_A(rand_time_AB_cmd_10,pop_order_2)
+  rand_cmd_pop11 <- prop_A(rand_time_AB_cmd_11,pop_order_2)
+  rand_cmd_pop12 <- prop_A(rand_time_AB_cmd_12,pop_order_2)
+  
+  # Filter for site (its currently duplicated since timeseries filtering was on 12 pop datatset)
+  rand_cmd_pop1 <- rand_cmd_pop1 %>% filter(Site==1)
+  rand_cmd_pop2 <- rand_cmd_pop2 %>% filter(Site==2)
+  rand_cmd_pop3 <- rand_cmd_pop3 %>% filter(Site==3)
+  rand_cmd_pop4 <- rand_cmd_pop4 %>% filter(Site==4)
+  rand_cmd_pop5 <- rand_cmd_pop5 %>% filter(Site==5)
+  rand_cmd_pop6 <- rand_cmd_pop6 %>% filter(Site==6)
+  rand_cmd_pop7 <- rand_cmd_pop7 %>% filter(Site==7)
+  rand_cmd_pop8 <- rand_cmd_pop8 %>% filter(Site==8)
+  rand_cmd_pop9 <- rand_cmd_pop9 %>% filter(Site==9)
+  rand_cmd_pop10 <- rand_cmd_pop10 %>% filter(Site==10)
+  rand_cmd_pop11 <- rand_cmd_pop11 %>% filter(Site==11)
+  rand_cmd_pop12 <- rand_cmd_pop12 %>% filter(Site==12)
+  
+  #Get slopes
+  rand_slope_cmd_pop1 <- glm_slopes(rand_cmd_pop1)
+  rand_slope_cmd_pop2 <- glm_slopes(rand_cmd_pop2)
+  rand_slope_cmd_pop3 <- glm_slopes(rand_cmd_pop3)
+  rand_slope_cmd_pop4 <- glm_slopes(rand_cmd_pop4)
+  rand_slope_cmd_pop5 <- glm_slopes(rand_cmd_pop5)
+  rand_slope_cmd_pop6 <- glm_slopes(rand_cmd_pop6)
+  rand_slope_cmd_pop7 <- glm_slopes(rand_cmd_pop7)
+  rand_slope_cmd_pop8 <- glm_slopes(rand_cmd_pop8)
+  rand_slope_cmd_pop9 <- glm_slopes(rand_cmd_pop9)
+  rand_slope_cmd_pop10 <- glm_slopes(rand_cmd_pop10)
+  rand_slope_cmd_pop11 <- glm_slopes(rand_cmd_pop11)
+  rand_slope_cmd_pop12 <- glm_slopes(rand_cmd_pop12)
+  
+  
+  #Bind populations for each env
+  rand_slope_cmd <- rbind(rand_slope_cmd_pop1,
+                          rand_slope_cmd_pop2,
+                          rand_slope_cmd_pop3,
+                          rand_slope_cmd_pop4,
+                          rand_slope_cmd_pop5,
+                          rand_slope_cmd_pop6,
+                          rand_slope_cmd_pop7,
+                          rand_slope_cmd_pop8,
+                          rand_slope_cmd_pop9,
+                          rand_slope_cmd_pop10,
+                          rand_slope_cmd_pop11,
+                          rand_slope_cmd_pop12)
+  rand_slope_cmd <- rand_slope_cmd %>% mutate (Seed_ID = seed_num)
+  #Export each joint df
+  rand_slope_cmd_out<-rbind(rand_slope_cmd_out,rand_slope_cmd)
+  
+  print(seed_num)
+  
+}
 
