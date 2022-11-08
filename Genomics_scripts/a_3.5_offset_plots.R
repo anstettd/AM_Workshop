@@ -33,6 +33,7 @@ mask_offset_2014 <- raster("Genomics_scripts/Data/offset_2014.tif") #pop data
 mask_offset_2015 <- raster("Genomics_scripts/Data/offset_2015.tif") #pop data
 mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
 mask_offset_1215 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+clim_diff_1215 <- raster("Genomics_scripts/Data/clim_distance_1215.tif") #pop data
 
 #Future cliamte change offset raster
 mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5_peakbf2.tif") #pop data 
@@ -272,5 +273,32 @@ offset_2016 <- tm_shape(mask_offset_2016, bbox=st_bbox(calo)) + #legal boundires
 offset_2016
 tmap_save(offset_2016, filename = "Offset_graphs/offset2016_peakbf5.pdf",width=4, height=7)
 
+
+
+
+
+
+##############################################################################
+#Clim diff
+off_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
+env_pallet <- c("#67A9CF","#D1E5F0","#f7c1c8","#f21836","#A50F15")
+off_pallet1215 <- c("#D1E5F0","#D1E5F0","#f7c1c8","#f7c1c8","#f21836","#f21836","#A50F15")
+#Plot offset 
+tmap_mode("plot")
+#tmap_mode("view")
+env_1215 <- tm_shape(clim_diff_1215, bbox=st_bbox(calo)) + #legal boundires
+   #tm_raster()+
+    tm_raster(palette = env_pallet)+
+  #  tm_raster(palette = rev(brewer.pal(6, "RdBu")))+
+  #  tm_raster(palette = "Reds")+
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(timeseries_pop_sf)+
+  tm_dots(size=0.5,shape=1,col="black",border.lwd = 2.5)+
+  #  tm_shape(baseline_pop_sf)+
+  #  tm_dots(size=0.1,shape=1)+
+  tm_layout(legend.position = c(0.62, 0.48),legend.title.size = 0.001)
+env_1215
+tmap_save(env_1215, filename = "Offset_graphs/clim_diff_1215.pdf",width=4, height=7)
 
 
