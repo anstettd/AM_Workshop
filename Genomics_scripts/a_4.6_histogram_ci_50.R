@@ -42,7 +42,7 @@ mat_p1_hist <- ggplot(env_obs_ci,aes(x=S,y=p1,ymin=p1_low,ymax=p1_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P1)", y = "# of SNPs") +
   scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p1_hist <- mat_p1_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -58,7 +58,7 @@ mat_p12_hist <- ggplot(env_obs_ci,aes(x=S,y=p12,ymin=p12_low,ymax=p12_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P12)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p12_hist <- mat_p12_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -74,7 +74,7 @@ mat_p2_hist <- ggplot(env_obs_ci,aes(x=S,y=p2,ymin=p2_low,ymax=p2_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P2)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p2_hist <- mat_p2_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -90,7 +90,7 @@ mat_p3_hist <- ggplot(env_obs_ci,aes(x=S,y=p3,ymin=p3_low,ymax=p3_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P3)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p3_hist <- mat_p3_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -106,7 +106,7 @@ mat_p4_hist <- ggplot(env_obs_ci,aes(x=S,y=p4,ymin=p4_low,ymax=p4_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P4)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p4_hist <- mat_p4_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -122,7 +122,7 @@ mat_p5_hist <- ggplot(env_obs_ci,aes(x=S,y=p5,ymin=p5_low,ymax=p5_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P5)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130))+
   theme_classic()
 mat_p5_hist <- mat_p5_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -138,7 +138,7 @@ mat_p6_hist <- ggplot(env_obs_ci,aes(x=S,y=p6,ymin=p6_low,ymax=p6_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P6)", y = "# of SNPs") +
   scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p6_hist <- mat_p6_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -154,7 +154,7 @@ mat_p7_hist <- ggplot(env_obs_ci,aes(x=S,y=p7,ymin=p7_low,ymax=p7_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P7)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p7_hist <- mat_p7_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -170,7 +170,7 @@ mat_p8_hist <- ggplot(env_obs_ci,aes(x=S,y=p8,ymin=p8_low,ymax=p8_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P8)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p8_hist <- mat_p8_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -186,7 +186,7 @@ mat_p9_hist <- ggplot(env_obs_ci,aes(x=S,y=p9,ymin=p9_low,ymax=p9_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P9)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p9_hist <- mat_p9_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -202,7 +202,7 @@ mat_p10_hist <- ggplot(env_obs_ci,aes(x=S,y=p10,ymin=p10_low,ymax=p10_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P10)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p10_hist <- mat_p10_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -218,7 +218,7 @@ mat_p11_hist <- ggplot(env_obs_ci,aes(x=S,y=p11,ymin=p11_low,ymax=p11_up))+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 6) +
   labs(x = "Strength of Selection (P11)", y = "# of SNPs") +
  scale_x_continuous(breaks=seq(-50,50,25))+
-  scale_y_continuous(limits=c(0,125))+
+  scale_y_continuous(limits=c(0,130),breaks=seq(0,125,25))+
   theme_classic()
 mat_p11_hist <- mat_p11_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
