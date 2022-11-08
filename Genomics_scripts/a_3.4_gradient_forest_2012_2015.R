@@ -218,6 +218,7 @@ rbg_mask <- raster::crop(MAT.clip, extent(c_range))
 rbg_mask <- mask(rbg_mask, c_range)
 rbg_mask <- rbg_mask * 0
 mask_offset_2012 <- rbg_mask
+mask_offset_2012_dist <- rbg_mask
 rbg_2012 <- rbg_mask
 
 
@@ -266,15 +267,26 @@ projBF20_2012 <- predict(gf, stk_2012.df[,-1:-2])
 offset_BF20_2012 <- sqrt((projBF20_2012[,1]-predBF20[,1])^2+(projBF20_2012[,2]-predBF20[,2])^2
                          +(projBF20_2012[,3]-predBF20[,3])^2)
 
+
 # assign values to raster - can be tricky if current/future climate
 # rasters are not identical in terms of # cells, extent, etc.
 
 mask_offset_2012[stk_2012.df.cell] <- offset_BF20_2012
 plot(mask_offset_2012)
 
-writeRaster(mask_offset_2012,"Genomics_scripts/Data/offset_1215.tif", format="GTiff", overwrite=TRUE)
+#writeRaster(mask_offset_2012,"Genomics_scripts/Data/offset_1215.tif", format="GTiff", overwrite=TRUE)
 
 
+#Get Climate Distance
+
+# calculate euclidean distance between current and future genetic spaces  
+clim_distance_1215 <- sqrt((stk.df[,3]-stk_2012.df[,3])^2+(stk.df[,4]-stk_2012.df[,4])^2
+                           +(stk.df[,5]-stk_2012.df[,5])^2)
+
+mask_offset_2012_dist[stk_2012.df.cell] <- clim_distance_1215
+plot(mask_offset_2012_dist)
+
+writeRaster(mask_offset_2012_dist,"Genomics_scripts/Data/clim_distance_1215", format="GTiff", overwrite=TRUE)
 
 
 
