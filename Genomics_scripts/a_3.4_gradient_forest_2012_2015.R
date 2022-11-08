@@ -279,14 +279,29 @@ plot(mask_offset_2012)
 
 #Get Climate Distance
 
+#Make PCAs
+past_pca <- prcomp(stk.df[3:5])
+             
+#Predict using past PCA
+pred_past_env <- predict(past_pca, stk.df[,-1:-2]) # remove cell column before transforming
+pred_1215_env <- predict(past_pca, stk_2012.df[,-1:-2])
+
+
+clim_distance_1215 <- sqrt((pred_past_env[,1]-pred_1215_env[,1])^2+(pred_past_env[,2]-pred_1215_env[,2])^2
+                           +(pred_past_env[,3]-pred_1215_env[,3])^2)
+
+
 # calculate euclidean distance between current and future genetic spaces  
-clim_distance_1215 <- sqrt((stk.df[,3]-stk_2012.df[,3])^2+(stk.df[,4]-stk_2012.df[,4])^2
-                           +(stk.df[,5]-stk_2012.df[,5])^2)
+#clim_distance_1215 <- sqrt((stk.df[,3]-stk_2012.df[,3])^2+(stk.df[,4]-stk_2012.df[,4])^2
+#                           +(stk.df[,5]-stk_2012.df[,5])^2)
 
 mask_offset_2012_dist[stk_2012.df.cell] <- clim_distance_1215
 plot(mask_offset_2012_dist)
 
-writeRaster(mask_offset_2012_dist,"Genomics_scripts/Data/clim_distance_1215.tif", format="GTiff", overwrite=TRUE)
+writeRaster(mask_offset_2012_dist,"Genomics_scripts/Data/clim_distance.tif", format="GTiff", overwrite=TRUE)
+
+
+
 
 
 
