@@ -37,9 +37,9 @@ for (i in 1:12){
 }
 
 offset_pop_lambda <- cbind(offset_pop,lambda_pop)
-colnames(offset_pop_lambda)[13] <- "offset_4.5"
-colnames(offset_pop_lambda)[14] <- "offset_8.5"
-colnames(offset_pop_lambda)[16] <- "lambda_slope"
+colnames(offset_pop_lambda)[14] <- "offset_4.5"
+colnames(offset_pop_lambda)[15] <- "offset_8.5"
+colnames(offset_pop_lambda)[17] <- "lambda_slope"
 
 write_csv(offset_pop_lambda,"Genomics_scripts/Data/offset_pop_lambda.csv")
 

@@ -30,6 +30,8 @@ mask_offset_2013 <- raster("Genomics_scripts/Data/offset_2013.tif") #pop data
 mask_offset_2014 <- raster("Genomics_scripts/Data/offset_2014.tif") #pop data
 mask_offset_2015 <- raster("Genomics_scripts/Data/offset_2015.tif") #pop data
 mask_offset_2016 <- raster("Genomics_scripts/Data/offset_2016.tif") #pop data
+clim_diff_1215 <- raster("Genomics_scripts/Data/clim_distance.tif") #pop data
+
 
 #Future cliamte change offset raster
 mask_offset_45 <- raster("Genomics_scripts/Data/offset_4.5_peakbf2.tif") #pop data
@@ -38,7 +40,7 @@ mask_offset_85 <- raster("Genomics_scripts/Data/offset_8.5_peakbf2.tif") #pop da
 #Stack rasters
 rasStack_gcc <- stack(mask_offset_45,mask_offset_85)
 rasStack_1016 <- stack(mask_offset_1215,mask_offset_2011,mask_offset_2012,mask_offset_2013,
-                       mask_offset_2014,mask_offset_2015,mask_offset_2016)
+                       mask_offset_2014,mask_offset_2015,mask_offset_2016,clim_diff_1215)
 
 #Define CRS
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
