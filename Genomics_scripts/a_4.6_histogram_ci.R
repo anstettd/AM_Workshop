@@ -40,13 +40,15 @@ env_obs_ci <- read_csv("Genomics_scripts/Data/env_obs_ci_peakbf5.csv")
 mat_p1_hist <- ggplot(env_obs_ci,aes(x=S,y=p1,ymin=p1_low,ymax=p1_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P1)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P1)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p1_hist <- mat_p1_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p1_hist <- mat_p1_hist + facet_wrap(.~env)
 mat_p1_hist 
 ggsave("Graphs_Oct_22/1_01env_hist_ci_p1.pdf",width=10, height = 6, units = "in")
@@ -55,13 +57,15 @@ ggsave("Graphs_Oct_22/1_01env_hist_ci_p1.pdf",width=10, height = 6, units = "in"
 mat_p12_hist <- ggplot(env_obs_ci,aes(x=S,y=p12,ymin=p12_low,ymax=p12_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P12)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P12)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p12_hist <- mat_p12_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p12_hist <- mat_p12_hist + facet_wrap(.~env)
 mat_p12_hist 
 ggsave("Graphs_Oct_22/1_02env_hist_ci_p12.pdf",width=10, height = 6, units = "in")
@@ -70,13 +74,15 @@ ggsave("Graphs_Oct_22/1_02env_hist_ci_p12.pdf",width=10, height = 6, units = "in
 mat_p2_hist <- ggplot(env_obs_ci,aes(x=S,y=p2,ymin=p2_low,ymax=p2_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P2)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P2)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p2_hist <- mat_p2_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p2_hist <- mat_p2_hist + facet_wrap(.~env)
 mat_p2_hist 
 ggsave("Graphs_Oct_22/1_03env_hist_ci_p2.pdf",width=10, height = 6, units = "in")
@@ -85,13 +91,15 @@ ggsave("Graphs_Oct_22/1_03env_hist_ci_p2.pdf",width=10, height = 6, units = "in"
 mat_p3_hist <- ggplot(env_obs_ci,aes(x=S,y=p3,ymin=p3_low,ymax=p3_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P3)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P3)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p3_hist <- mat_p3_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p3_hist <- mat_p3_hist + facet_wrap(.~env)
 mat_p3_hist 
 ggsave("Graphs_Oct_22/1_04env_hist_ci_p3.pdf",width=10, height = 6, units = "in")
@@ -100,13 +108,15 @@ ggsave("Graphs_Oct_22/1_04env_hist_ci_p3.pdf",width=10, height = 6, units = "in"
 mat_p4_hist <- ggplot(env_obs_ci,aes(x=S,y=p4,ymin=p4_low,ymax=p4_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P4)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P4)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p4_hist <- mat_p4_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p4_hist <- mat_p4_hist + facet_wrap(.~env)
 mat_p4_hist 
 ggsave("Graphs_Oct_22/1_05env_hist_ci_p4.pdf",width=10, height = 6, units = "in")
@@ -115,13 +125,15 @@ ggsave("Graphs_Oct_22/1_05env_hist_ci_p4.pdf",width=10, height = 6, units = "in"
 mat_p5_hist <- ggplot(env_obs_ci,aes(x=S,y=p5,ymin=p5_low,ymax=p5_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P5)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P5)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p5_hist <- mat_p5_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p5_hist <- mat_p5_hist + facet_wrap(.~env)
 mat_p5_hist 
 ggsave("Graphs_Oct_22/1_06env_hist_ci_p5.pdf",width=10, height = 6, units = "in")
@@ -130,13 +142,15 @@ ggsave("Graphs_Oct_22/1_06env_hist_ci_p5.pdf",width=10, height = 6, units = "in"
 mat_p6_hist <- ggplot(env_obs_ci,aes(x=S,y=p6,ymin=p6_low,ymax=p6_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P6)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P6)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p6_hist <- mat_p6_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p6_hist <- mat_p6_hist + facet_wrap(.~env)
 mat_p6_hist 
 ggsave("Graphs_Oct_22/1_07env_hist_ci_p6.pdf",width=10, height = 6, units = "in")
@@ -145,13 +159,15 @@ ggsave("Graphs_Oct_22/1_07env_hist_ci_p6.pdf",width=10, height = 6, units = "in"
 mat_p7_hist <- ggplot(env_obs_ci,aes(x=S,y=p7,ymin=p7_low,ymax=p7_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P7)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P7)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p7_hist <- mat_p7_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p7_hist <- mat_p7_hist + facet_wrap(.~env)
 mat_p7_hist 
 ggsave("Graphs_Oct_22/1_08env_hist_ci_p7.pdf",width=10, height = 6, units = "in")
@@ -160,13 +176,15 @@ ggsave("Graphs_Oct_22/1_08env_hist_ci_p7.pdf",width=10, height = 6, units = "in"
 mat_p8_hist <- ggplot(env_obs_ci,aes(x=S,y=p8,ymin=p8_low,ymax=p8_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P8)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P8)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p8_hist <- mat_p8_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p8_hist <- mat_p8_hist + facet_wrap(.~env)
 mat_p8_hist 
 ggsave("Graphs_Oct_22/1_09env_hist_ci_p8.pdf",width=10, height = 6, units = "in")
@@ -175,13 +193,15 @@ ggsave("Graphs_Oct_22/1_09env_hist_ci_p8.pdf",width=10, height = 6, units = "in"
 mat_p9_hist <- ggplot(env_obs_ci,aes(x=S,y=p9,ymin=p9_low,ymax=p9_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P9)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P9)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p9_hist <- mat_p9_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p9_hist <- mat_p9_hist + facet_wrap(.~env)
 mat_p9_hist 
 ggsave("Graphs_Oct_22/1_10env_hist_ci_p9.pdf",width=10, height = 6, units = "in")
@@ -190,13 +210,15 @@ ggsave("Graphs_Oct_22/1_10env_hist_ci_p9.pdf",width=10, height = 6, units = "in"
 mat_p10_hist <- ggplot(env_obs_ci,aes(x=S,y=p10,ymin=p10_low,ymax=p10_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P10)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P10)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p10_hist <- mat_p10_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p10_hist <- mat_p10_hist + facet_wrap(.~env)
 mat_p10_hist 
 ggsave("Graphs_Oct_22/1_11env_hist_ci_p10.pdf",width=10, height = 6, units = "in")
@@ -205,13 +227,15 @@ ggsave("Graphs_Oct_22/1_11env_hist_ci_p10.pdf",width=10, height = 6, units = "in
 mat_p11_hist <- ggplot(env_obs_ci,aes(x=S,y=p11,ymin=p11_low,ymax=p11_up))+
   geom_bar(colour = "black", stat = "identity", width = 0.2, fill = "lightblue1")+
   geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.12) +
-  labs(x = "Strength of Selection (P11)", y = "# of SNPs") +
+  labs(x = "Slope of Frequency Change Across Years (P11)", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,100))+
   theme_classic()
 mat_p11_hist <- mat_p11_hist +
   theme(axis.text.x = element_text(size = 16, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
         axis.title = element_text(size = 20, face = "bold"), 
-        axis.text.y = element_text(size = 16, face = "bold"))
+        axis.text.y = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
 mat_p11_hist <- mat_p11_hist + facet_wrap(.~env)
 mat_p11_hist 
 ggsave("Graphs_Oct_22/1_12env_hist_ci_p11.pdf",width=10, height = 6, units = "in")
