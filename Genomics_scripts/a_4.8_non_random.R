@@ -61,17 +61,18 @@ slope.out.mat <- data.frame()
 for (j in 1:12){
   instruction_env <- instruction_mat %>% select(eval(paste("p",j, sep="")),S)
   instruction_env <- instruction_env %>% filter(instruction_env[,1]>0)
+  env_slope_pop <- mat_slope %>% filter(Site==j)
   
-if(dim(instruction_env)[1]!=0){
+  if(dim(instruction_env)[1]!=0){
   instruction_env <- instruction_env %>%  mutate(low_S=S-0.1,high_S=S+0.1)
   
-  for (i in 1:dim(instruction_env)[1]){
+  for (i in 1:2){
     data.temp <- instruction_env[i,]
-    slope.temp <- mat_slope %>% filter(Slope >= data.temp$low_S & Slope < data.temp$high_S) %>% 
+    slope.temp <- env_slope_pop %>% filter(Slope >= data.temp$low_S & Slope < data.temp$high_S) %>% 
       mutate(Site=j)
     slope.out.mat <- rbind(slope.out.mat,slope.temp)
   }
-}  
+}
 }
 
 #map
@@ -79,13 +80,14 @@ slope.out.map <- data.frame()
 for (j in 1:12){
   instruction_env <- instruction_map %>% select(eval(paste("p",j, sep="")),S)
   instruction_env <- instruction_env %>% filter(instruction_env[,1]>0)
-  
+  env_slope_pop <- map_slope %>% filter(Site==j)
+
   if(dim(instruction_env)[1]!=0){
     instruction_env <- instruction_env %>%  mutate(low_S=S-0.1,high_S=S+0.1)
     
     for (i in 1:dim(instruction_env)[1]){
       data.temp <- instruction_env[i,]
-      slope.temp <- map_slope %>% filter(Slope >= data.temp$low_S & Slope < data.temp$high_S) %>% 
+      slope.temp <- env_slope_pop %>% filter(Slope >= data.temp$low_S & Slope < data.temp$high_S) %>% 
         mutate(Site=j)
       slope.out.map <- rbind(slope.out.map,slope.temp)
     }
@@ -97,13 +99,14 @@ slope.out.cmd <- data.frame()
 for (j in 1:12){
   instruction_env <- instruction_cmd %>% select(eval(paste("p",j, sep="")),S)
   instruction_env <- instruction_env %>% filter(instruction_env[,1]>0)
+  env_slope_pop <- cmd_slope %>% filter(Site==j)
   
   if(dim(instruction_env)[1]!=0){
     instruction_env <- instruction_env %>%  mutate(low_S=S-0.1,high_S=S+0.1)
     
     for (i in 1:dim(instruction_env)[1]){
       data.temp <- instruction_env[i,]
-      slope.temp <- cmd_slope %>% filter(Slope >= data.temp$low_S & Slope < data.temp$high_S) %>% 
+      slope.temp <- env_slope_pop %>% filter(Slope >= data.temp$low_S & Slope < data.temp$high_S) %>% 
         mutate(Site=j)
       slope.out.cmd <- rbind(slope.out.cmd,slope.temp)
     }
