@@ -115,7 +115,29 @@ for (j in 1:12){
 
 snp_list <- rbind(slope.out.mat,slope.out.map,slope.out.cmd)
 
+
+
+############################################################################################################
+#Make unique snp_list across env
+
+#Diagnostics
+snp_list_p1 <- snp_list %>% filter(Site==1)
+#Not unique SNP ID
+unique(snp_list_p1$snp_ID[duplicated(snp_list_p1$snp_ID)]) 
+
+#Remove not unique SNPs
+snp_list_filter <- data.frame()
+for(i in 1:12){
+  snp_list_p <- snp_list %>% filter(Site==i)
+  snp_list_p_filtered <- snp_list_p %>% filter(duplicated(snp_ID) == FALSE)
+  snp_list_filter <- rbind(snp_list_filter,snp_list_p_filtered)
+}
+
+
+
+
 write_csv(snp_list,"Genomics_scripts/Data/snp_list.csv")
+write_csv(snp_list_filter,"Genomics_scripts/Data/snp_list_unique.csv")
 
 
 

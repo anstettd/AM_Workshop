@@ -24,6 +24,7 @@ Climate_season <- read.csv("Genomics_scripts/Data/Baseline_Timeseries_climate_No
 #Combine NanuQ with Dylan datasets 
 
 victory <- left_join(NanuQ,Dylan,by=c("Name"="ID")) 
+write.csv(victory, "Genomics_scripts/Data/M_caridnalis_genomics_meta_data.csv")
 vic <- victory %>% select(Name,Site,Population,Year)
 #write.csv(vic, "Genomics_scripts/Data/victory.csv")
 vic1 <- victory %>% select(Site,Year)  
