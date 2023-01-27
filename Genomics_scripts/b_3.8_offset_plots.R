@@ -12,13 +12,13 @@ library(car)
 library(ggrepel)
 
 #Import data
-offset_pop_nocumul <- read_csv("Genomics_scripts/Data/offset_pop_lambda.csv")
-slope.cumul <- read_csv("Genomics_scripts/Data/slope.cumul.csv")
-slope.cumul.unique <- read_csv("Genomics_scripts/Data/slope.cumul.unique.csv")
-offset_pop <- cbind(offset_pop_nocumul,slope.cumul,slope.cumul.unique)
-colnames(offset_pop)[18] <- "cumul_MAT" ; colnames(offset_pop)[19] <- "cumul_MAP"
+offset_pop <- read_csv("Genomics_scripts/Data/offset_demo_pop.csv")
+#slope.cumul <- read_csv("Genomics_scripts/Data/slope.cumul.csv")
+#slope.cumul.unique <- read_csv("Genomics_scripts/Data/slope.cumul.unique.csv")
+#offset_pop <- cbind(offset_pop_nocumul,slope.cumul,slope.cumul.unique)
+#colnames(offset_pop)[18] <- "cumul_MAT" ; colnames(offset_pop)[19] <- "cumul_MAP"
 
-offset_pop_mod <- offset_pop %>% filter(Paper_ID!=10)
+offset_pop_mod <- offset_pop %>% filter(ID!=10)
 
 #stats
 lm.1215 <- lm(lambda_slope~offset_1215,data=offset_pop)
@@ -58,10 +58,10 @@ Anova(lm.dist,type="III")
 ###########################################################################################################
 
 #2012-2015 offset plotted against lambda
-ggplot(offset_pop, aes(x=offset_1215, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop, aes(x=offset_1215, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   geom_smooth(method=lm,color="black")+
-#  geom_label_repel(aes(label = Paper_ID))+
+#  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="2012-2015 Genetic Offset")+
@@ -78,10 +78,10 @@ ggplot(offset_pop, aes(x=offset_1215, y=lambda_slope, label=Paper_ID)) +
 
 
 #2012-2015 offset plotted against lambda, rm pop 10
-ggplot(offset_pop_mod, aes(x=offset_1215, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop_mod, aes(x=offset_1215, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="2012-2015 Genetic Offset")+
@@ -96,10 +96,10 @@ ggplot(offset_pop_mod, aes(x=offset_1215, y=lambda_slope, label=Paper_ID)) +
 #ggsave("Graphs_Oct_22/offset_lambda_slope_1215_mod.pdf",width=7, height = 5, units = "in")
 
 #RCP 4.5 offset plotted against lambda, rm pop 10
-ggplot(offset_pop_mod, aes(x=offset_4.5, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop_mod, aes(x=offset_4.5, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="2040-2070 RCP4.5 Genetic Offset")+
@@ -114,10 +114,10 @@ ggplot(offset_pop_mod, aes(x=offset_4.5, y=lambda_slope, label=Paper_ID)) +
 ggsave("Graphs_Oct_22/offset_lambda_slope_rcp4.5_mod.pdf",width=7, height = 5, units = "in")
 
 #RCP 4.5 offset plotted against lambda, rm pop 10
-ggplot(offset_pop_mod, aes(x=offset_8.5, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop_mod, aes(x=offset_8.5, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="2040-2070 RCP8.5 Genetic Offset")+
@@ -135,10 +135,10 @@ ggsave("Graphs_Oct_22/offset_lambda_slope_rcp8.5_mod.pdf",width=7, height = 5, u
 ###########################
 
 #climate distance plotted against lambda
-ggplot(offset_pop, aes(x=clim_distance, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop, aes(x=clim_distance, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="2012-2015 Climate Distance")+
@@ -153,10 +153,10 @@ ggplot(offset_pop, aes(x=clim_distance, y=lambda_slope, label=Paper_ID)) +
 ggsave("Graphs_Oct_22/5_distance_lambda.pdf",width=8, height = 6, units = "in")
 
 #climate distance plotted against lambda, rm pop 10
-ggplot(offset_pop_mod, aes(x=clim_distance, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop_mod, aes(x=clim_distance, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="2012-2015 Climate Distance")+
@@ -180,10 +180,10 @@ ggsave("Graphs_Oct_22/5_distance_lambda_mod.pdf",width=7, height = 5, units = "i
 #Cumulative meteric across all env of cumulative slope
 
 #MAT
-ggplot(offset_pop_mod, aes(x=cumul_slope, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop_mod, aes(x=cumul_slope, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   #  geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="Cumulative Slope")+
@@ -201,10 +201,10 @@ ggsave("Graphs_Oct_22/lamda_cumul_slope_unique.pdf",width=7, height = 5, units =
 
 
 #MAT
-ggplot(offset_pop_mod, aes(x=cumul_MAT, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop_mod, aes(x=cumul_MAT, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   #  geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="Cumul. Slope MAT")+
@@ -219,10 +219,10 @@ ggplot(offset_pop_mod, aes(x=cumul_MAT, y=lambda_slope, label=Paper_ID)) +
 ggsave("Graphs_Oct_22/lamda_cumul_slope_mat.pdf",width=7, height = 5, units = "in")
 
 #MAP
-ggplot(offset_pop_mod, aes(x=cumul_MAP, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop_mod, aes(x=cumul_MAP, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   #  geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="Cumul. Slope MAP")+
@@ -238,10 +238,10 @@ ggsave("Graphs_Oct_22/lamda_cumul_slope_map.pdf",width=7, height = 5, units = "i
 
 
 #CMD
-ggplot(offset_pop_mod, aes(x=cumul_CMD, y=lambda_slope, label=Paper_ID)) + 
+ggplot(offset_pop_mod, aes(x=cumul_CMD, y=lambda_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   #  geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Lambda Slope")+
   scale_x_continuous(name="Cumul. Slope CMD")+
@@ -264,10 +264,10 @@ ggsave("Graphs_Oct_22/lamda_cumul_slope_cmd.pdf",width=7, height = 5, units = "i
 
 
 #cumul predicting offset
-ggplot(offset_pop, aes(x=cumul_slope, y=offset_1215, label=Paper_ID)) + 
+ggplot(offset_pop, aes(x=cumul_slope, y=offset_1215, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   #  geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="2012-2015 Genetic Offset")+
   scale_x_continuous(name="Cumulative Slope")+
@@ -282,10 +282,10 @@ ggplot(offset_pop, aes(x=cumul_slope, y=offset_1215, label=Paper_ID)) +
 ggsave("Graphs_Oct_22/cumul_offset.pdf",width=7, height = 5, units = "in")
 
 #cumul predicting offset
-ggplot(offset_pop, aes(x=offset_1215, y=cumul_slope, label=Paper_ID)) + 
+ggplot(offset_pop, aes(x=offset_1215, y=cumul_slope, label=ID)) + 
   geom_point(aes(color=Region), size =4.5)+
   #  geom_smooth(method=lm,color="black")+
-  #  geom_label_repel(aes(label = Paper_ID))+
+  #  geom_label_repel(aes(label = ID))+
   geom_text(hjust=-.15, vjust=-.2)+
   scale_y_continuous(name="Cumulative Slope")+
   scale_x_continuous(name="2012-2015 Genetic Offset")+

@@ -49,22 +49,23 @@ rasStack_1016 <- stack(mask_offset_1215,mask_offset_2011,mask_offset_2012,mask_o
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
 
 #Baseline & Timeseries
-baseline_pop <- read_csv("Genomics_scripts/Data/paper_ID_site_select.csv")
-timeseries_pop <- baseline_pop %>% filter(Paper_ID<13) %>% dplyr::select(Long,Lat, Paper_ID,)
-#imeseries_pop_sf <- st_as_sf(timeseries_pop,coords=c("Long","Lat"), crs=EPSG4326)
-#time_sp <- SpatialPoints(timeseries_pop)
-coordinates(timeseries_pop)=cbind(timeseries_pop$Long,timeseries_pop$Lat)
-proj4string(timeseries_pop) <- EPSG4326
-crs(timeseries_pop)
+demo_pop_raw <- read_csv("Genomics_scripts/Data/offset_pop_lambda_allsites.csv")
+demo_pop <- demo_pop_raw %>% dplyr::select(Longitude,Latitude,ID)
+coordinates(demo_pop)=cbind(demo_pop$Longitude,demo_pop$Latitude)
+proj4string(demo_pop) <- EPSG4326
+crs(demo_pop)
 
-rasStack_1016 <- raster::extract(rasStack_1016,timeseries_pop)
-rasValue_gcc <- raster::extract(rasStack_gcc,timeseries_pop)
+rasStack_1016 <- raster::extract(rasStack_1016,demo_pop)
+rasValue_gcc <- raster::extract(rasStack_gcc,demo_pop)
 
 #Save offset data in dataframe
-timeseries_offset <- baseline_pop %>% filter(Paper_ID<13)
-offset_pop <- cbind(timeseries_offset,rasStack_1016,rasValue_gcc)
+offset_demo_pop <- cbind(demo_pop_raw ,rasStack_1016,rasValue_gcc)
 
+colnames(offset_demo_pop)[14] <- "offset_4.5"
+colnames(offset_demo_pop)[15] <- "offset_8.5"
+colnames(offset_demo_pop)[16] <- "offset_4.5_old"
+colnames(offset_demo_pop)[17] <- "offset_8.5_old"
 
-write_csv(offset_pop,"Genomics_scripts/Data/offset_pop_bf5.csv")
+write_csv(offset_demo_pop,"Genomics_scripts/Data/offset_demo_pop.csv")
 
 

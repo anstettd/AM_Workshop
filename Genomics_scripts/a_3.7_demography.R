@@ -24,7 +24,7 @@ demo <- demo_all %>% filter(Site =="SweetwaterRiver" | Site == "WestForkMojaveRi
                               Site == "RockCreek" | Site == "MillCreek")
 site_popID <- read_csv("Genomics_scripts/Data/site_popID.csv")
 demo_ID <- left_join(demo,site_popID,by="Site")
-demo_ID <- demo_ID %>% filter(Year!=2010:2011)
+demo_ID <- demo_ID %>% filter(!Year%in%c(2010,2011))
 
 
 ###################################################################################
@@ -43,7 +43,7 @@ colnames(offset_pop_lambda)[16] <- "offset_4.5_old"
 colnames(offset_pop_lambda)[17] <- "offset_8.5_old"
 colnames(offset_pop_lambda)[19] <- "lambda_slope"
 
-#write_csv(offset_pop_lambda,"Genomics_scripts/Data/offset_pop_lambda.csv")
+write_csv(offset_pop_lambda,"Genomics_scripts/Data/offset_pop_lambda.csv")
 
 
 

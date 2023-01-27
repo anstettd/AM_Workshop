@@ -9,41 +9,41 @@
 #Library install and import
 library(tidyverse) 
 
-#Bring in dataframe with offset information
-offset_pop <- read_csv("Genomics_scripts/Data/offset_pop_bf5.csv")
-offset_pop <- offset_pop %>% mutate(Region = ifelse(Lat >= 40, "North", 
-                                                        ifelse((Lat >35) & (Lat <40), "Centre","South")))
-
 #Import lambda from demography data for all sites
 demo_all <- read_csv("Genomics_scripts/Data/lambda_2010_2016.csv")
-demo <- demo_all %>% filter(Site =="SweetwaterRiver" | Site == "WestForkMojaveRiver" | 
-                              Site =="NorthForkMiddleForkTule" | Site == "RedwoodCreek" |
-                              Site == "Wawona" | Site == "OregonCreek" |
-                              Site == "LittleJamesonCreek" | Site == "DeepCreek" |
-                              Site == "O'NeilCreek" | Site == "DeerCreek" |
-                              Site == "RockCreek" | Site == "MillCreek")
-site_popID <- read_csv("Genomics_scripts/Data/site_popID.csv")
-demo_ID <- left_join(demo,site_popID,by="Site")
-demo_ID <- demo_ID %>% filter(Year!=2010:2011)
+demo_select <- demo_all %>% filter(Site !="BearCreek" & Site != "CherokeeCreek" & 
+                              Site !="ChinoCreek" & Site != "CorralCreek" &
+                              Site != "FiddleCreek" & Site != "HauserCreek" &
+                              Site != "MossCreekMercedDrainage" & Site != "NorthForkTuolumne" &
+                              Site != "ParadiseCreek" & Site != "SweetwaterCreek" &
+                              Site != "WillowCreek" & Site != "KitchenCreek" &
+                              Site != "WhitewaterCanyon") 
+demo_select <- demo_select %>% filter(!Year%in%c(2010,2011))
+demo_select <- na.omit(demo_select)
 
+
+demo_order <- demo_select[order(demo_select$Latitude),]
+demo_ID <- data.frame(unique(demo_order$Site))
+demo_ID$ID<-1:nrow(demo_ID)
+names(demo_ID) <- c("Site","ID")
+demo_select_ID <- left_join(demo_select,demo_ID,by="Site")
+demo_select_raw <- demo_select %>% select(-Year,-lambda,-SiteYear)
+demo_ID_join <- left_join(demo_ID,unique(demo_select_raw),by="Site")
 
 ###################################################################################
 #Calc lambda slopes over time
 
 lambda_pop <- data.frame()
-for (i in 1:12){
-  demo_pop <- demo_ID %>% filter(Paper_ID == i)
+for (i in 1:nrow(demo_ID)){
+  demo_pop <- demo_select_ID %>% filter(ID == i)
   lambda_pop[i,1] <- summary(lm(lambda~Year,data=demo_pop))$coefficients[2]
 }
 
-offset_pop_lambda <- cbind(offset_pop,lambda_pop)
-colnames(offset_pop_lambda)[14] <- "offset_4.5"
-colnames(offset_pop_lambda)[15] <- "offset_8.5"
-colnames(offset_pop_lambda)[16] <- "offset_4.5_old"
-colnames(offset_pop_lambda)[17] <- "offset_8.5_old"
-colnames(offset_pop_lambda)[19] <- "lambda_slope"
+offset_pop_lambda <- cbind(demo_ID_join,lambda_pop)
 
-#write_csv(offset_pop_lambda,"Genomics_scripts/Data/offset_pop_lambda.csv")
+colnames(offset_pop_lambda)[8] <- "lambda_slope"
+
+#write_csv(offset_pop_lambda,"Genomics_scripts/Data/offset_pop_lambda_allsites.csv")
 
 
 
