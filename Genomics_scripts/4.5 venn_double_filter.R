@@ -15,6 +15,13 @@ env1 <- read_csv("Genomics_scripts/Data/win_bf_mat30_5.csv")
 env2 <- read_csv("Genomics_scripts/Data/win_bf_map30_5.csv")
 env5 <- read_csv("Genomics_scripts/Data/win_bf_cmd30_5.csv")
 
+env_all <- rbind(env1,env2,env5)
+
+#write out unique SNP set
+snp_set <- env_all %>% distinct(chr_snp)
+#write_csv(snp_set, "Genomics_scripts/Data/snp_set.csv")
+
+
 
 #Venn Diagram of SNP overlap
 MAT_set <- pull(env1[,1])
