@@ -25,7 +25,7 @@ library(RColorBrewer)
 EPSG4326<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #setup WGS 1984 CRS
 
 #Baseline & Timeseries
-all_pop <- read_csv("Genomics_scripts/Data//Baseline_Timeseries_pops_final2.csv")%>% filter(Paper_ID<55)
+all_pop <- read_csv("Genomics_scripts/Data/Baseline_Timeseries_pops_final2.csv")%>% filter(Paper_ID<55)
 all_pop_sf <- st_as_sf(all_pop,coords=c("Long","Lat"), crs=EPSG4326)
 timeseries_pop <- all_pop %>% filter(Paper_ID<13) %>% dplyr::select(Long,Lat)
 timeseries_pop_sf <- st_as_sf(timeseries_pop,coords=c("Long","Lat"), crs=EPSG4326)
@@ -39,7 +39,7 @@ calo <- states %>%
 
 #Baseline + Timeseries
 tmap_mode("plot")
-#tmap_mode("view")
+tmap_mode("view")
 mim <-
   tm_shape(calo)+
   tm_borders()+
