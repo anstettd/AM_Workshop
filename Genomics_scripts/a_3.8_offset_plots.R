@@ -18,7 +18,7 @@ offset_pop <- read_csv("Genomics_scripts/Data/offset_pop_lambda.csv")
 #offset_pop <- cbind(offset_pop_nocumul,slope.cumul,slope.cumul.unique)
 #colnames(offset_pop)[18] <- "cumul_MAT" ; colnames(offset_pop)[19] <- "cumul_MAP"
 
-offset_pop_mod <- offset_pop %>% filter(Paper_ID!=10)
+offset_pop_mod <- offset_pop %>% filter(Paper_ID!=10) %>% filter(Paper_ID!=12)
 
 #stats
 lm.1215 <- lm(lambda_slope~offset_1215,data=offset_pop)
@@ -73,7 +73,7 @@ ggplot(offset_pop, aes(x=offset_1215, y=lambda_slope, label=Paper_ID)) +
     axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5),
     legend.position = c(0.85, 0.25),legend.text=element_text(size=14),
     legend.title=element_text(size=16,face="bold"))
-ggsave("Graphs_Jan_23/offset_lambda_slope_1215.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs_Jan_23/offset_lambda_slope_1215.pdf",width=8, height = 6, units = "in")
 
 
 
@@ -93,7 +93,7 @@ ggplot(offset_pop_mod, aes(x=offset_1215, y=lambda_slope, label=Paper_ID)) +
     axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5),
     legend.position = c(0.85, 0.85),legend.text=element_text(size=14),
     legend.title=element_text(size=16,face="bold"))
-ggsave("Graphs_Jan_23/offset_lambda_slope_1215_mod.pdf",width=7, height = 5, units = "in")
+#ggsave("Graphs_Jan_23/offset_lambda_slope_1215_mod.pdf",width=7, height = 5, units = "in")
 
 #RCP 4.5 offset plotted against lambda, rm pop 10
 ggplot(offset_pop_mod, aes(x=offset_4.5, y=lambda_slope, label=Paper_ID)) + 
@@ -111,7 +111,7 @@ ggplot(offset_pop_mod, aes(x=offset_4.5, y=lambda_slope, label=Paper_ID)) +
     axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5),
     legend.position = c(0.85, 0.85),legend.text=element_text(size=14),
     legend.title=element_text(size=16,face="bold"))
-ggsave("Graphs_Jan_23/offset_lambda_slope_rcp4.5_mod.pdf",width=7, height = 5, units = "in")
+#ggsave("Graphs_Jan_23/offset_lambda_slope_rcp4.5_mod.pdf",width=7, height = 5, units = "in")
 
 #RCP 4.5 offset plotted against lambda, rm pop 10
 ggplot(offset_pop_mod, aes(x=offset_8.5, y=lambda_slope, label=Paper_ID)) + 
@@ -129,7 +129,7 @@ ggplot(offset_pop_mod, aes(x=offset_8.5, y=lambda_slope, label=Paper_ID)) +
     axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5),
     legend.position = c(0.85, 0.85),legend.text=element_text(size=14),
     legend.title=element_text(size=16,face="bold"))
-ggsave("Graphs_Jan_23/offset_lambda_slope_rcp8.5_mod.pdf",width=7, height = 5, units = "in")
+#ggsave("Graphs_Jan_23/offset_lambda_slope_rcp8.5_mod.pdf",width=7, height = 5, units = "in")
 
 
 ###########################
