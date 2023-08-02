@@ -24,7 +24,7 @@ Climate_season <- read.csv("Genomics_scripts/Data/Baseline_Timeseries_climate_No
 #Combine NanuQ with Dylan datasets 
 
 victory <- left_join(NanuQ,Dylan,by=c("Name"="ID")) 
-write.csv(victory, "Genomics_scripts/Data/M_caridnalis_genomics_meta_data.csv")
+#write.csv(victory, "Genomics_scripts/Data/M_caridnalis_genomics_meta_data.csv")
 vic <- victory %>% select(Name,Site,Population,Year)
 #write.csv(vic, "Genomics_scripts/Data/victory.csv")
 vic1 <- victory %>% select(Site,Year)  
@@ -58,13 +58,56 @@ vic_yakima_names <- gsub("NS","--sample-name NS", vic_yakima_names)
 vic_yakima_names <-as.data.frame(vic_yakima_names)
 #write_csv(vic_yakima_names, "Genomics_scripts/Data/yakima_names.csv")
 
-
 #No Yakima
 vic_no_yakima <- victory %>% filter(Collection != "Yakima")
 vic_no_yakima_names <- vic_no_yakima$Filename.Prefix
 vic_no_yakima_names <- gsub("NS","--sample-name NS", vic_no_yakima_names) 
 vic_no_yakima_names <-as.data.frame(vic_no_yakima_names)
 #write_csv(vic_no_yakima_names, "Genomics_scripts/Data/no_yakima_names.csv")
+
+#Make files for demography populations not in timeseries
+#Coast Fork Willamette 
+vic_55 <- victory %>% filter(Paper_ID==55)
+vic_55<- vic_55$Filename.Prefix
+vic_55<-as.data.frame(vic_55)
+write_csv(vic_55, "Genomics_scripts/Data/pop_demo_55.csv")
+
+#Rainbow Pool
+vic_29 <- victory %>% filter(Paper_ID==29)
+vic_29<- vic_29$Filename.Prefix
+vic_29<-as.data.frame(vic_29)
+write_csv(vic_29, "Genomics_scripts/Data/pop_demo_29.csv")
+
+#Carlon
+vic_28 <- victory %>% filter(Paper_ID==28)
+vic_28<- vic_28$Filename.Prefix
+vic_28<-as.data.frame(vic_28)
+write_csv(vic_28, "Genomics_scripts/Data/pop_demo_28.csv")
+
+#Buck Meadows
+vic_27 <- victory %>% filter(Paper_ID==27)
+vic_27<- vic_27$Filename.Prefix
+vic_27<-as.data.frame(vic_27)
+write_csv(vic_27, "Genomics_scripts/Data/pop_demo_27.csv")
+
+#Whitewater Cayon
+vic_17 <- victory %>% filter(Paper_ID==17)
+vic_17<- vic_17$Filename.Prefix
+vic_17<-as.data.frame(vic_17)
+write_csv(vic_17, "Genomics_scripts/Data/pop_demo_17.csv")
+
+#Kitchen Creek
+vic_15 <- victory %>% filter(Paper_ID==15)
+vic_15<- vic_15$Filename.Prefix
+vic_15<-as.data.frame(vic_15)
+write_csv(vic_15, "Genomics_scripts/Data/pop_demo_15.csv")
+
+#Hauser Creek
+vic_14 <- victory %>% filter(Paper_ID==14)
+vic_14<- vic_14$Filename.Prefix
+vic_14<-as.data.frame(vic_14)
+write_csv(vic_14, "Genomics_scripts/Data/pop_demo_14.csv")
+  
 
 ###################################################################################
 #Climate Data
