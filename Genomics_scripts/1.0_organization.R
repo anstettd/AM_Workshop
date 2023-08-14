@@ -108,6 +108,28 @@ vic_14<- vic_14$Filename.Prefix
 vic_14<-as.data.frame(vic_14)
 write_csv(vic_14, "Genomics_scripts/Data/pop_demo_14.csv")
   
+###################################################################################
+
+#Make 
+#vic_only_baseline <- victory %>% filter(Collection == "Baseline") %>%
+ # filter(Paper_ID!=55 | Paper_ID!=29 | Paper_ID!=28 | Paper_ID!=27 | Paper_ID!=17 | Paper_ID!=15 | Paper_ID!=14)
+
+#unique_baseline <- as.data.frame(unique(vic_only_baseline$Paper_ID))
+
+for (i in 13:55){
+  vic_select <- victory %>% filter(Paper_ID==i)
+  vic_select <- vic_select$Filename.Prefix
+  vic_select <- as.data.frame(vic_select)
+  fname_out<-paste("Genomics_scripts/Data/pop_baseline_", i, ".csv", sep = "")
+  write_csv(vic_select, fname_out,col_names = F)
+  
+}
+
+
+
+
+
+
 
 ###################################################################################
 #Climate Data
