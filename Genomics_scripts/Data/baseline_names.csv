@@ -1,4 +1,3 @@
-vic_base_names
 --sample-name NS.1481.002.IDT_i7_29---IDT_i5_29.1
 --sample-name NS.1493.004.IDT_i7_102---IDT_i5_102.2
 --sample-name NS.1481.002.IDT_i7_53---IDT_i5_53.3
@@ -28,6 +27,7 @@ vic_base_names
 --sample-name NS.1480.001.IDT_i7_108---IDT_i5_108.154
 --sample-name NS.1480.001.IDT_i7_120---IDT_i5_120.155
 --sample-name NS.1480.001.IDT_i7_132---IDT_i5_132.156
+--sample-name NS.1493.003.IDT_i7_159---IDT_i5_159.183
 --sample-name NS.1493.003.IDT_i7_171---IDT_i5_171.184
 --sample-name NS.1493.003.IDT_i7_183---IDT_i5_183.185
 --sample-name NS.1493.003.IDT_i7_100---IDT_i5_100.186
@@ -35,7 +35,6 @@ vic_base_names
 --sample-name NS.1493.003.IDT_i7_124---IDT_i5_124.188
 --sample-name NS.1493.003.IDT_i7_136---IDT_i5_136.189
 --sample-name NS.1493.003.IDT_i7_148---IDT_i5_148.190
---sample-name NS.1493.003.IDT_i7_160---IDT_i5_160.191
 --sample-name NS.1480.001.IDT_i7_31---IDT_i5_31.221
 --sample-name NS.1480.001.IDT_i7_43---IDT_i5_43.222
 --sample-name NS.1480.001.IDT_i7_55---IDT_i5_55.223

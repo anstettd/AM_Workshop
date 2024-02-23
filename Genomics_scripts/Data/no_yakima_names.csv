@@ -1,4 +1,3 @@
-vic_no_yakima_names
 --sample-name NS.1481.002.IDT_i7_29---IDT_i5_29.1
 --sample-name NS.1493.004.IDT_i7_102---IDT_i5_102.2
 --sample-name NS.1481.002.IDT_i7_53---IDT_i5_53.3
@@ -107,7 +106,6 @@ vic_no_yakima_names
 --sample-name NS.1480.001.IDT_i7_186---IDT_i5_186.110
 --sample-name NS.1480.001.IDT_i7_110---IDT_i5_110.111
 --sample-name NS.1480.001.IDT_i7_103---IDT_i5_103.112
---sample-name NS.1493.004.IDT_i7_140---IDT_i5_140.113
 --sample-name NS.1480.001.IDT_i7_121---IDT_i5_121.113
 --sample-name NS.1480.001.IDT_i7_157---IDT_i5_157.114
 --sample-name NS.1480.001.IDT_i7_127---IDT_i5_127.115

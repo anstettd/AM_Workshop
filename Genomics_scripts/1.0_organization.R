@@ -16,6 +16,9 @@ library(data.table)
 
 #import NanuQ data
 NanuQ <- read.csv("Genomics_scripts/Data/NanuQ_all.csv", header=T)
+#Remove duplicated sample with lower quality
+NanuQ <- NanuQ %>% filter(Filename.Prefix!="NS.1493.004.IDT_i7_140---IDT_i5_140.113")
+
 Dylan <- read.csv("Genomics_scripts/Data/Sequenced_Mimulus_NovaSeq.csv", header=T)
 Climate_year <- read.csv("Genomics_scripts/Data/Baseline_Timeseries_climate_Normal_1961_1990Y.csv", header=T)
 Climate_season <- read.csv("Genomics_scripts/Data/Baseline_Timeseries_climate_Normal_1961_1990S.csv", header=T)
@@ -24,10 +27,39 @@ Climate_season <- read.csv("Genomics_scripts/Data/Baseline_Timeseries_climate_No
 #Combine NanuQ with Dylan datasets 
 
 victory <- left_join(NanuQ,Dylan,by=c("Name"="ID")) 
-#write.csv(victory, "Genomics_scripts/Data/M_caridnalis_genomics_meta_data.csv")
+write.csv(victory, "Genomics_scripts/Data/M_caridnalis_genomics_meta_data.csv")
 vic <- victory %>% select(Name,Site,Population,Year)
-#write.csv(vic, "Genomics_scripts/Data/victory.csv")
+write.csv(vic, "Genomics_scripts/Data/victory.csv")
 vic1 <- victory %>% select(Site,Year)  
+
+###################################################################################
+#Combine data
+Climate_season <- Climate_season %>% select(Tmax_wt:CMI_at)
+climate_90 <- cbind(Climate_year,Climate_season)
+
+#Select only 
+##### Annual #####
+# MAT = Mean annual temperature (°C)
+# MAP = Mean annual precipitation (mm)
+# PAS = Precipitation as snow (mm) between August in previous year and July in current year
+# EXT = Extreme temperature over 30 years
+# CMD = Hargreaves climatic moisture deficit (mm)
+##### Seasonal #####
+# Tave_wt = Winter mean temperature (°C)
+# Tave_sm = Summer mean temperature (°C)
+# PPT_wt = Winter precipitation (mm)
+# PPT_sm = Summer precipitation (mm)
+
+climate <- climate_90 %>% select(Site_Name,Paper_ID,Latitude,Longitude,Elevation,
+                                 MAT,MAP,PAS,EXT,CMD,
+                                 Tave_wt,Tave_sm,PPT_wt,PPT_sm)
+
+###################################################################################
+#Export out full meta data table
+meta_data_clim <- left_join(victory,climate,by="Paper_ID")
+write.csv(meta_data_clim, "Genomics_scripts/Data/M_caridnalis_genomics_meta_data_climate.csv")
+
+
 
 ###################################################################################
 #Produce list of baseline and non-baseline samples
@@ -35,35 +67,35 @@ vic1 <- victory %>% select(Site,Year)
 vic_non_base <- victory %>% filter(Collection == "Timeseries" | Collection == "Yakima")
 vic_non_base_names <- vic_non_base$Filename.Prefix
 vic_non_base_names<-as.data.frame(vic_non_base_names)
-#write_csv(vic_non_base_names, "Genomics_scripts/Data/non_baseline_names.csv")
+write_csv(vic_non_base_names, "Genomics_scripts/Data/non_baseline_names.csv",col_names = F)
 
 #Baseline
 vic_base <- victory %>% filter(Collection == "Baseline" | Collection == "Both")
 vic_base_names <- vic_base$Filename.Prefix
 vic_base_names <- gsub("NS","--sample-name NS", vic_base_names) 
 vic_base_names <-as.data.frame(vic_base_names)
-#write_csv(vic_base_names, "Genomics_scripts/Data/baseline_names.csv")
+write_csv(vic_base_names, "Genomics_scripts/Data/baseline_names.csv",col_names = F)
 
 #Timeseries
 vic_time <- victory %>% filter(Collection == "Timeseries" | Collection == "Both")
 vic_time_names <- vic_time$Filename.Prefix
 vic_time_names <- gsub("NS","--sample-name NS", vic_time_names) 
 vic_time_names <-as.data.frame(vic_time_names)
-#write_csv(vic_time_names, "Genomics_scripts/Data/timeseries_names.csv")
+write_csv(vic_time_names, "Genomics_scripts/Data/timeseries_names.csv",col_names = F)
 
 #Yakima
 vic_yakima <- victory %>% filter(Collection == "Yakima")
 vic_yakima_names <- vic_yakima$Filename.Prefix
 vic_yakima_names <- gsub("NS","--sample-name NS", vic_yakima_names) 
 vic_yakima_names <-as.data.frame(vic_yakima_names)
-#write_csv(vic_yakima_names, "Genomics_scripts/Data/yakima_names.csv")
+write_csv(vic_yakima_names, "Genomics_scripts/Data/yakima_names.csv",col_names = F)
 
 #No Yakima
 vic_no_yakima <- victory %>% filter(Collection != "Yakima")
 vic_no_yakima_names <- vic_no_yakima$Filename.Prefix
 vic_no_yakima_names <- gsub("NS","--sample-name NS", vic_no_yakima_names) 
 vic_no_yakima_names <-as.data.frame(vic_no_yakima_names)
-#write_csv(vic_no_yakima_names, "Genomics_scripts/Data/no_yakima_names.csv")
+write_csv(vic_no_yakima_names, "Genomics_scripts/Data/no_yakima_names.csv",col_names = F)
 
 #Make files for demography populations not in timeseries
 #Coast Fork Willamette 
@@ -116,14 +148,14 @@ write_csv(vic_14, "Genomics_scripts/Data/pop_demo_14.csv")
 
 #unique_baseline <- as.data.frame(unique(vic_only_baseline$Paper_ID))
 
-for (i in 13:55){
-  vic_select <- victory %>% filter(Paper_ID==i)
-  vic_select <- vic_select$Filename.Prefix
-  vic_select <- as.data.frame(vic_select)
-  fname_out<-paste("Genomics_scripts/Data/pop_baseline_", i, ".csv", sep = "")
-  write_csv(vic_select, fname_out,col_names = F)
-  
-}
+#for (i in 13:55){
+#  vic_select <- victory %>% filter(Paper_ID==i)
+#  vic_select <- vic_select$Filename.Prefix
+#  vic_select <- as.data.frame(vic_select)
+#  fname_out<-paste("Genomics_scripts/Data/pop_baseline_", i, ".csv", sep = "")
+#  write_csv(vic_select, fname_out,col_names = F)
+#  
+#}
 
 
 
@@ -158,7 +190,7 @@ climate <- climate_90 %>% select(Site_Name,Paper_ID,Latitude,Longitude,Elevation
 climate <- climate %>% filter(Site_Name!="Yakima, WA")
 # order by Paper_ID
 climate <- climate[order(climate$Paper_ID),]
-write_csv(climate, "Donor_selection/Data/climate_pop.csv")
+#write_csv(climate, "Donor_selection/Data/climate_pop.csv")
 
 #make site lat file
 site_lat <- climate %>% select(Site_Name:Longitude)
@@ -172,20 +204,16 @@ env_baypass <- transpose(no_t_env_baypass.s)
 #write_csv(env_baypass, "Genomics_scripts/Data/env_baseline.csv",col_names=FALSE)
 
 ###################################################################################
-#Produce list of sample ID and Population
-#Baseline
-vic_base_ID <- vic_base %>% select(Read.Set.Id,Paper_ID)
-vic_base_ID <- vic_base_ID[order(vic_base_ID$Paper_ID),] # order by Paper_ID
-#write_csv(vic_base_ID, "Genomics_scripts/Data/baseline_pop_id.csv",col_names=FALSE)
+t
 
 #Timeseries
 vic_time_ID <- vic_time %>% select(Read.Set.Id,Paper_ID)
 vic_time_ID <- vic_time_ID[order(vic_time_ID$Paper_ID),] # order by Paper_ID
-#write_csv(vic_time_ID, "Genomics_scripts/Data/time_pop_id.csv",col_names=FALSE)
+write_csv(vic_time_ID, "Genomics_scripts/Data/time_pop_id.csv",col_names=FALSE)
 
 #Yakima
 vic_yakima_ID <- vic_yakima %>% select(Read.Set.Id,Paper_ID)
-#write_csv(vic_yakima_ID, "Genomics_scripts/Data/yakima_pop_id.csv",col_names=FALSE)
+write_csv(vic_yakima_ID, "Genomics_scripts/Data/yakima_pop_id.csv",col_names=FALSE)
 
 #Timeseries pop_ID
 time_pop <- vic_time %>% select(Read.Set.Id,Paper_ID,Year)
