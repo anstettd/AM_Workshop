@@ -1,4 +1,4 @@
-#Filter in Unix
+ #Filter in Unix
 
 #Get column ID per SNP
 sed -n "1 s/CE10_chr1_231269.*//p" freq_MAT_slopes.csv | sed 's/[^,*]//g' | wc -c

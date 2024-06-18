@@ -204,7 +204,12 @@ env_baypass <- transpose(no_t_env_baypass.s)
 #write_csv(env_baypass, "Genomics_scripts/Data/env_baseline.csv",col_names=FALSE)
 
 ###################################################################################
-t
+#Produce list of sample ID and Population
+#Baseline
+vic_base_ID <- vic_base %>% select(Read.Set.Id,Paper_ID)
+vic_base_ID <- vic_base_ID[order(vic_base_ID$Paper_ID),] # order by Paper_ID
+write_csv(vic_base_ID, "Genomics_scripts/Data/baseline_pop_id.csv",col_names=FALSE) 
+#NOTE: File needs 0 added to pop 1-9 to reforomat to 01-09 before usage in BayPass. Do this in unix.
 
 #Timeseries
 vic_time_ID <- vic_time %>% select(Read.Set.Id,Paper_ID)
@@ -216,17 +221,17 @@ vic_yakima_ID <- vic_yakima %>% select(Read.Set.Id,Paper_ID)
 write_csv(vic_yakima_ID, "Genomics_scripts/Data/yakima_pop_id.csv",col_names=FALSE)
 
 #Timeseries pop_ID
-time_pop <- vic_time %>% select(Read.Set.Id,Paper_ID,Year)
-time_pop <- time_pop[order(time_pop$Paper_ID),] # order by Paper_ID
-time_pop_f <- time_pop %>% unite(Pop_ID,Paper_ID,Year,sep="_")  ##### This is wrong
-write_tsv(time_pop_f, "Genomics_scripts/Data/timeseries_pop_id.txt",col_names=FALSE)
+#time_pop <- vic_time %>% select(Read.Set.Id,Paper_ID,Year)
+#time_pop <- time_pop[order(time_pop$Paper_ID),] # order by Paper_ID
+#time_pop_f <- time_pop %>% unite(Pop_ID,Paper_ID,Year,sep="_")  ##### This is wrong
+#write_tsv(time_pop_f, "Genomics_scripts/Data/timeseries_pop_id.txt",col_names=FALSE)
 
 
 #Timeseries Geo_Region ID
-time_Geo_Region <- vic_time %>% select(Read.Set.Id,Geo_Region,Year)
-time_Geo_Region <- time_Geo_Region[order(time_Geo_Region$Geo_Region),] # order by Region
-time_region_f <- time_Geo_Region %>% unite(Region_ID,Geo_Region,Year,sep="_")  ##### This is wrong
-write_tsv(time_region_f, "Genomics_scripts/Data/timeseries_region_id.txt",col_names=FALSE)
+#time_Geo_Region <- vic_time %>% select(Read.Set.Id,Geo_Region,Year)
+#time_Geo_Region <- time_Geo_Region[order(time_Geo_Region$Geo_Region),] # order by Region
+#time_region_f <- time_Geo_Region %>% unite(Region_ID,Geo_Region,Year,sep="_")  ##### This is wrong
+#write_tsv(time_region_f, "Genomics_scripts/Data/timeseries_region_id.txt",col_names=FALSE)
 
 ###################################################################################
 #Make Site Year Combination Table
